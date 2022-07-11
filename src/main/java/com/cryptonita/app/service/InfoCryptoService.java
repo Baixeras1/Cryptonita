@@ -27,4 +27,3 @@ public class InfoCryptoService {
 }
 // URL API
 // https://api.coinranking.com/v2/coin/Qwsogvtv82FCd?x-access-token=coinranking798c1b4ec9657b5092e1bd04c620f4171c7e3787b03cb469
-//Esto es una prueba
