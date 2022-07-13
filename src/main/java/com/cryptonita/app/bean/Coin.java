@@ -2,49 +2,25 @@ package com.cryptonita.app.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Coin {
+public class Coin implements Serializable {
 
-    private String uuid;
-    private String symbol;
-    private String name;
-    private String description;
+    CoinData coin;
 
-    public String getUuid() {
-        return uuid;
+    public Coin() {
+
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public CoinData getCoin() {
+        return coin;
     }
 
     @Override
     public String toString() {
         return "Coin{" +
-                "uuid='" + uuid + '\'' +
-                ", symbol='" + symbol + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                "coin=" + coin +
                 '}';
     }
 }
