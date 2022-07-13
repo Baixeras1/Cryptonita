@@ -20,13 +20,15 @@ public class CoinController {
     private CoinService coinService;
 
     @GetMapping("/{id}")
-    public Coin getCoinInfoById(@PathVariable String id, RestTemplate restTemplate) {
+    public Coin getCoinById(@PathVariable String id, RestTemplate restTemplate) {
         return coinService.getCoinById(restTemplate, id);
     }
-    @GetMapping("/all")
-    public List<Coin> getCoins(RestTemplate restTemplate){
 
-        return  Arrays.asList(coinService.getCoins(restTemplate));
+    @GetMapping("/all")
+    public List<Coin> getCoins(RestTemplate restTemplate) {
+
+        return Arrays.asList(coinService.getCoins(restTemplate));
     }
+
 
 }
