@@ -7,7 +7,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Coin implements Serializable {
 
-    CoinData coin;
+   private CoinData coin;
 
     public Coin() {
 
