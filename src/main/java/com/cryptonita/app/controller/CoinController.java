@@ -1,7 +1,10 @@
 package com.cryptonita.app.controller;
 
 import com.cryptonita.app.bean.Coin;
+import com.cryptonita.app.bean.CoinData;
+import com.cryptonita.app.bean.Coins;
 import com.cryptonita.app.service.CoinService;
+import com.cryptonita.app.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,16 +22,21 @@ public class CoinController {
     @Autowired
     private CoinService coinService;
 
+    private final StorageService storageService;
+
+    @Autowired
+    public CoinController(StorageService storageService) {
+        this.storageService = storageService;
+    }
+
     @GetMapping("/{id}")
     public Coin getCoinById(@PathVariable String id, RestTemplate restTemplate) {
         return coinService.getCoinById(restTemplate, id);
     }
 
     @GetMapping("/all")
-    public List<Coin> getCoins(RestTemplate restTemplate) {
+    public Coins getCoins(RestTemplate restTemplate) {
 
-        return Arrays.asList(coinService.getCoins(restTemplate));
+        return coinService.getCoins(restTemplate);
     }
-
-
 }

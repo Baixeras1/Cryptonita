@@ -1,22 +1,20 @@
 package com.cryptonita.app.bean;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Coin implements Serializable {
+public class Coins implements Serializable {
 
-    private CoinData data;
+    private CoinData[] data;
 
     private Date timestamp;
 
-    public CoinData getData() {
+    public CoinData[] getData() {
         return data;
     }
 
-    public void setData(CoinData data) {
+    public void setData(CoinData[] data) {
         this.data = data;
     }
 
@@ -28,18 +26,18 @@ public class Coin implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public Coin() {
+    public Coins() {
     }
 
-    public Coin(CoinData data, Date timestamp) {
+    public Coins(CoinData[] data, Date timestamp) {
         this.data = data;
         this.timestamp = timestamp;
     }
 
     @Override
     public String toString() {
-        return "Coin{" +
-                "data=" + data +
+        return "Coins{" +
+                "data=" + Arrays.toString(data) +
                 ", timestamp=" + timestamp +
                 '}';
     }

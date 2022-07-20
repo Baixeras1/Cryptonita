@@ -1,6 +1,6 @@
 package com.cryptonita.app;
 
-import com.cryptonita.app.bean.Coin;
+import com.cryptonita.app.bean.Coins;
 import com.cryptonita.app.controller.CoinController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,20 +25,14 @@ class AppApplicationTests {
     @Autowired
     private CoinController coinController;
 
-
     @Test
     public void getCoinsIsNotNull() throws Exception {
-        assertThat(testRestTemplate.getForObject("http://localhost:" + port + "/coins/all", Coin.class)).isNull();
+        assertThat(testRestTemplate.getForObject("http://localhost:" + port + "/coins/all", Coins.class)).isNull();
     }
 
     @Test
     public void getCoinsIsNotEmpty() throws Exception {
-        assertThat(testRestTemplate.getForObject("http://localhost:" + port + "/coins/all", Coin.class)).isNotNull();
-    }
-
-    @Test
-    public void getCoinsSizeIsEqualTo100() throws Exception {
-        assertEquals("El size es 100", coinController.getCoins(restTemplate).size(), 100);
+        assertThat(testRestTemplate.getForObject("http://localhost:" + port + "/coins/all", Coins.class)).isNotNull();
     }
 
 
