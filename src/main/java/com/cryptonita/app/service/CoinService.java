@@ -1,6 +1,7 @@
 package com.cryptonita.app.service;
 
 import com.cryptonita.app.bean.Coin;
+import com.cryptonita.app.bean.Coins;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -8,29 +9,26 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class CoinService {
 
-    public Coin getCoinById(RestTemplate restTemplate, String uuid) {
+    public Coin getCoinById(RestTemplate restTemplate, String id) {
 
-        //TODO cambiar url
-        Coin coin = restTemplate.getForObject("https://api.coincap.io/v2/assets", Coin.class);
-        return coin;
+        String url = "https://api.coincap.io/v2/assets/";
+
+        ResponseEntity<Coin> response
+                = restTemplate.getForEntity(url + id, Coin.class);
+
+        return response.getBody();
     }
 
-    public Coin[] getCoins(RestTemplate restTemplate) {
+    public Coins getCoins(RestTemplate restTemplate) {
 
-        ResponseEntity<Coin[]> response = restTemplate.getForEntity("https://api.coincap.io/v2/assets", Coin[].class);
+        ResponseEntity<Coins> response = restTemplate.getForEntity("https://api.coincap.io/v2/assets", Coins.class);
 
-        Coin[] coins = response.getBody();
+
+        Coins coins = response.getBody();
 
         return coins;
     }
 
-
-
-
-
-
-
 }
-// URL API
-// https://api.coinranking.com/v2/coin/Qwsogvtv82FCd?x-access-token=coinranking798c1b4ec9657b5092e1bd04c620f4171c7e3787b03cb469
+
 
