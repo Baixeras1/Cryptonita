@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class UserModel {
+public class CoinModel {
 
     @Id
     private long id;
