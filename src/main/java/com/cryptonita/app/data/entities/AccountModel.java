@@ -18,9 +18,8 @@ public class AccountModel {
     private long id;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "User_ID")
     private UserModel user;
-
 
     @OneToMany(mappedBy = "account")
     private List<WalletModel> walletModels;
