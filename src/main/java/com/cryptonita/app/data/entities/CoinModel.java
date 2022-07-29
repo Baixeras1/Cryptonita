@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of= {"id","name"})
-@ToString(exclude = "CoinModel")
+@EqualsAndHashCode
+@ToString
 public class CoinModel {
 
     @Id
@@ -18,8 +18,8 @@ public class CoinModel {
     @Column(unique = true)
     private String name;
 
-    public CoinModel(long id,String name){
-        this.id = id;
+    @Builder
+    public CoinModel(String name){
         this.name = name;
     }
 
