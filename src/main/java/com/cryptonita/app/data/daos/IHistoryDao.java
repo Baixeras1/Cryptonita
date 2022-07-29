@@ -9,7 +9,7 @@ import java.util.List;
  * History repository
  * */
 
-public interface HistoryDao extends JpaRepository<HistoryModel,Long> {
+public interface IHistoryDao extends JpaRepository<HistoryModel,Long> {
 
     HistoryModel findById(long id);
 
@@ -17,9 +17,6 @@ public interface HistoryDao extends JpaRepository<HistoryModel,Long> {
 
     List<HistoryModel> findAllByUser_Id(long id);
 
-    HistoryModel deleteById(long id);
-
-
-
+    void deleteById(long id);
 
 }
