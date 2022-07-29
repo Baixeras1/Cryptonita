@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ *  Create Wallet JPA Entity
+ **/
+
 @Entity
 @Data
 @AllArgsConstructor
