@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+@Table(name = "Stacking_table")
 public class StackingModel {
 
     @Id
