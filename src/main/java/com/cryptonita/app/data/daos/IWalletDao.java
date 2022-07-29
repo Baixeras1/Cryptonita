@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Wallet repository
  * */
-public interface WalletDao extends JpaRepository <WalletModel , Long> {
+public interface IWalletDao extends JpaRepository <WalletModel , Long> {
 
     WalletModel findById(long id);
     List<WalletModel> findAll();
