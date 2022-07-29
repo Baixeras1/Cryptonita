@@ -23,12 +23,12 @@ public class WalletModel {
     private AccountModel account;
 
     @ManyToOne
-    private CoinsModel coin;
+    private CoinModel coin;
 
     private float quantity;
 
     @Builder
-    public WalletModel(AccountModel account, CoinsModel coin, float quantity) {
+    public WalletModel(AccountModel account, CoinModel coin, float quantity) {
         this.account = account;
         this.coin = coin;
         this.quantity = quantity;
