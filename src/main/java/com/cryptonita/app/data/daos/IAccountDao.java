@@ -7,11 +7,6 @@ import java.util.List;
 
 public interface IAccountDao extends JpaRepository<AccountModel,Long> {
 
-    AccountModel findById(long id);
-
-    AccountModel findByUserModel();
-
-    List<AccountModel>findAll();
-
-    void deleteById(long id);
+    AccountModel findByUserUsername(String userName);
+    AccountModel findByUser_Id(long id);
 }
