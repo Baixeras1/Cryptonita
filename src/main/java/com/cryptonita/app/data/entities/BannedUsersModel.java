@@ -1,8 +1,21 @@
 package com.cryptonita.app.data.entities;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
-public class BanUserModel {
+@Table(name = "BannedUsers")
+public class BannedUsersModel {
+
+    @Id
+    private long userID;
+
+    private LocalDate bannedAt;
+
+    private LocalDate expiresAt;
+
+    @MapsId
+    @OneToOne
+    private UserModel user;
 
 }
