@@ -1,6 +1,10 @@
 package com.cryptonita.app.data.entities;
 
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -8,26 +12,25 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id","monederoId","coinId"})
-@ToString(exclude = "WalletModel")
+@Table (name = "WALLET")
 public class WalletModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(unique = true)
-    private String monederoId;
-    @Column(unique = true)
-    private String coinId;
 
-    private double quantity;
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
+    private long id;
+
+    @ManyToOne
+    private AccountModel account;
+
+    @ManyToOne
+    private CoinsModel coin;
+
+    private float quantity;
 
     @Builder
-    private WalletModel(long id,String monederoId,String coinId,double quantity){
-        this.id = id;
-        this.monederoId = monederoId;
-        this.coinId = coinId;
+    public WalletModel(AccountModel account, CoinsModel coin, float quantity) {
+        this.account = account;
+        this.coin = coin;
         this.quantity = quantity;
     }
-
-
 }
