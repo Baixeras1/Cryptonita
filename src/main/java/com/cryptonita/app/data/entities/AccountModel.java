@@ -17,17 +17,18 @@ public class AccountModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true)
-    private String userId;
+    @OneToOne
+    @JoinColumn
+    private UserModel user;
 
 
-    @OneToMany(mappedBy = "walletId")
+    @OneToMany(mappedBy = "account")
     private List<WalletModel> walletModels;
 
     @Builder
-    public AccountModel(long id,String userId){
+    public AccountModel(long id,UserModel user){
         this.id = id;
-        this.userId = userId;
+        this.user = user;
     }
 
 }

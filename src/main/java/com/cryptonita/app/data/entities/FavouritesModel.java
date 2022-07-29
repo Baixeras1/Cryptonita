@@ -19,9 +19,11 @@ public class FavouritesModel {
     private long id;
 
     @ManyToOne
+    @JoinColumn
     private UserModel user;
 
     @ManyToOne
+    @JoinColumn
     private CoinModel coin;
 
 

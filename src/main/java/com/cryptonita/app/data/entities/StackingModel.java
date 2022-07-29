@@ -22,9 +22,9 @@ public class StackingModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "Coin_ID")
+
     @ManyToOne
-    private CoinModel coinId;
+    private CoinModel coin;
 
     @Column(name="Created_At")
     private LocalDateTime createdAt;
@@ -35,16 +35,16 @@ public class StackingModel {
     @Column(name="Quantity")
     private double quantity;
 
-    @Column(name = "UserId")
+
     @ManyToOne
-    private UserModel userId;
+    private UserModel user;
 
     @Builder
-    public StackingModel(CoinModel coinId, LocalDateTime createdAt, int daysToExpire, double quantity, UserModel userId) {
-        this.coinId = coinId;
+    public StackingModel(CoinModel coin, LocalDateTime createdAt, int daysToExpire, double quantity, UserModel user) {
+        this.coin = coin;
         this.createdAt = createdAt;
         this.daysToExpire = daysToExpire;
         this.quantity = quantity;
-        this.userId = userId;
+        this.user = user;
     }
 }
