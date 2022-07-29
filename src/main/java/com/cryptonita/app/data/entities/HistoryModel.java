@@ -6,13 +6,16 @@ import org.h2.engine.User;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Create History JPA entity
+ * */
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "user")
 @EqualsAndHashCode(of = {"id","user"})
-@Table(name = "HYSTORI")
+@Table(name = "HISTORY")
 public class HistoryModel {
 
     @Id
