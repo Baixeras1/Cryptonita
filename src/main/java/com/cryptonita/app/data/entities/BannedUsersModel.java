@@ -9,21 +9,21 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of ={"userID"})
-@ToString(exclude = "user")
+@EqualsAndHashCode(of ={"id", "user"})
 @Table(name = "BannedUsers")
 public class BannedUsersModel {
 
     @Id
-    private long userID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @OneToOne
+    @JoinColumn(name = "USER_ID")
+    private UserModel user;
 
     private LocalDate bannedAt;
 
     private LocalDate expiresAt;
-
-    @MapsId
-    @OneToOne
-    private UserModel user;
 
     @Builder
     public BannedUsersModel(LocalDate bannedAt, LocalDate expiresAt, UserModel user) {
@@ -31,4 +31,5 @@ public class BannedUsersModel {
         this.expiresAt = expiresAt;
         this.user = user;
     }
+
 }

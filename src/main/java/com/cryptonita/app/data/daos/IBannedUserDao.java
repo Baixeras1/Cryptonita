@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface IBannedUserDao extends JpaRepository<BannedUsersModel, UserModel> {
 
-    Optional<BannedUsersModel> findByUserID(long id);
+    Optional<BannedUsersModel> findByUserId(long id);
 
     Optional<BannedUsersModel> findByUserMail(String mail);
 
