@@ -1,6 +1,7 @@
 package com.cryptonita.app.data.providers;
 
 import com.cryptonita.app.dto.request.UserRegisterDTO;
+import com.cryptonita.app.dto.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.response.FavoritesResponseDto;
 import com.cryptonita.app.dto.response.UserResponseDTO;
 
@@ -56,7 +57,7 @@ public interface IUserProvider {
      * @param mail the mail of the user to be banned
      * @return the dto with all the information of the user banned
      */
-    Void banUser(String mail);
+    BannedUserResponseDTO banUser(String mail);
 
     /**
      * Convenient method to unban a user
@@ -64,7 +65,7 @@ public interface IUserProvider {
      * @param mail the mail of the user to unban
      * @return the dto with all the information of the user unbanned
      */
-    Void unBanUser(String mail);
+    BannedUserResponseDTO unBanUser(String mail);
 
     /**
      * Convenient method to ban a user by its username
@@ -72,7 +73,7 @@ public interface IUserProvider {
      * @param username the username
      * @return TODO
      */
-    Void banUserByUsername(String username);
+    BannedUserResponseDTO banUserByUsername(String username);
 
     /**
      * Convenient method to unban a user by username
@@ -80,14 +81,14 @@ public interface IUserProvider {
      * @param username the username of the user to ban
      * @return TODO
      */
-    Void unbanUserByUsername(String username);
+    BannedUserResponseDTO unbanUserByUsername(String username);
 
     /**
      * Method to return all the banned users
      *
      * @return a list of all the banned users TODO
      */
-    List<Void> getBannedUsers();
+    List<BannedUserResponseDTO> getBannedUsers();
 
     /**
      * Convenient method to know if a user is banned
@@ -111,7 +112,7 @@ public interface IUserProvider {
      * @param mail the mail of the banned user to get
      * @return dto with the information of the user
      */
-    Void get(String mail);
+    BannedUserResponseDTO get(String mail);
 
     /**
      * Convenient method to get a bannedUser
@@ -119,7 +120,7 @@ public interface IUserProvider {
      * @param username the username of the banned user to get
      * @return dto with the information of the user
      */
-    Void getByUsername(String username);
+    BannedUserResponseDTO getByUsername(String username);
 
     /**
      * Method to add a favourite coin to a user

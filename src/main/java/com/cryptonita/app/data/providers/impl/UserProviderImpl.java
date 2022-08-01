@@ -1,11 +1,13 @@
 package com.cryptonita.app.data.providers.impl;
 
+import com.cryptonita.app.data.daos.IBannedUserDao;
 import com.cryptonita.app.data.daos.IUserDao;
 import com.cryptonita.app.data.entities.BannedUsersModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.request.UserRegisterDTO;
+import com.cryptonita.app.dto.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.response.FavoritesResponseDto;
 import com.cryptonita.app.dto.response.UserResponseDTO;
 import lombok.AllArgsConstructor;
@@ -14,15 +16,18 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UserProviderImpl implements IUserProvider {
 
     private final IUserDao userDao;
+    private final IBannedUserDao bannedUserDao;
 
     private final IMapper<UserModel, UserRegisterDTO> registerDTOIMapper;
     private final IMapper<UserModel, UserResponseDTO> responseDTOIMapper;
+    private final IMapper<BannedUsersModel, BannedUserResponseDTO> banResponseDTOIMapper;
 
     private final PasswordEncoder encoder;
 
@@ -69,7 +74,7 @@ public class UserProviderImpl implements IUserProvider {
     }
 
     @Override
-    public Void banUser(String mail) {
+    public BannedUserResponseDTO banUser(String mail) {
         UserModel user = userDao.findByMail(mail).orElse(null);
         if (user == null)
             throw new RuntimeException("No user with that mail!"); // TODO
@@ -82,47 +87,71 @@ public class UserProviderImpl implements IUserProvider {
 
         bannedUser = bannedUserDao.save(bannedUser);
 
-        return ba
+        return banResponseDTOIMapper.mapToDto(bannedUser);
     }
 
     @Override
-    public Void unBanUser(String mail) {
-        return null;
+    public BannedUserResponseDTO unBanUser(String mail) {
+        BannedUsersModel bannedUser = bannedUserDao.findByUserMail(mail).orElse(null);
+        if (bannedUser == null)
+            throw new RuntimeException("No user with that mail!"); // TODO
+
+        bannedUserDao.delete(bannedUser);
+
+        return banResponseDTOIMapper.mapToDto(bannedUser);
     }
 
     @Override
-    public Void banUserByUsername(String username) {
-        return null;
+    public BannedUserResponseDTO banUserByUsername(String username) {
+        BannedUsersModel bannedUser = bannedUserDao.findByUser_Username(username).orElse(null);
+        if (bannedUser == null)
+            throw new RuntimeException("No user with that mail!"); // TODO
+
+        bannedUserDao.delete(bannedUser);
+
+        return banResponseDTOIMapper.mapToDto(bannedUser);
     }
 
     @Override
-    public Void unbanUserByUsername(String username) {
-        return null;
+    public BannedUserResponseDTO unbanUserByUsername(String username) {
+        BannedUsersModel bannedUser = bannedUserDao.findByUser_Username(username).orElse(null);
+        if (bannedUser == null)
+            throw new RuntimeException("No user with that mail!"); // TODO
+
+        bannedUserDao.delete(bannedUser);
+
+        return banResponseDTOIMapper.mapToDto(bannedUser);
     }
 
     @Override
-    public List<Void> getBannedUsers() {
-        return null;
+    public List<BannedUserResponseDTO> getBannedUsers() {
+        return bannedUserDao.findAll().stream()
+                .map(banResponseDTOIMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public boolean isBanned(String mail) {
-        return false;
+        return bannedUserDao.findByUserMail(mail).isPresent();
     }
 
     @Override
     public boolean isBannedByUsername(String username) {
-        return false;
+        return bannedUserDao.findByUser_Username(username).isPresent();
     }
 
     @Override
-    public Void get(String mail) {
-        return null;
+    public BannedUserResponseDTO get(String mail) {
+        return bannedUserDao.findByUserMail(mail)
+                .map(banResponseDTOIMapper::mapToDto)
+                .orElse(null); // TODO
     }
 
     @Override
-    public Void getByUsername(String username) {
-        return null;
+    public BannedUserResponseDTO getByUsername(String username) {
+        return bannedUserDao.findByUser_Username(username)
+                .map(banResponseDTOIMapper::mapToDto)
+                .orElse(null); // TODO
     }
 
     @Override
