@@ -1,6 +1,7 @@
-package com.cryptonita.app.data.providers.mappers;
+package com.cryptonita.app.data.providers.mappers.impl;
 
 import com.cryptonita.app.data.entities.UserModel;
+import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.request.UserRegisterDTO;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +19,8 @@ public class UserRegisterMapper implements IMapper<UserModel, UserRegisterDTO> {
                 .mail(dto.mail)
                 .username(dto.username)
                 .password(dto.password)
-                .role(dto.userRole)
-                .type(dto.userType)
+                .role(dto.role)
+                .type(dto.type)
                 .build();
     }
 
