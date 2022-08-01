@@ -3,7 +3,10 @@ package com.cryptonita.app.data.providers.mappers.impl;
 import com.cryptonita.app.data.entities.CoinModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.response.CoinResponseDTO;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Component
 public class CoinMapper implements IMapper<CoinModel, CoinResponseDTO> {
 
     @Override

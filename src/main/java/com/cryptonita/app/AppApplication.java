@@ -1,5 +1,6 @@
 package com.cryptonita.app;
 
+import com.cryptonita.app.data.providers.ICoinProvider;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
