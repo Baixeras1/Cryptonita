@@ -8,7 +8,7 @@ import com.cryptonita.app.dto.response.FavoritesResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FavoritesMapperImpl implements IMapper<FavouritesModel, FavoritesResponseDto> {
+public class FavoritesMapper implements IMapper<FavouritesModel, FavoritesResponseDto> {
 
     @Override
     public FavoritesResponseDto mapToDto(FavouritesModel favouritesModel) {

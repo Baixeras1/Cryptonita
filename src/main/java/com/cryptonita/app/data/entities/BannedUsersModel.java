@@ -25,4 +25,10 @@ public class BannedUsersModel {
     @OneToOne
     private UserModel user;
 
+    @Builder
+    public BannedUsersModel(LocalDate bannedAt, LocalDate expiresAt, UserModel user) {
+        this.bannedAt = bannedAt;
+        this.expiresAt = expiresAt;
+        this.user = user;
+    }
 }

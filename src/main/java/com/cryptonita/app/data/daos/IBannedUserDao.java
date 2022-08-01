@@ -10,6 +10,8 @@ public interface IBannedUserDao extends JpaRepository<BannedUsersModel, UserMode
 
     Optional<BannedUsersModel> findByUserID(long id);
 
+    Optional<BannedUsersModel> findByUserMail(String mail);
+
     Optional<BannedUsersModel> findByUser_Username(String username);
 
 }
