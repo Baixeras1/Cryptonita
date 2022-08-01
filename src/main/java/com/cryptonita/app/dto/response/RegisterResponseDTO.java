@@ -3,10 +3,12 @@ package com.cryptonita.app.dto.response;
 
 import com.cryptonita.app.data.entities.UserModel;
 import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDate;
 
 @Builder
+@Data
 public class RegisterResponseDTO {
 
     public final String user;
