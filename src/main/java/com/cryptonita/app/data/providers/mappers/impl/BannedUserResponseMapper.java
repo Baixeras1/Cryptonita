@@ -11,7 +11,7 @@ public class BannedUserResponseMapper implements IMapper<BannedUsersModel, Banne
     @Override
     public BannedUserResponseDTO mapToDto(BannedUsersModel bannedUser) {
         return BannedUserResponseDTO.builder()
-                .userID(bannedUser.getUserID())
+                .userID(bannedUser.getUser().getId())
                 .username(bannedUser.getUser().getUsername())
                 .bannedAt(bannedUser.getBannedAt())
                 .expiresAt(bannedUser.getExpiresAt())

@@ -15,6 +15,7 @@ import com.cryptonita.app.dto.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.response.FavoritesResponseDto;
 import com.cryptonita.app.dto.response.UserResponseDTO;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserProviderImpl implements IUserProvider {
@@ -48,6 +50,8 @@ public class UserProviderImpl implements IUserProvider {
             throw new RuntimeException("user by that username exists!"); // TODO
 
         UserModel user = registerDTOIMapper.mapToEntity(dto);
+        user.setPassword(encoder.encode(user.getPassword()));
+
         user = userDao.save(user);
 
         return responseDTOIMapper.mapToDto(user);

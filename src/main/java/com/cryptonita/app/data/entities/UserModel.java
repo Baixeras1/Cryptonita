@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id", "username"})
-@ToString(exclude = "account")
+@ToString(exclude = {"account", "favourites"})
 @Table(name = "USERS")
 public class UserModel {
 
