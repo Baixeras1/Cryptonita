@@ -8,12 +8,8 @@ import java.util.Optional;
 
 public interface IFavoritesDao extends JpaRepository<FavouritesModel,Long> {
 
-    Optional<FavouritesModel> findById(long id);
+    List<FavouritesModel> findAllByUser_Username(String name);
 
-    List<FavouritesModel> findAll();
-
-    List<FavouritesModel> findByUser_Username(String name);
-
-    Optional<FavouritesModel> deleteById(long id);
+    Optional<FavouritesModel> findByUser_UsernameAndCoinName(String username, String coin);
 
 }

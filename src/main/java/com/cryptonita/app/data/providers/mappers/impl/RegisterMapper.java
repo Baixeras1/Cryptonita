@@ -1,9 +1,10 @@
-package com.cryptonita.app.data.providers.mappers;
+package com.cryptonita.app.data.providers.mappers.impl;
 
 import com.cryptonita.app.data.entities.HistoryModel;
+import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.response.RegisterResponseDTO;
 
-public class RegisterMapperImpl implements IMapper <HistoryModel , RegisterResponseDTO> {
+public class RegisterMapper implements IMapper<HistoryModel , RegisterResponseDTO> {
 
 
     @Override

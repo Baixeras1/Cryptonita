@@ -1,8 +1,12 @@
 package com.cryptonita.app.data.providers.impl;
 
 import com.cryptonita.app.data.daos.IBannedUserDao;
+import com.cryptonita.app.data.daos.ICoinDAO;
+import com.cryptonita.app.data.daos.IFavoritesDao;
 import com.cryptonita.app.data.daos.IUserDao;
 import com.cryptonita.app.data.entities.BannedUsersModel;
+import com.cryptonita.app.data.entities.CoinModel;
+import com.cryptonita.app.data.entities.FavouritesModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,10 +29,13 @@ public class UserProviderImpl implements IUserProvider {
 
     private final IUserDao userDao;
     private final IBannedUserDao bannedUserDao;
+    private final IFavoritesDao favoritesDao;
+    private final ICoinDAO coinDAO;
 
     private final IMapper<UserModel, UserRegisterDTO> registerDTOIMapper;
     private final IMapper<UserModel, UserResponseDTO> responseDTOIMapper;
     private final IMapper<BannedUsersModel, BannedUserResponseDTO> banResponseDTOIMapper;
+    private final IMapper<FavouritesModel, FavoritesResponseDto> favoritesResponseDtoIMapper;
 
     private final PasswordEncoder encoder;
 
@@ -47,20 +55,19 @@ public class UserProviderImpl implements IUserProvider {
 
     @Override
     public boolean matchesPassword(String mail, String password) {
-        UserModel user = userDao.findByMail(mail).orElse(null);
-        if (user == null)
-            throw new RuntimeException("No user with that mail!"); // TODO
-
-        return encoder.matches(password, user.getPassword());
+        return innerMatchPassword(userDao.findByMail(mail), password);
     }
 
     @Override
     public boolean matchesPasswordByUsername(String username, String password) {
-        UserModel user = userDao.findByUsername(username).orElse(null);
-        if (user == null)
-            throw new RuntimeException("No user with that mail!"); // TODO
+        return innerMatchPassword(userDao.findByUsername(username), password);
+    }
 
-        return encoder.matches(password, user.getPassword());
+    /**
+     * Inner method to check password
+     */
+    private boolean innerMatchPassword(Optional<UserModel> user, String rawPassword) {
+        return user.isPresent() && encoder.matches(rawPassword, user.get().getPassword());
     }
 
     @Override
@@ -75,7 +82,28 @@ public class UserProviderImpl implements IUserProvider {
 
     @Override
     public BannedUserResponseDTO banUser(String mail) {
-        UserModel user = userDao.findByMail(mail).orElse(null);
+        return innerBanUser(userDao.findByMail(mail).orElse(null));
+    }
+
+    @Override
+    public BannedUserResponseDTO unBanUser(String mail) {
+        return innerUnbanUser(bannedUserDao.findByUserMail(mail).orElse(null));
+    }
+
+    @Override
+    public BannedUserResponseDTO banUserByUsername(String username) {
+        return innerBanUser(userDao.findByUsername(username).orElse(null));
+    }
+
+    @Override
+    public BannedUserResponseDTO unbanUserByUsername(String username) {
+        return innerUnbanUser(bannedUserDao.findByUser_Username(username).orElse(null));
+    }
+
+    /**
+     * Inner ban user method
+     */
+    private BannedUserResponseDTO innerBanUser(UserModel user) {
         if (user == null)
             throw new RuntimeException("No user with that mail!"); // TODO
 
@@ -90,31 +118,10 @@ public class UserProviderImpl implements IUserProvider {
         return banResponseDTOIMapper.mapToDto(bannedUser);
     }
 
-    @Override
-    public BannedUserResponseDTO unBanUser(String mail) {
-        BannedUsersModel bannedUser = bannedUserDao.findByUserMail(mail).orElse(null);
-        if (bannedUser == null)
-            throw new RuntimeException("No user with that mail!"); // TODO
-
-        bannedUserDao.delete(bannedUser);
-
-        return banResponseDTOIMapper.mapToDto(bannedUser);
-    }
-
-    @Override
-    public BannedUserResponseDTO banUserByUsername(String username) {
-        BannedUsersModel bannedUser = bannedUserDao.findByUser_Username(username).orElse(null);
-        if (bannedUser == null)
-            throw new RuntimeException("No user with that mail!"); // TODO
-
-        bannedUserDao.delete(bannedUser);
-
-        return banResponseDTOIMapper.mapToDto(bannedUser);
-    }
-
-    @Override
-    public BannedUserResponseDTO unbanUserByUsername(String username) {
-        BannedUsersModel bannedUser = bannedUserDao.findByUser_Username(username).orElse(null);
+    /**
+     * Inner unban user method
+     */
+    private BannedUserResponseDTO innerUnbanUser(BannedUsersModel bannedUser) {
         if (bannedUser == null)
             throw new RuntimeException("No user with that mail!"); // TODO
 
@@ -155,12 +162,47 @@ public class UserProviderImpl implements IUserProvider {
     }
 
     @Override
-    public FavoritesResponseDto addFavourite(String name, String coin) {
-        return null;
+    public FavoritesResponseDto addFavourite(String name, String coinStr) {
+        UserModel user = userDao.findByUsername(name).orElse(null);
+        if (user == null)
+            throw new RuntimeException("That user does not exists!"); //TODO
+
+        CoinModel coin = coinDAO.findByName(coinStr).orElse(null);
+        if (coin == null)
+            throw new RuntimeException("That coin does not exists!"); //TODO
+
+        if (favoritesDao.findByUser_UsernameAndCoinName(name, coinStr).isPresent())
+            throw new RuntimeException("Coin already exists!"); //TODO
+
+        FavouritesModel favourite = FavouritesModel.builder()
+                .user(user)
+                .coin(coin)
+                .build();
+
+       favourite = favoritesDao.save(favourite);
+
+       return favoritesResponseDtoIMapper.mapToDto(favourite);
     }
 
     @Override
-    public FavoritesResponseDto removeFavorite(String name, String coin) {
-        return null;
+    public FavoritesResponseDto removeFavorite(String name, String coinStr) {
+        UserModel user = userDao.findByUsername(name).orElse(null);
+        if (user == null)
+            throw new RuntimeException("That user does not exists!"); //TODO
+
+        CoinModel coin = coinDAO.findByName(coinStr).orElse(null);
+        if (coin == null)
+            throw new RuntimeException("That coin does not exists!"); //TODO
+
+        FavouritesModel favourite = favoritesDao.findByUser_UsernameAndCoinName(name, coinStr).orElse(null);
+        if (favourite == null)
+            throw new RuntimeException("Coin already exists!"); //TODO
+
+        favoritesDao.delete(favourite);
+
+        return favoritesResponseDtoIMapper.mapToDto(favourite);
     }
+
+
+
 }

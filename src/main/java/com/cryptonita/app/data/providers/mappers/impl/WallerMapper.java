@@ -6,7 +6,7 @@ import com.cryptonita.app.dto.response.WallerResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WallerMapperImpl implements IMapper<WalletModel, WallerResponseDto> {
+public class WallerMapper implements IMapper<WalletModel, WallerResponseDto> {
 
     @Override
     public WallerResponseDto mapToDto(WalletModel walletModel) {
