@@ -5,7 +5,9 @@ import com.cryptonita.app.data.entities.FavouritesModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.response.FavoritesResponseDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FavoritesMapperImpl implements IMapper<FavouritesModel, FavoritesResponseDto> {
 
     @Override
