@@ -9,10 +9,10 @@ import lombok.Builder;
 @Builder
 public class UserRegisterDTO {
 
-    public String mail;
-    public String username;
-    public String password;
-    public UserRole userRole;
-    public UserType userType;
+    public final String mail;
+    public final String username;
+    public final String password;
+    public final UserRole role;
+    public final UserType type;
 
 }
