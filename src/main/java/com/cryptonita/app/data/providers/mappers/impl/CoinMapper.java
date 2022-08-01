@@ -1,6 +1,7 @@
-package com.cryptonita.app.data.providers.mappers;
+package com.cryptonita.app.data.providers.mappers.impl;
 
 import com.cryptonita.app.data.entities.CoinModel;
+import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.response.CoinResponseDTO;
 
 public class CoinMapper implements IMapper<CoinModel, CoinResponseDTO> {

@@ -4,6 +4,7 @@ import com.cryptonita.app.data.entities.HistoryModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * History repository
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface IHistoryDao extends JpaRepository<HistoryModel,Long> {
 
-    HistoryModel findById(long id);
+    Optional<HistoryModel> findById(long id);
 
     List<HistoryModel> findAll();
 
