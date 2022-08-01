@@ -17,6 +17,8 @@ public interface IHistoryDao extends JpaRepository<HistoryModel,Long> {
 
     List<HistoryModel> findAllByUser_Id(long id);
 
+    List<HistoryModel> findAllByUser_Username(String name);
+
     void deleteById(long id);
 
 }
