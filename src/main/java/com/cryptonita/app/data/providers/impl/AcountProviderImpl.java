@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -36,22 +37,46 @@ public class AcountProviderImpl implements IAcountProvider {
     }
 
     @Override
-    public WallerResponseDto deposit(String user, String coin, double ammount) {
-        return null;
+    public WallerResponseDto deposit(String user, String coin, long ammount) {
+        WalletModel walletModel = walletDao.findByCoin_NameAndAccount_User_Username(user,coin).orElse(null);
+
+        if(walletModel == null)
+            throw new RuntimeException();
+
+        walletModel.setQuantity(ammount);
+
+        return walletMapper.mapToDto(walletDao.save(walletModel));
     }
 
     @Override
-    public WallerResponseDto withDraw(String user, String coin, double ammount) {
-        return null;
+    public WallerResponseDto withDraw(String user, String coin, long ammount) {
+        WalletModel walletModel = walletDao.findByCoin_NameAndAccount_User_Username(user,coin).orElse(null);
+
+        if(walletModel == null)
+            throw new RuntimeException();
+
+        walletModel.setQuantity(walletModel.getQuantity()-ammount);
+
+        return walletMapper.mapToDto(walletDao.save(walletModel));
     }
+
 
     @Override
     public WallerResponseDto clear(String user, String coin) {
-        return null;
+        WalletModel walletModel = walletDao.findByCoin_NameAndAccount_User_Username(user,coin).orElse(null);
+
+        if(walletModel == null)
+            throw new RuntimeException();
+
+        walletModel.setQuantity(0);
+
+        return walletMapper.mapToDto(walletDao.save(walletModel));
     }
 
     @Override
     public List<WallerResponseDto> getAllFromUser(String user) {
-        return null;
+        return walletDao.findAllByAccount_User_Username(user).stream()
+                .map(walletMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 }

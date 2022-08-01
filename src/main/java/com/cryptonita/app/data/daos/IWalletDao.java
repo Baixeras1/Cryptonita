@@ -16,7 +16,8 @@ public interface IWalletDao extends JpaRepository <WalletModel , Long> {
     Optional<WalletModel> findByAccount_Id(long id);
 
     Optional<WalletModel> findByCoin_NameAndAccount_User_Username(String coin, String userName);
-    List<WalletModel> findAll();
+
+    List<WalletModel> findAllByAccount_User_Username(String name);
 
     Optional<WalletModel> deleteById(long id);
 
