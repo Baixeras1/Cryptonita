@@ -206,7 +206,16 @@ public class UserProviderImpl implements IUserProvider {
 
         return favoritesResponseDtoIMapper.mapToDto(favourite);
     }
+    @Override
+    public List<FavoritesResponseDto> findAll(String name) {
+        UserModel user = userDao.findByUsername(name).orElse(null);
+        if (user == null)
+            throw new RuntimeException("That user does not exists!"); //TODO
 
+        return favoritesDao.findAllByUser_Username(name).stream()
+                .map(favoritesResponseDtoIMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
 
 
 }

@@ -12,4 +12,5 @@ public interface IFavoritesDao extends JpaRepository<FavouritesModel,Long> {
 
     Optional<FavouritesModel> findByUser_UsernameAndCoinName(String username, String coin);
 
+
 }

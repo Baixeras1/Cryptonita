@@ -140,4 +140,11 @@ public interface IUserProvider {
      */
     FavoritesResponseDto removeFavorite(String name, String coin);
 
+    /**
+     * Method to show a favourite coin to a user
+     * @param name the username of the user to remove the coin to
+     * @return the dto with all the information of the transaction
+     */
+    List<FavoritesResponseDto> findAll(String name);
+
 }
