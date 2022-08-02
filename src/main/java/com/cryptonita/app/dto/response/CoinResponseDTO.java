@@ -12,6 +12,5 @@ public class CoinResponseDTO {
     public long id;
     public String name;
     public String symbol;
-    public String logo;
     public int rank;
 }
