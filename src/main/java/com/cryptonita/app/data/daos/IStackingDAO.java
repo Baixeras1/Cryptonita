@@ -12,4 +12,9 @@ public interface IStackingDAO extends JpaRepository <StackingModel,Long> {
 
     List<StackingModel> findAllByUserId(long id);
 
+    Optional<StackingModel> findByUserUsername(String userName);
+    Optional<StackingModel> findByCoinName (String coinName);
+
+
+
 }
