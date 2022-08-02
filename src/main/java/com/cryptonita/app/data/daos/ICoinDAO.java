@@ -14,4 +14,6 @@ public interface ICoinDAO extends JpaRepository<CoinModel,Long> {
 
     Optional<CoinModel> findByRank(int rank);
 
+    Optional<CoinModel> findBySymbol(String symbol);
+
 }

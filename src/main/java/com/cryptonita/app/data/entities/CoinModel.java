@@ -22,6 +22,9 @@ public class CoinModel {
     @Column(unique = true)
     private int rank;
 
+    @Column(unique = true)
+    private String symbol;
+
     @Builder
     public CoinModel(String name,int rank){
         this.name = name;

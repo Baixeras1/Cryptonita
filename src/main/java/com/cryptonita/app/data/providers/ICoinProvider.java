@@ -42,4 +42,6 @@ public interface ICoinProvider {
     CoinResponseDTO getCoinById(long id);
 
     CoinResponseDTO getByRank(int rank);
+
+    CoinResponseDTO getBySymbol(String symbol);
 }

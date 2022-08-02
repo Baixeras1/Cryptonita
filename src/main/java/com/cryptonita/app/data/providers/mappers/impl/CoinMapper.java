@@ -14,6 +14,8 @@ public class CoinMapper implements IMapper<CoinModel, CoinResponseDTO> {
        return CoinResponseDTO.builder()
                .id(coinModel.getId())
                .name(coinModel.getName())
+               .rank(coinModel.getRank())
+               .symbol(coinModel.getSymbol())
                .build();
     }
 
