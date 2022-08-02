@@ -40,4 +40,6 @@ public interface ICoinProvider {
      * @return The called coin
      */
     CoinResponseDTO getCoinById(long id);
+
+    CoinResponseDTO getByRank(int rank);
 }

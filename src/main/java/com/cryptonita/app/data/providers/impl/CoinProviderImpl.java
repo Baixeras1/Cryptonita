@@ -73,5 +73,15 @@ public class CoinProviderImpl implements ICoinProvider {
             throw new RuntimeException("Esa moneda no existe");
 
         return responseDTOIMapper.mapToDto(coin);
+
+
+    }
+
+    @Override
+    public CoinResponseDTO getByRank(int rank) {
+        CoinModel coin = coinDAO.findByRank(rank).orElse(null);
+        if (coin == null)
+            throw  new RuntimeException("Esa moneda no tiene rango");
+        return responseDTOIMapper.mapToDto(coin);
     }
 }

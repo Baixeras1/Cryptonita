@@ -12,4 +12,6 @@ public interface ICoinDAO extends JpaRepository<CoinModel,Long> {
 
     void deleteByName(String name);
 
+    Optional<CoinModel> findByRank(int rank);
+
 }
