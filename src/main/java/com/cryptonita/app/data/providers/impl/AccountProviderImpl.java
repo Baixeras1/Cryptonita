@@ -2,7 +2,7 @@ package com.cryptonita.app.data.providers.impl;
 
 import com.cryptonita.app.data.daos.IWalletDao;
 import com.cryptonita.app.data.entities.WalletModel;
-import com.cryptonita.app.data.providers.IAcountProvider;
+import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.response.WallerResponseDto;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class AcountProviderImpl implements IAcountProvider {
+public class AccountProviderImpl implements IAccountProvider {
 
     private IWalletDao walletDao;
 

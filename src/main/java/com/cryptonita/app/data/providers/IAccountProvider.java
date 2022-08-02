@@ -4,7 +4,7 @@ import com.cryptonita.app.dto.response.WallerResponseDto;
 
 import java.util.List;
 
-public interface IAcountProvider {
+public interface IAccountProvider {
 
     /**
      * Convenient method to get a specific account of a user
