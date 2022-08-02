@@ -19,9 +19,13 @@ public class CoinModel {
     @Column(unique = true)
     private String name;
 
+    @Column(unique = true)
+    private int rank;
+
     @Builder
-    public CoinModel(String name){
+    public CoinModel(String name,int rank){
         this.name = name;
+        this.rank = rank;
     }
 
 
