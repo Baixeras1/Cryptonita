@@ -1,13 +1,7 @@
 package com.cryptonita.app.data.providers.impl;
 
-import com.cryptonita.app.data.daos.IBannedUserDao;
-import com.cryptonita.app.data.daos.ICoinDAO;
-import com.cryptonita.app.data.daos.IFavoritesDao;
-import com.cryptonita.app.data.daos.IUserDao;
-import com.cryptonita.app.data.entities.BannedUsersModel;
-import com.cryptonita.app.data.entities.CoinModel;
-import com.cryptonita.app.data.entities.FavouritesModel;
-import com.cryptonita.app.data.entities.UserModel;
+import com.cryptonita.app.data.daos.*;
+import com.cryptonita.app.data.entities.*;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.request.UserRegisterDTO;
@@ -31,6 +25,7 @@ public class UserProviderImpl implements IUserProvider {
 
     private final IUserDao userDao;
     private final IBannedUserDao bannedUserDao;
+    private final IAccountDao accountDao;
     private final IFavoritesDao favoritesDao;
     private final ICoinDAO coinDAO;
 
@@ -53,8 +48,20 @@ public class UserProviderImpl implements IUserProvider {
         user.setPassword(encoder.encode(user.getPassword()));
 
         user = userDao.save(user);
+        user.setAccount(createAccount(user));
 
         return responseDTOIMapper.mapToDto(user);
+    }
+
+    /**
+     * Inner method to create a user account
+     */
+    private AccountModel createAccount(UserModel user) {
+        AccountModel account = AccountModel.builder()
+                .user(user)
+                .build();
+
+        return accountDao.save(account);
     }
 
     @Override

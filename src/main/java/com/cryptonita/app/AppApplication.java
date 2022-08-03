@@ -1,12 +1,16 @@
 package com.cryptonita.app;
 
 import com.cryptonita.app.core.loaders.CoinLoader;
+import com.cryptonita.app.core.loaders.UsersLoader;
 import com.cryptonita.app.data.providers.ICoinProvider;
+import com.cryptonita.app.dto.integration.CoinInfoDTO;
+import com.cryptonita.app.dto.response.UserResponseDTO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import reactor.core.publisher.Flux;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class AppApplication {
@@ -16,9 +20,17 @@ public class AppApplication {
     }
 
     @Bean
-    CommandLineRunner init(CoinLoader coinLoader) {
+    CommandLineRunner init(
+            CoinLoader coinLoader,
+            UsersLoader usersLoader
+    ) {
         return (args) -> {
-            coinLoader.load().subscribe();
+            Flux<CoinInfoDTO> coinFlux = coinLoader.load();
+            Flux<UserResponseDTO> usersFlux = usersLoader.load();
+
+            Flux.concat(coinFlux, usersFlux)
+                    .doOnComplete(() -> {})
+                    .subscribe();
         };
     }
 }
