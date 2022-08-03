@@ -6,10 +6,12 @@ import com.cryptonita.app.data.daos.IUserDao;
 import com.cryptonita.app.data.entities.CoinModel;
 import com.cryptonita.app.data.entities.StackingModel;
 import com.cryptonita.app.data.entities.UserModel;
+import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.IStackingProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.response.StackingDTO;
 import lombok.AllArgsConstructor;
+import org.h2.engine.User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,6 +42,16 @@ public class StackingProviderImpl implements IStackingProvider {
         if (coinModel==null)
             throw new RuntimeException("La moneda no existe");
 
+
+        WalletModel wallet = userModel.getAccount().getWallets().stream()
+                .filter(wallet_ -> wallet_.getCoin().getName().equals(coinModel.getName()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No tiene wallet de " + coinModel.getName()));
+
+        if(wallet.getQuantity() < quantity)
+            throw new RuntimeException("Lo siento, no tienes saldo suficiente");
+
+
         StackingModel stackingModel = StackingModel.builder()
                 .user(userModel)
                 .coin(coinModel)
@@ -61,7 +73,7 @@ public class StackingProviderImpl implements IStackingProvider {
      * @return retorna el stake eliminado
      */
     @Override
-    public StackingDTO unStake(String userName, long id) {
+    public StackingDTO unStake(long id,String userName) {
 
         UserModel userModel = userDao.findByUsername(userName).orElse(null);
         if(userModel == null)
