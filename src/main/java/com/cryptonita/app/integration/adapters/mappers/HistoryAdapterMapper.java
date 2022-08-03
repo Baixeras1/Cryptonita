@@ -4,11 +4,14 @@ import com.cryptonita.app.dto.integration.CoinInfoDTO;
 import com.cryptonita.app.dto.integration.HistoryInfoDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -27,9 +30,16 @@ public class HistoryAdapterMapper implements AdapterMapper<HistoryInfoDTO>{
         return maper(data);
     }
 
+    @SneakyThrows
     @Override
     public List<HistoryInfoDTO> mapManyToDto(String s) {
-        return null;
+        JsonNode jsonNode = jsonMapper.readTree(s);
+        ArrayNode data = (ArrayNode) jsonNode.get("data");
+
+        List<HistoryInfoDTO> historys = new ArrayList<>();
+        data.forEach(node -> historys.add(maper(node)));
+
+        return historys;
     }
 
 
