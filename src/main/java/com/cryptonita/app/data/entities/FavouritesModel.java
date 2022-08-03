@@ -17,6 +17,7 @@ import java.time.LocalDate;
 public class FavouritesModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @ManyToOne
