@@ -58,6 +58,39 @@ public class UserProviderImpl implements IUserProvider {
     }
 
     @Override
+    public UserResponseDTO getById(long id) {
+        UserModel user = userDao.findById(id).orElse(null);
+        if (user == null)
+            throw new RuntimeException("That user does not exists!"); //TODO
+
+        return userDao.findById(id)
+                .map(responseDTOIMapper::mapToDto)
+                .orElse(null);
+    }
+
+    @Override
+    public UserResponseDTO getByName(String name) {
+        UserModel user = userDao.findByUsername(name).orElse(null);
+        if (user == null)
+            throw new RuntimeException("That user does not exists!"); //TODO
+
+        return userDao.findByUsername(name)
+                .map(responseDTOIMapper::mapToDto)
+                .orElse(null);
+    }
+
+    @Override
+    public UserResponseDTO getByEmail(String mail) {
+        UserModel user = userDao.findByMail(mail).orElse(null);
+        if (user == null)
+            throw new RuntimeException("That user does not exists!"); //TODO
+
+        return userDao.findByMail(mail)
+                .map(responseDTOIMapper::mapToDto)
+                .orElse(null);
+    }
+
+    @Override
     public boolean matchesPassword(String mail, String password) {
         return innerMatchPassword(userDao.findByMail(mail), password);
     }
@@ -206,7 +239,6 @@ public class UserProviderImpl implements IUserProvider {
 
         return favoritesResponseDtoIMapper.mapToDto(favourite);
     }
-
 
 
 }
