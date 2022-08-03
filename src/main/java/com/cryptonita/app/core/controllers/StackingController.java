@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping{"/stacking"}
+//@RequestMapping{"/stacking"}
 public class StackingController {
 
-    @GetMapping{"/all"}
-    public List<>
+    //@GetMapping {"/all"}
+   // public List<>
 
 }
