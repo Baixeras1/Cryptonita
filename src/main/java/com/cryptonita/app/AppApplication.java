@@ -1,5 +1,6 @@
 package com.cryptonita.app;
 
+import com.cryptonita.app.core.loaders.CoinLoader;
 import com.cryptonita.app.data.providers.ICoinProvider;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,8 +16,9 @@ public class AppApplication {
     }
 
     @Bean
-    CommandLineRunner init() {
+    CommandLineRunner init(CoinLoader coinLoader) {
         return (args) -> {
+            coinLoader.load().subscribe();
         };
     }
 }

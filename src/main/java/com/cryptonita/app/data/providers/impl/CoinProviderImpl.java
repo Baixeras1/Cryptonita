@@ -21,12 +21,14 @@ public class CoinProviderImpl implements ICoinProvider {
     private final IMapper<CoinModel,CoinResponseDTO> responseDTOIMapper;
 
     @Override
-    public CoinResponseDTO createCoin(String name) {
+    public CoinResponseDTO createCoin(String name, String symbol, int rank) {
         if(coinDAO.findByName(name).isPresent())
             throw new RuntimeException("Esa moneda ya existe");
 
        CoinModel coin =  CoinModel.builder()
                .name(name)
+               .symbol(symbol)
+               .rank(rank)
                .build();
 
        coin = coinDAO.save(coin);

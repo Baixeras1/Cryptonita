@@ -12,7 +12,7 @@ public interface ICoinProvider {
      * @param name name of the coin
      * @return  object created
      */
-    CoinResponseDTO createCoin(String name);
+    CoinResponseDTO createCoin(String name, String symbol, int rank);
 
     /**
      * This method returns a list of all coins.
