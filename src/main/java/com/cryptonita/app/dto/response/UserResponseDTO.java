@@ -17,6 +17,7 @@ public class UserResponseDTO {
     public final String username;
     public final UserRole role;
     public final UserType type;
-    public final List<WallerResponseDto> wallerResponseDto;
+    public final List<FavoritesResponseDto> favorites;
+    public final List<WallerResponseDto> wallet;
 
 }

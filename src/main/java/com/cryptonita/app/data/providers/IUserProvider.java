@@ -4,6 +4,7 @@ import com.cryptonita.app.dto.request.UserRegisterDTO;
 import com.cryptonita.app.dto.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.response.FavoritesResponseDto;
 import com.cryptonita.app.dto.response.UserResponseDTO;
+import org.h2.engine.User;
 
 import java.util.List;
 
@@ -16,6 +17,12 @@ public interface IUserProvider {
      * @return a response dto with the information of the transaction
      */
     UserResponseDTO register(UserRegisterDTO dto);
+
+    UserResponseDTO getById(long id);
+
+    UserResponseDTO getByName(String name);
+
+    UserResponseDTO getByEmail(String mail);
 
     /**
      * Convenient method to check if a raw password matches the user hashed stored password

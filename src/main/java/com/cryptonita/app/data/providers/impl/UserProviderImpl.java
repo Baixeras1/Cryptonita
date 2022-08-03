@@ -58,6 +58,27 @@ public class UserProviderImpl implements IUserProvider {
     }
 
     @Override
+    public UserResponseDTO getById(long id) {
+        return userDao.findById(id)
+                .map(responseDTOIMapper::mapToDto)
+                .orElse(null);
+    }
+
+    @Override
+    public UserResponseDTO getByName(String name) {
+        return userDao.findByUsername(name)
+                .map(responseDTOIMapper::mapToDto)
+                .orElse(null);
+    }
+
+    @Override
+    public UserResponseDTO getByEmail(String mail) {
+        return userDao.findByMail(mail)
+                .map(responseDTOIMapper::mapToDto)
+                .orElse(null);
+    }
+
+    @Override
     public boolean matchesPassword(String mail, String password) {
         return innerMatchPassword(userDao.findByMail(mail), password);
     }
