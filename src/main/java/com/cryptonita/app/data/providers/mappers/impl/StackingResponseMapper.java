@@ -3,7 +3,9 @@ package com.cryptonita.app.data.providers.mappers.impl;
 import com.cryptonita.app.data.entities.StackingModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.response.StackingDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StackingResponseMapper implements IMapper<StackingModel, StackingDTO> {
     @Override
     public StackingDTO mapToDto(StackingModel stackingModel) {
