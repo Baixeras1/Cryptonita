@@ -41,7 +41,6 @@ public class CoinCapAdapterMapper implements AdapterMapper<CoinInfoDTO> {
     @SneakyThrows
     @Override
     public CoinInfoDTO mapToDto(String s) {
-        log.info("String is:" + s);
         JsonNode json = jsonMapper.readTree(s);
         JsonNode data = getData(json);
 
@@ -51,7 +50,6 @@ public class CoinCapAdapterMapper implements AdapterMapper<CoinInfoDTO> {
     @SneakyThrows
     @Override
     public List<CoinInfoDTO> mapManyToDto(String s) {
-        log.info("string is something" + s);
         JsonNode json = jsonMapper.readTree(s);
         ArrayNode data = (ArrayNode) getData(json);
 
