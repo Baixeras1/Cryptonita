@@ -11,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Table(name = "COINS")
 public class CoinModel {
 
     @Id

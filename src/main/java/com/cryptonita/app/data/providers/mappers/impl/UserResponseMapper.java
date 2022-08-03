@@ -17,17 +17,17 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserResponseMapper implements IMapper<UserModel, UserResponseDTO> {
 
-    private final IMapper<WalletModel, WallerResponseDto> walletResponseDtoMapper;
+    private final IMapper<FavouritesModel, FavoritesResponseDto> favouritesMapper;
+    private final IMapper<WalletModel, WallerResponseDto> walletMapper;
 
-    private final IMapper<FavouritesModel, FavoritesResponseDto> favoritesResponseDTOMapper;
     @Override
     public UserResponseDTO mapToDto(UserModel userModel) {
-        List<WallerResponseDto> wallerResponseDtos = userModel.getAccount().getWalletModels().stream()
-                .map(walletResponseDtoMapper::mapToDto)
+        List<WallerResponseDto> wallerResponseDtos = userModel.getAccount().getWallets().stream()
+                .map(walletMapper::mapToDto)
                 .collect(Collectors.toList());
 
         List<FavoritesResponseDto> favoritesResponseDtos = userModel.getFavourites().stream()
-                .map(favoritesResponseDTOMapper::mapToDto)
+                .map(favouritesMapper::mapToDto)
                 .collect(Collectors.toList());
 
         return UserResponseDTO.builder()

@@ -3,6 +3,7 @@ package com.cryptonita.app.data.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,11 +23,10 @@ public class AccountModel {
     private UserModel user;
 
     @OneToMany(mappedBy = "account")
-    private List<WalletModel> walletModels;
+    private List<WalletModel> wallets = new ArrayList<>();
 
     @Builder
-    public AccountModel(long id,UserModel user){
-        this.id = id;
+    public AccountModel(UserModel user){
         this.user = user;
     }
 

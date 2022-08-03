@@ -5,6 +5,7 @@ import com.cryptonita.app.data.entities.enums.UserType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,7 +39,7 @@ public class UserModel {
     private AccountModel account;
 
     @OneToMany(mappedBy = "user")
-    private List<FavouritesModel> favourites;
+    private List<FavouritesModel> favourites = new ArrayList<>();
 
     @Builder
     public UserModel(String mail, String username, String password, UserRole role, UserType type) {
