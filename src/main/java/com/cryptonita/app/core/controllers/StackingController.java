@@ -2,7 +2,7 @@ package com.cryptonita.app.core.controllers;
 
 
 import com.cryptonita.app.core.controllers.services.IStackingService;
-import com.cryptonita.app.dto.response.StackingDTO;
+import com.cryptonita.app.dto.data.response.StackingDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

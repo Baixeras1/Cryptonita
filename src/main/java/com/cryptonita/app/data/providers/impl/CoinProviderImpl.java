@@ -4,11 +4,10 @@ import com.cryptonita.app.data.daos.ICoinDAO;
 import com.cryptonita.app.data.entities.CoinModel;
 import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.response.CoinResponseDTO;
+import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Transient;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;

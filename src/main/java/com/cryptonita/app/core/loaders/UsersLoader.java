@@ -1,11 +1,10 @@
 package com.cryptonita.app.core.loaders;
 
-import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.entities.enums.UserRole;
 import com.cryptonita.app.data.entities.enums.UserType;
 import com.cryptonita.app.data.providers.IUserProvider;
-import com.cryptonita.app.dto.request.UserRegisterDTO;
-import com.cryptonita.app.dto.response.UserResponseDTO;
+import com.cryptonita.app.dto.data.request.UserRegisterDTO;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

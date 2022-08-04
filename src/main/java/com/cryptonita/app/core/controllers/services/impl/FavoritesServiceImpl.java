@@ -1,9 +1,8 @@
 package com.cryptonita.app.core.controllers.services.impl;
 
 import com.cryptonita.app.core.controllers.services.IFavoritesService;
-import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
-import com.cryptonita.app.dto.response.FavoritesResponseDto;
+import com.cryptonita.app.dto.data.response.FavoritesResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

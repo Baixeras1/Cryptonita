@@ -5,12 +5,11 @@ import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.data.providers.IStackingProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
 
-import com.cryptonita.app.dto.response.RegisterResponseDTO;
-import com.cryptonita.app.dto.response.StackingDTO;
+import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
+import com.cryptonita.app.dto.data.response.StackingDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

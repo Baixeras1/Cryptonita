@@ -2,7 +2,7 @@ package com.cryptonita.app.core.controllers.services.impl;
 
 import com.cryptonita.app.core.controllers.services.IPorfolioService;
 import com.cryptonita.app.data.providers.IAccountProvider;
-import com.cryptonita.app.dto.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WallerResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

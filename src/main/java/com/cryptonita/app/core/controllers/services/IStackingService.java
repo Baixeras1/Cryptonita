@@ -1,6 +1,6 @@
 package com.cryptonita.app.core.controllers.services;
 
-import com.cryptonita.app.dto.response.StackingDTO;
+import com.cryptonita.app.dto.data.response.StackingDTO;
 
 import java.util.List;
 

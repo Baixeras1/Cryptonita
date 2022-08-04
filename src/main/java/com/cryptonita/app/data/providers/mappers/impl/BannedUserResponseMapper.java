@@ -2,7 +2,7 @@ package com.cryptonita.app.data.providers.mappers.impl;
 
 import com.cryptonita.app.data.entities.BannedUsersModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.response.BannedUserResponseDTO;
+import com.cryptonita.app.dto.data.response.BannedUserResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,6 +1,6 @@
 package com.cryptonita.app.data.providers;
 
-import com.cryptonita.app.dto.response.CoinResponseDTO;
+import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 
 import java.util.List;
 
