@@ -11,6 +11,7 @@ import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.response.WallerResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,9 +39,11 @@ public class AccountProviderImpl implements IAccountProvider {
         UserModel userModel = userDao.findByUsername(user).orElse(null);
         if(userModel == null)
             throw new RuntimeException("El usuario no existe");
+
         CoinModel coinModel = coinDAO.findByName(coin).orElse(null);
         if(coinModel == null)
             throw new RuntimeException("Esa moneda no existe");
+
         WalletModel walletModel = WalletModel.builder()
                 .account(userModel.getAccount())
                 .coin(coinModel)
@@ -52,16 +55,24 @@ public class AccountProviderImpl implements IAccountProvider {
         return walletMapper.mapToDto(walletDao.save(walletModel));
     }
 
+    @Transactional
     @Override
     public WallerResponseDto deposit(String user, String coin, long ammount) {
-        WalletModel walletModel = walletDao.findByCoin_NameAndAccount_User_Username(user,coin).orElse(null);
+        UserModel userModel = userDao.findByUsername(user).orElse(null);
+        if(userModel == null)
+            throw new RuntimeException("El usuario no existe");
 
-        if(walletModel == null)
+        CoinModel coinModel = coinDAO.findByName(coin).orElse(null);
+        if(coinModel == null)
+            throw new RuntimeException("Esa moneda no existe");
+
+        WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
+        if(wallet == null)
             throw new RuntimeException();
 
-        walletModel.setQuantity(ammount);
+        wallet.setQuantity(ammount);
 
-        return walletMapper.mapToDto(walletDao.save(walletModel));
+        return walletMapper.mapToDto(walletDao.save(wallet));
     }
 
     @Override
