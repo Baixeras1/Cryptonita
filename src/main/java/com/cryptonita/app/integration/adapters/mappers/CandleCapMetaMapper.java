@@ -43,12 +43,12 @@ public class CandleCapMetaMapper implements AdapterMapper<CandleInfoDTO>{
 
     private CandleInfoDTO mapper(JsonNode jsonNode) {
         return CandleInfoDTO.builder()
-                .open(jsonNode.get("open").asLong())
-                .high(jsonNode.get("high").asLong())
-                .low(jsonNode.get("low").asLong())
-                .close(jsonNode.get("close").asLong())
-                .volume(jsonNode.get("volume").asLong())
-                .period(jsonNode.get("period").asLong())
+                .open(jsonNode.get("open").asDouble())
+                .high(jsonNode.get("high").asDouble())
+                .low(jsonNode.get("low").asDouble())
+                .close(jsonNode.get("close").asDouble())
+                .volume(jsonNode.get("volume").asDouble())
+                .period(jsonNode.get("period").asDouble())
                 .build();
     }
 }
