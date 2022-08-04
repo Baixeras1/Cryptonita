@@ -25,13 +25,13 @@ public class HistoryModel {
     @ManyToOne
     @JoinColumn(name = "USER_ID",nullable = false)
     private UserModel user;
-    private LocalDateTime date;
+    private LocalDate date;
     private String origin;
     private String destiny;
     private double quantity;
 
     @Builder
-    public HistoryModel(UserModel user,LocalDateTime date,String origin,String destiny,double quantity) {
+    public HistoryModel(UserModel user,LocalDate date,String origin,String destiny,double quantity) {
         this.user = user;
         this.date = date;
         this.origin = origin;

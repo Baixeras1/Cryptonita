@@ -4,13 +4,12 @@ import com.cryptonita.app.core.controllers.services.IStackingService;
 import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.data.providers.IStackingProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
-
-import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
 import com.cryptonita.app.dto.data.response.StackingDTO;
+import com.cryptonita.app.dto.request.RegisterRequestDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -51,13 +50,13 @@ public class StackingServiceImpl implements IStackingService {
      * @return el stake creado
      */
     @Override
-    public StackingDTO stake(String username,String coinName, double quantity,int daysToExpires) {
+    public StackingDTO stake(String username, String coinName, double quantity, int daysToExpires) {
 
         StackingDTO stackingDTO = stackingProvider.stake(username,coinName,quantity,daysToExpires);
 
-        RegisterResponseDTO registerResponseDTO = RegisterResponseDTO.builder()
+        RegisterRequestDTO registerResponseDTO = RegisterRequestDTO.builder()
                 .user(username)
-                .date(LocalDateTime.now())
+                .date(LocalDate.now())
                 .quantity(quantity)
                 .destiny("Staking id: " + String.valueOf(stackingDTO.getId())) //TODO Security
                 .origin("Wallet id: " + stackingDTO.getUser().username) //TODO Security & MAP
@@ -79,7 +78,7 @@ public class StackingServiceImpl implements IStackingService {
 
         StackingDTO dto = stackingProvider.unStake(id,username);
 
-        RegisterResponseDTO registerResponseDTO = RegisterResponseDTO.builder()
+        RegisterRequestDTO registerResponseDTO = RegisterRequestDTO.builder()
                 .user(username)
                 .origin("Staking id: " + dto.getId())
                 .destiny("Wallet id: " + dto.getUser().username) //TODO MAP

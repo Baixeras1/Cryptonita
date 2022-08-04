@@ -1,18 +1,20 @@
-package com.cryptonita.app.dto.data.response;
+package com.cryptonita.app.dto.request;
+
 
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 
 @Builder
 @Data
-public class RegisterResponseDTO
-{
-    public final UserResponseDTO user;
+public class RegisterRequestDTO {
+
+    public final String user;
     public final LocalDate date;
     public final String origin;
     public final String destiny;
     public final double quantity;
+
 }
