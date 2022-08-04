@@ -10,5 +10,6 @@ public interface IStackingProvider {
     StackingDTO unStake(long id,String userName);
     List<StackingDTO> getAllUserStakes(String username);
     StackingDTO getUserStake(long id,String username);
+    List<StackingDTO> findAll();
 
 }

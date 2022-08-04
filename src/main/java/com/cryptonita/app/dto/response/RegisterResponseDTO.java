@@ -6,15 +6,16 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @Data
 public class RegisterResponseDTO {
 
     public final String user;
-    public final LocalDate date;
+    public final LocalDateTime date;
     public final String origin;
     public final String destiny;
-    public final int quantity;
+    public final double quantity;
 
 }

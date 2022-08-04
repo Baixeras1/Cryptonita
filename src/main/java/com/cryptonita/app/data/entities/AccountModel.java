@@ -4,14 +4,16 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id", "userId"})
-@ToString(exclude = "accountModel")
+@EqualsAndHashCode(of = {"id"})
+@ToString(exclude = "wallets")
 public class AccountModel {
 
     @Id
@@ -23,7 +25,7 @@ public class AccountModel {
     private UserModel user;
 
     @OneToMany(mappedBy = "account")
-    private List<WalletModel> wallets = new ArrayList<>();
+    private Map<CoinModel, WalletModel> wallets = new HashMap<>();
 
     @Builder
     public AccountModel(UserModel user){
