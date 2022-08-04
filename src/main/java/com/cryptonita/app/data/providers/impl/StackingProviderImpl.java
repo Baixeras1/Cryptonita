@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.h2.engine.User;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class StackingProviderImpl implements IStackingProvider {
      * @param quantity cantidad de dicha moneda
      * @return el stake creado
      */
+    @Transactional
     @Override
     public StackingDTO stake(String userName, String coinName, double quantity,int daysToExpire) {
         UserModel userModel = userDao.findByUsername(userName).orElse(null);
@@ -43,10 +45,10 @@ public class StackingProviderImpl implements IStackingProvider {
             throw new RuntimeException("La moneda no existe");
 
 
-        WalletModel wallet = userModel.getAccount().getWallets().stream()
-                .filter(wallet_ -> wallet_.getCoin().getName().equals(coinModel.getName()))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("No tiene wallet de " + coinModel.getName()));
+        WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
+
+        if(wallet == null)
+            throw new RuntimeException("No tienes wallet");
 
         if(wallet.getQuantity() < quantity)
             throw new RuntimeException("Lo siento, no tienes saldo suficiente");
@@ -129,5 +131,22 @@ public class StackingProviderImpl implements IStackingProvider {
             throw new RuntimeException("No existe ese Stake");
 
         return stackingDTOIMapper.mapToDto(stackingModel);
+    }
+
+    /**
+     * Este metodo te da una lista con todos los stakes
+     * @return todos los stakes
+     */
+
+    @Override
+    public List<StackingDTO> findAll() {
+        List<StackingModel> stackingModelList = stackingDAO.findAll();
+        List<StackingDTO> stackingDTOList = new ArrayList<>();
+
+        for(StackingModel stackingModel : stackingModelList){
+            StackingDTO dto = stackingDTOIMapper.mapToDto(stackingModel);
+            stackingDTOList.add(dto);
+        }
+        return stackingDTOList;
     }
 }

@@ -5,6 +5,7 @@ import org.h2.engine.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Create History JPA entity
@@ -24,13 +25,13 @@ public class HistoryModel {
     @ManyToOne
     @JoinColumn(name = "USER_ID",nullable = false)
     private UserModel user;
-    private LocalDate date;
+    private LocalDateTime date;
     private String origin;
     private String destiny;
-    private int quantity;
+    private double quantity;
 
     @Builder
-    public HistoryModel(UserModel user,LocalDate date,String origin,String destiny,int quantity) {
+    public HistoryModel(UserModel user,LocalDateTime date,String origin,String destiny,double quantity) {
         this.user = user;
         this.date = date;
         this.origin = origin;

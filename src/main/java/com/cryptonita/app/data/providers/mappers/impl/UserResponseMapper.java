@@ -22,7 +22,7 @@ public class UserResponseMapper implements IMapper<UserModel, UserResponseDTO> {
 
     @Override
     public UserResponseDTO mapToDto(UserModel userModel) {
-        List<WallerResponseDto> wallerResponseDtos = userModel.getAccount().getWallets().stream()
+        List<WallerResponseDto> wallerResponseDtos = userModel.getAccount().getWallets().values().stream()
                 .map(walletMapper::mapToDto)
                 .collect(Collectors.toList());
 

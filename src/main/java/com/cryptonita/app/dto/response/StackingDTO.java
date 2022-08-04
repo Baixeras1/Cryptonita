@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 public class StackingDTO {
 
     private long id;
-    private String coinName;
-    private String userName;
+    private CoinResponseDTO coin;
+    private UserResponseDTO user;
     private double quantity;
     private LocalDateTime createdAt;
     private int daysToExpire;
