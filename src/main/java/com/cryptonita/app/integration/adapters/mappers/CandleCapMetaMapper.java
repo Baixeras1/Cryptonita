@@ -1,11 +1,16 @@
 package com.cryptonita.app.integration.adapters.mappers;
 
 import com.cryptonita.app.dto.integration.CandleInfoDTO;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -13,15 +18,37 @@ import java.util.List;
 @AllArgsConstructor
 public class CandleCapMetaMapper implements AdapterMapper<CandleInfoDTO>{
 
-    private final JsonMapper jsonMapper;
+    private final ObjectMapper jsonMapper;
 
+    @SneakyThrows
     @Override
     public CandleInfoDTO mapToDto(String s) {
-        return null;
+        JsonNode jsonNode = jsonMapper.readTree(s);
+        JsonNode data = jsonNode.get("data");
+
+        return mapper(data);
     }
 
+    @SneakyThrows
     @Override
     public List<CandleInfoDTO> mapManyToDto(String s) {
-        return null;
+        JsonNode jsonNode = jsonMapper.readTree(s);
+        ArrayNode data = (ArrayNode) jsonNode.get("data");
+
+        List<CandleInfoDTO> candles = new ArrayList<>();
+        data.forEach(node -> candles.add(mapper(node)));
+
+        return candles;
+    }
+
+    private CandleInfoDTO mapper(JsonNode jsonNode) {
+        return CandleInfoDTO.builder()
+                .open(jsonNode.get("open").asLong())
+                .high(jsonNode.get("high").asLong())
+                .low(jsonNode.get("low").asLong())
+                .close(jsonNode.get("close").asLong())
+                .volume(jsonNode.get("volume").asLong())
+                .period(jsonNode.get("period").asLong())
+                .build();
     }
 }
