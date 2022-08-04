@@ -77,27 +77,41 @@ public class AccountProviderImpl implements IAccountProvider {
 
     @Override
     public WallerResponseDto withDraw(String user, String coin, long ammount) {
-        WalletModel walletModel = walletDao.findByCoin_NameAndAccount_User_Username(user,coin).orElse(null);
+        UserModel userModel = userDao.findByUsername(user).orElse(null);
+        if(userModel == null)
+            throw new RuntimeException("El usuario no existe");
 
-        if(walletModel == null)
+        CoinModel coinModel = coinDAO.findByName(coin).orElse(null);
+        if(coinModel == null)
+            throw new RuntimeException("Esa moneda no existe");
+
+        WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
+        if(wallet == null)
             throw new RuntimeException();
 
-        walletModel.setQuantity(walletModel.getQuantity()-ammount);
+        wallet.setQuantity(wallet.getQuantity()-ammount);
 
-        return walletMapper.mapToDto(walletDao.save(walletModel));
+        return walletMapper.mapToDto(walletDao.save(wallet));
     }
 
 
     @Override
     public WallerResponseDto clear(String user, String coin) {
-        WalletModel walletModel = walletDao.findByCoin_NameAndAccount_User_Username(user,coin).orElse(null);
+        UserModel userModel = userDao.findByUsername(user).orElse(null);
+        if(userModel == null)
+            throw new RuntimeException("El usuario no existe");
 
-        if(walletModel == null)
+        CoinModel coinModel = coinDAO.findByName(coin).orElse(null);
+        if(coinModel == null)
+            throw new RuntimeException("Esa moneda no existe");
+
+        WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
+        if(wallet == null)
             throw new RuntimeException();
 
-        walletModel.setQuantity(0);
+        wallet.setQuantity(0);
 
-        return walletMapper.mapToDto(walletDao.save(walletModel));
+        return walletMapper.mapToDto(walletDao.save(wallet));
     }
 
     @Override
