@@ -25,6 +25,7 @@ public class AccountModel {
     private UserModel user;
 
     @OneToMany(mappedBy = "account")
+    @MapKeyJoinColumn(name = "id")
     private Map<CoinModel, WalletModel> wallets = new HashMap<>();
 
     @Builder

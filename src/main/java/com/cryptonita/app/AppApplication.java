@@ -2,6 +2,7 @@ package com.cryptonita.app;
 
 import com.cryptonita.app.core.loaders.CoinLoader;
 import com.cryptonita.app.core.loaders.UsersLoader;
+import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.data.providers.IStackingProvider;
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
@@ -26,21 +27,24 @@ public class AppApplication {
     @Bean
     CommandLineRunner init(
             CoinLoader coinLoader,
-            UsersLoader usersLoader
+            UsersLoader usersLoader,
+            IAccountProvider accountProvider
+
     ) {
         return (args) -> {
             Flux<CoinInfoDTO> coinFlux = coinLoader.load();
             Flux<UserResponseDTO> usersFlux = usersLoader.load();
 
             Flux.concat(coinFlux, usersFlux)
-                    .doOnComplete(this::callBack)
+                    .doOnComplete(() -> {
+                        accountProvider.create("sergio.bernal","Bitcoin");
+                        accountProvider.deposit("sergio.bernal","Bitcoin",12);
+                    })
                     .subscribe();
-
         };
     }
 
     private void callBack() {
-        // Logic after data is loaded
     }
 
 }
