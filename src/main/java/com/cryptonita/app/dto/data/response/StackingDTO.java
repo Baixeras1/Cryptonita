@@ -1,6 +1,5 @@
-package com.cryptonita.app.dto.response;
+package com.cryptonita.app.dto.data.response;
 
-import com.cryptonita.app.data.entities.CoinModel;
 import lombok.Builder;
 import lombok.Data;
 

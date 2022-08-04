@@ -2,7 +2,7 @@ package com.cryptonita.app.data.providers.mappers.impl;
 
 import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WallerResponseDto;
 import org.springframework.stereotype.Component;
 
 @Component

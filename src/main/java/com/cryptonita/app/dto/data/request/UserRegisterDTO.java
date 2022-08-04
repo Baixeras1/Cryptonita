@@ -1,4 +1,4 @@
-package com.cryptonita.app.dto.request;
+package com.cryptonita.app.dto.data.request;
 
 import com.cryptonita.app.data.entities.enums.UserRole;
 import com.cryptonita.app.data.entities.enums.UserType;

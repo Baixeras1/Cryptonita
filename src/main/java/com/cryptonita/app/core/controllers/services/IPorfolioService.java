@@ -1,7 +1,6 @@
 package com.cryptonita.app.core.controllers.services;
 
-import com.cryptonita.app.dto.response.UserResponseDTO;
-import com.cryptonita.app.dto.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WallerResponseDto;
 
 import java.util.List;
 

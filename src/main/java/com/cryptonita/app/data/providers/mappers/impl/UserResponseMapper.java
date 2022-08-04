@@ -4,9 +4,9 @@ import com.cryptonita.app.data.entities.FavouritesModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.response.FavoritesResponseDto;
-import com.cryptonita.app.dto.response.UserResponseDTO;
-import com.cryptonita.app.dto.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.FavoritesResponseDto;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
+import com.cryptonita.app.dto.data.response.WallerResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

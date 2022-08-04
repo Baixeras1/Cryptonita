@@ -3,7 +3,7 @@ package com.cryptonita.app.data.providers.mappers.impl;
 import com.cryptonita.app.data.entities.HistoryModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.response.RegisterResponseDTO;
+import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
 import org.springframework.stereotype.Component;
 
 @Component

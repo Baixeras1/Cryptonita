@@ -9,9 +9,8 @@ import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.IStackingProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.response.StackingDTO;
+import com.cryptonita.app.dto.data.response.StackingDTO;
 import lombok.AllArgsConstructor;
-import org.h2.engine.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

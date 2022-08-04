@@ -4,9 +4,9 @@ import com.cryptonita.app.data.entities.CoinModel;
 import com.cryptonita.app.data.entities.StackingModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.response.CoinResponseDTO;
-import com.cryptonita.app.dto.response.StackingDTO;
-import com.cryptonita.app.dto.response.UserResponseDTO;
+import com.cryptonita.app.dto.data.response.CoinResponseDTO;
+import com.cryptonita.app.dto.data.response.StackingDTO;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

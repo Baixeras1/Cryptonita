@@ -1,10 +1,9 @@
 package com.cryptonita.app.data.providers;
 
-import com.cryptonita.app.dto.request.UserRegisterDTO;
-import com.cryptonita.app.dto.response.BannedUserResponseDTO;
-import com.cryptonita.app.dto.response.FavoritesResponseDto;
-import com.cryptonita.app.dto.response.UserResponseDTO;
-import org.h2.engine.User;
+import com.cryptonita.app.dto.data.request.UserRegisterDTO;
+import com.cryptonita.app.dto.data.response.BannedUserResponseDTO;
+import com.cryptonita.app.dto.data.response.FavoritesResponseDto;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
 
 import java.util.List;
 

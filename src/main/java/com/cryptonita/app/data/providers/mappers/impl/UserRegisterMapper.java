@@ -2,7 +2,7 @@ package com.cryptonita.app.data.providers.mappers.impl;
 
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.request.UserRegisterDTO;
+import com.cryptonita.app.dto.data.request.UserRegisterDTO;
 import org.springframework.stereotype.Component;
 
 @Component

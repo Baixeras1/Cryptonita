@@ -1,4 +1,4 @@
-package com.cryptonita.app.dto.response;
+package com.cryptonita.app.dto.data.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.cryptonita.app.data.providers;
 
-import com.cryptonita.app.dto.response.RegisterResponseDTO;
+import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
 
 import java.util.List;
 

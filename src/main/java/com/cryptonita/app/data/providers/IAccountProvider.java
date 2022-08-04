@@ -1,6 +1,6 @@
 package com.cryptonita.app.data.providers;
 
-import com.cryptonita.app.dto.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WallerResponseDto;
 
 import java.util.List;
 

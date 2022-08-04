@@ -1,6 +1,6 @@
 package com.cryptonita.app.core.controllers.services;
 
-import com.cryptonita.app.dto.response.FavoritesResponseDto;
+import com.cryptonita.app.dto.data.response.FavoritesResponseDto;
 
 import java.util.List;
 
