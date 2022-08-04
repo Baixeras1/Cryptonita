@@ -7,6 +7,7 @@ import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.data.providers.IStackingProvider;
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
 import com.cryptonita.app.dto.response.UserResponseDTO;
+import com.cryptonita.app.integration.services.ICandleService;
 import com.cryptonita.app.integration.services.ICoinMetadataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -28,12 +29,14 @@ public class AppApplication {
     CommandLineRunner init(
             CoinLoader coinLoader,
             UsersLoader usersLoader,
-            IAccountProvider accountProvider
+            IAccountProvider accountProvider,
+            ICandleService candleService
 
     ) {
         return (args) -> {
             Flux<CoinInfoDTO> coinFlux = coinLoader.load();
             Flux<UserResponseDTO> usersFlux = usersLoader.load();
+
 
             Flux.concat(coinFlux, usersFlux)
                     .doOnComplete(() -> {
@@ -41,6 +44,10 @@ public class AppApplication {
                         accountProvider.deposit("sergio.bernal","Bitcoin",12);
                     })
                     .subscribe();
+
+            candleService.getAll("poloniex","h8","ethereum","bitcoin")
+                    .subscribe(candleInfoDTO -> log.info(candleInfoDTO.toString()));
+
         };
     }
 
