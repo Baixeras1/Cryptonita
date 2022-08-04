@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.h2.util.json.JSONArray;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import java.util.List;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class CoinCapAdapterMapper implements AdapterMapper<CoinInfoDTO> {
+public class CoinInfoMapper implements AdapterMapper<CoinInfoDTO> {
 
     private final ObjectMapper jsonMapper;
 

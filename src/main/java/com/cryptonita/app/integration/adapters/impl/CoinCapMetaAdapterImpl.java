@@ -1,10 +1,9 @@
 package com.cryptonita.app.integration.adapters.impl;
 
 import com.cryptonita.app.dto.integration.CoinMetadataDTO;
-import com.cryptonita.app.integration.adapters.ICoinMetaAdapter;
+import com.cryptonita.app.integration.adapters.ICoinCapMetaAdapter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,29 +18,19 @@ import reactor.util.function.Tuple2;
 
 @Slf4j
 @Component
-public class CoinMetaAdapterImpl implements ICoinMetaAdapter {
+public class CoinCapMetaAdapterImpl implements ICoinCapMetaAdapter {
 
     private static final String COIN_CAP_URL = "api.coincap.io/v2/assets";
-    private static final String COIN_MARKET_URL = "https://pro-api.coinmarketcap.com";
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Value("${coinMarketCapApiKey}")
-    private String COIN_MARKET_KEY;
 
     private final WebClient coinCapClient = WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
                     HttpClient.create().followRedirect(true)
             ))
             .baseUrl(COIN_CAP_URL)
-            .build();
-
-    private final WebClient coinMarketClient = WebClient.builder()
-            .clientConnector(new ReactorClientHttpConnector(
-                    HttpClient.create().followRedirect(true)
-            ))
-            .baseUrl(COIN_MARKET_URL)
             .build();
 
 
@@ -52,24 +41,11 @@ public class CoinMetaAdapterImpl implements ICoinMetaAdapter {
 
     @Override
     public Mono<CoinMetadataDTO> getCoinMetadataByName(String name) {
-        Mono<String> coinCapMono = coinCapClient.get()
+        return coinCapClient.get()
                 .uri(String.format("/%s", name))
                 .retrieve()
-                .bodyToMono(String.class);
-
-        Mono<String> marketCapMono = coinMarketClient.get()
-                .uri(uriBuilder ->
-                        uriBuilder.path("/v2/cryptocurrency/info")
-                                .queryParam("slug", name)
-                                .build()
-                )
-                .header("X-CMC_PRO_API_KEY", COIN_MARKET_KEY)
-                .retrieve()
-                .bodyToMono(String.class);
-
-        return Flux.zip(coinCapMono, marketCapMono)
-                .single()
-                .map(this::mapToJson);
+                .bodyToMono(String.class)
+                .map(this::mapCoinCapToJson);
     }
 
     @Override
@@ -77,16 +53,7 @@ public class CoinMetaAdapterImpl implements ICoinMetaAdapter {
         throw new UnsupportedOperationException();
     }
 
-    @SneakyThrows
-    private CoinMetadataDTO mapToJson(Tuple2<String, String> tuple) {
-        CoinMetadataDTO coinCapDTO = mapCoinCapToJson(tuple.getT1());
-        CoinMetadataDTO marketCapDTO = mapMarketCapToJson(tuple.getT2());
 
-        coinCapDTO.description = marketCapDTO.description;
-        coinCapDTO.logo = marketCapDTO.logo;
-
-        return coinCapDTO;
-    }
 
     @SneakyThrows
     private CoinMetadataDTO mapCoinCapToJson(String s) {
@@ -106,17 +73,6 @@ public class CoinMetaAdapterImpl implements ICoinMetaAdapter {
                 .build();
     }
 
-    @SneakyThrows
-    private CoinMetadataDTO mapMarketCapToJson(String s) {
-        JsonNode json = objectMapper.readTree(s);
-        JsonNode data = json.get("data");
 
-        JsonNode body = data.fields().next().getValue();
-
-        return CoinMetadataDTO.builder()
-                .logo(body.get("logo").asText())
-                .description(body.get("description").asText())
-                .build();
-    }
 
 }

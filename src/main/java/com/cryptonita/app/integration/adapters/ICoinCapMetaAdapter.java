@@ -3,7 +3,7 @@ package com.cryptonita.app.integration.adapters;
 import com.cryptonita.app.dto.integration.CoinMetadataDTO;
 import reactor.core.publisher.Mono;
 
-public interface ICoinMetaAdapter {
+public interface ICoinCapMetaAdapter {
 
     /**
      * Returns the metadata of a certain coin
