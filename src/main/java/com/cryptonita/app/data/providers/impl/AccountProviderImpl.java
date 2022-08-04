@@ -1,6 +1,10 @@
 package com.cryptonita.app.data.providers.impl;
 
+import com.cryptonita.app.data.daos.ICoinDAO;
+import com.cryptonita.app.data.daos.IUserDao;
 import com.cryptonita.app.data.daos.IWalletDao;
+import com.cryptonita.app.data.entities.CoinModel;
+import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
@@ -16,6 +20,9 @@ import java.util.stream.Collectors;
 public class AccountProviderImpl implements IAccountProvider {
 
     private IWalletDao walletDao;
+    private IUserDao userDao;
+
+    private ICoinDAO coinDAO;
 
     private IMapper<WalletModel,WallerResponseDto> walletMapper;
 
@@ -28,10 +35,19 @@ public class AccountProviderImpl implements IAccountProvider {
 
     @Override
     public WallerResponseDto create(String user, String coin) {
-        WalletModel walletModel = walletDao.findByCoin_NameAndAccount_User_Username(user,coin).orElse(null);
+        UserModel userModel = userDao.findByUsername(user).orElse(null);
+        if(userModel == null)
+            throw new RuntimeException("El usuario no existe");
+        CoinModel coinModel = coinDAO.findByName(coin).orElse(null);
+        if(coinModel == null)
+            throw new RuntimeException("Esa moneda no existe");
+        WalletModel walletModel = WalletModel.builder()
+                .account(userModel.getAccount())
+                .coin(coinModel)
+                .build();
 
         if(walletModel == null)
-            throw new RuntimeException();
+            throw new RuntimeException("No tienes wallet");
 
         return walletMapper.mapToDto(walletDao.save(walletModel));
     }
