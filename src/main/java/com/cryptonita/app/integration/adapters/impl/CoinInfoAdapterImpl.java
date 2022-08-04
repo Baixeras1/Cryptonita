@@ -1,9 +1,8 @@
 package com.cryptonita.app.integration.adapters.impl;
 
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
-import com.cryptonita.app.integration.adapters.ICoinAdapter;
+import com.cryptonita.app.integration.adapters.ICoinInfoAdapter;
 import com.cryptonita.app.integration.adapters.mappers.AdapterMapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import reactor.netty.http.client.HttpClient;
 
 @Service
 @AllArgsConstructor
-public class CoinAdapterCoinCap implements ICoinAdapter {
+public class CoinInfoAdapterImpl implements ICoinInfoAdapter {
 
     private static final String URL = "api.coincap.io/v2/assets";
 

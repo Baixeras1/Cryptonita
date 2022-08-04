@@ -1,8 +1,8 @@
 package com.cryptonita.app.integration.services.impl;
 
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
-import com.cryptonita.app.integration.adapters.ICoinAdapter;
-import com.cryptonita.app.integration.services.ICoinServiceInfo;
+import com.cryptonita.app.integration.adapters.ICoinInfoAdapter;
+import com.cryptonita.app.integration.services.ICoinInfoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -10,9 +10,9 @@ import reactor.core.publisher.Mono;
 
 @Service
 @AllArgsConstructor
-public class CoinServiceImpl implements ICoinServiceInfo {
+public class CoinServiceImpl implements ICoinInfoService {
 
-    private final ICoinAdapter adapter;
+    private final ICoinInfoAdapter adapter;
 
     @Override
     public Flux<CoinInfoDTO> getAll() {

@@ -1,10 +1,10 @@
-package com.cryptonita.app.integration.services;
+package com.cryptonita.app.integration.adapters;
 
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ICoinServiceInfo {
+public interface ICoinInfoAdapter {
 
     /**
      * Retrieves the most important cryptos and the
@@ -25,10 +25,10 @@ public interface ICoinServiceInfo {
     /**
      * Retrieves the information of one crypto in specific
      *
-     * @param name the name of the coin to search
+     * @param symbol the name of the coin to search
      * @return a reactive mono with the information wrapped in a dto
      */
-    Mono<CoinInfoDTO> getByName(String name);
+    Mono<CoinInfoDTO> getByName(String symbol);
 
     /**
      * Retrieves the information of one crypto in specific
