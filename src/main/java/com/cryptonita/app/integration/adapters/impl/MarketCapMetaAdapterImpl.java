@@ -33,9 +33,6 @@ public class MarketCapMetaAdapterImpl implements IMarketCapMetaAdapter {
     @Autowired
     private MarketCapMetaMapper mapper;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Override
     public Mono<CoinMetadataDTO> getCoinMetadataBySymbol(String symbol) {
         throw new UnsupportedOperationException();
@@ -52,25 +49,12 @@ public class MarketCapMetaAdapterImpl implements IMarketCapMetaAdapter {
                 .header("X-CMC_PRO_API_KEY", COIN_MARKET_KEY)
                 .retrieve()
                 .bodyToMono(String.class)
-                .map(this::mapMarketCapToJson);
+                .map(mapper::mapToDto);
     }
 
     @Override
     public Mono<CoinMetadataDTO> getCoinMetadata(int rank) {
         throw new UnsupportedOperationException();
-    }
-
-    @SneakyThrows
-    private CoinMetadataDTO mapMarketCapToJson(String s) {
-        JsonNode json = objectMapper.readTree(s);
-        JsonNode data = json.get("data");
-
-        JsonNode body = data.fields().next().getValue();
-
-        return CoinMetadataDTO.builder()
-                .logo(body.get("logo").asText())
-                .description(body.get("description").asText())
-                .build();
     }
 
 }
