@@ -4,7 +4,7 @@ import com.cryptonita.app.dto.integration.CoinInfoDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ICoinServiceInfo {
+public interface ICoinInfoService {
 
     /**
      * Retrieves the most important cryptos and the
