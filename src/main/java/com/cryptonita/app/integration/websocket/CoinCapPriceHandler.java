@@ -24,7 +24,7 @@ public class CoinCapPriceHandler extends TextWebSocketHandler {
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) {
-        log.info("Message Received [" + message.getPayload() + "]");
+        log.debug("Message Received [" + message.getPayload() + "]");
 
         parser.parse(message.getPayload()).forEach(coinUpdatePair -> {
 

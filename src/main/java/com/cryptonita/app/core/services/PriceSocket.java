@@ -16,10 +16,10 @@ public class PriceSocket {
 
     @EventListener
     public void listener(CoinCapPriceUpdateEvent e) {
-        log.info("Received event for coin " + e.getCoin());
+        log.info("Received event for coin " + e.toString());
 
         String topic = String.format("/crypto/%s", e.getCoin());
-        simpMessagingTemplate.convertAndSend(topic, e.getPrice());
+        simpMessagingTemplate.convertAndSend(topic, e);
     }
 
 }

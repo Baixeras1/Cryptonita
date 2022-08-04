@@ -5,6 +5,7 @@ import com.cryptonita.app.core.loaders.UsersLoader;
 import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
+import com.cryptonita.app.integration.websocket.CoinCapConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +26,8 @@ public class AppApplication {
     CommandLineRunner init(
             CoinLoader coinLoader,
             UsersLoader usersLoader,
-            IAccountProvider accountProvider
+            IAccountProvider accountProvider,
+            CoinCapConsumer coinCapConsumer
 
     ) {
         return (args) -> {
@@ -36,6 +38,7 @@ public class AppApplication {
                     .doOnComplete(() -> {
                         accountProvider.create("sergio.bernal","Bitcoin");
                         accountProvider.deposit("sergio.bernal","Bitcoin",12);
+                        coinCapConsumer.start();
                     })
                     .subscribe();
         };
