@@ -9,11 +9,11 @@ import lombok.ToString;
 @ToString
 public class CandleInfoDTO {
 
-    private double open;
-    private double high;
-    private double low;
-    private double close;
-    private double volume;
-    private double period;
+    public final double open;
+    public final double high;
+    public final double low;
+    public final double close;
+    public final double volume;
+    public final double period;
 
 }
