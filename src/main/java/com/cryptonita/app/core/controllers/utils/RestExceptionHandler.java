@@ -1,5 +1,6 @@
 package com.cryptonita.app.core.controllers.utils;
 
+import com.cryptonita.app.exceptions.LogicError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +31,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     protected RestResponse authenticationHandler(AuthenticationException e) {
         return RestResponse.encapsulate(e, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(LogicError.class)
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    protected RestResponse logicErrorHandler(LogicError e) {
+        return RestResponse.encapsulate(e, HttpStatus.OK);
     }
 
     @ExceptionHandler(RuntimeException.class)
