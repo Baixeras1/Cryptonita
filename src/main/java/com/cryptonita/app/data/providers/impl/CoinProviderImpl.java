@@ -17,20 +17,20 @@ import java.util.List;
 public class CoinProviderImpl implements ICoinProvider {
 
     private final ICoinDAO coinDAO;
-    private final IMapper<CoinModel,CoinResponseDTO> responseDTOIMapper;
+    private final IMapper<CoinModel, CoinResponseDTO> responseDTOIMapper;
 
     @Override
     public CoinResponseDTO createCoin(String name, String symbol, int rank) {
-        if(coinDAO.findByName(name).isPresent())
+        if (coinDAO.findByName(name).isPresent())
             throw new RuntimeException("Esa moneda ya existe");
 
-       CoinModel coin =  CoinModel.builder()
-               .name(name)
-               .symbol(symbol)
-               .rank(rank)
-               .build();
+        CoinModel coin = CoinModel.builder()
+                .name(name)
+                .symbol(symbol)
+                .rank(rank)
+                .build();
 
-       coin = coinDAO.save(coin);
+        coin = coinDAO.save(coin);
 
         return responseDTOIMapper.mapToDto(coin);
     }
@@ -51,7 +51,7 @@ public class CoinProviderImpl implements ICoinProvider {
     @Transactional
     public CoinResponseDTO deleteByName(String name) {
         CoinModel coin = coinDAO.findByName(name).orElse(null);
-        if(coin == null)
+        if (coin == null)
             throw new RuntimeException("Esa moneda no existe");
 
         coinDAO.deleteByName(name);
@@ -62,7 +62,7 @@ public class CoinProviderImpl implements ICoinProvider {
     @Override
     public CoinResponseDTO getCoinByName(String name) {
         CoinModel coin = coinDAO.findByName(name).orElse(null);
-        if(coin == null)
+        if (coin == null)
             throw new RuntimeException("Esa moneda no existe");
         return responseDTOIMapper.mapToDto(coin);
     }
@@ -70,19 +70,17 @@ public class CoinProviderImpl implements ICoinProvider {
     @Override
     public CoinResponseDTO getCoinById(long id) {
         CoinModel coin = coinDAO.findById(id).orElse(null);
-        if(coin == null)
+        if (coin == null)
             throw new RuntimeException("Esa moneda no existe");
 
         return responseDTOIMapper.mapToDto(coin);
-
-
     }
 
     @Override
     public CoinResponseDTO getByRank(int rank) {
         CoinModel coin = coinDAO.findByRank(rank).orElse(null);
         if (coin == null)
-            throw  new RuntimeException("Esa moneda no tiene rango");
+            throw new RuntimeException("Esa moneda no tiene rango");
         return responseDTOIMapper.mapToDto(coin);
     }
 
@@ -90,7 +88,8 @@ public class CoinProviderImpl implements ICoinProvider {
     public CoinResponseDTO getBySymbol(String symbol) {
         CoinModel coin = coinDAO.findBySymbol(symbol).orElse(null);
         if (coin == null)
-            throw  new RuntimeException("Esa moneda no existe");
+            throw new RuntimeException("Esa moneda no existe");
         return responseDTOIMapper.mapToDto(coin);
     }
+
 }

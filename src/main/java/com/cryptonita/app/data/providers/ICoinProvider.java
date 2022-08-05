@@ -1,5 +1,6 @@
 package com.cryptonita.app.data.providers;
 
+import com.cryptonita.app.core.utils.Validate;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 
 import java.util.List;
@@ -35,13 +36,58 @@ public interface ICoinProvider {
     CoinResponseDTO getCoinByName(String name);
 
     /**
-     * This method get a coin by Id
-     * @param id of coin
+     * This method get a coin by its id
+     * @param id of coin to search
      * @return The called coin
      */
     CoinResponseDTO getCoinById(long id);
 
+    /**
+     * This method get a coin by its rank
+     * @param rank of coin to search
+     * @return The called coin
+     */
     CoinResponseDTO getByRank(int rank);
 
+    /**
+     * This method get a coin by its symbol
+     * @param symbol of coin to search
+     * @return The called coin
+     */
     CoinResponseDTO getBySymbol(String symbol);
+
+    /**
+     * Method to check if a coin exists
+     *
+     * @param id the id of the coin to search
+     * @return true if exists, false if not
+     */
+    default boolean exists(long id) {
+        return Validate.testAndTry(() -> getCoinById(id));
+    }
+
+    default boolean exists(String name) {
+        return Validate.testAndTry(() -> getCoinByName(name));
+    }
+
+    /**
+     * Method to check if a coin exists
+     *
+     * @param rank the rank of the coin to search
+     * @return true if exists, false if not
+     */
+    default boolean exists(int rank) {
+        return Validate.testAndTry(() -> getByRank(rank));
+    }
+
+    /**
+     * Method to check if a coin exists
+     *
+     * @param symbol the symbol of the coin to search
+     * @return true if exists, false if not
+     */
+    default boolean existsBySymbol(String symbol) {
+        return Validate.testAndTry(() -> getBySymbol(symbol));
+    }
+
 }
