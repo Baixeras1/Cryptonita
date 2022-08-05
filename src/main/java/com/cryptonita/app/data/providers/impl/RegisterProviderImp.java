@@ -40,7 +40,8 @@ public class RegisterProviderImp implements IRegisterProvider {
             throw new RuntimeException("Ese usuario no existe en la BBDD");
 
         HistoryModel model = iMapper.mapToEntity(registerRequestDTO);
-        log.info(model.toString());
+        model.setUser(userModel);
+
         historyDao.save(model);
 
         return RegisterResponseDTO.builder()
