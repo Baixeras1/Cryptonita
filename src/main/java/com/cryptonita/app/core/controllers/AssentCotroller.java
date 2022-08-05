@@ -19,33 +19,31 @@ public class AssentCotroller {
     private final IAssetsService assetsService;
 
     @GetMapping("/getAll")
-    public List<CoinResponseDTO> getALL() {
-        return assetsService.getAll();
+    public RestResponse getALL() {
+        return RestResponse.encapsulate(assetsService.getAll());
     }
 
     @GetMapping("/getById/{id}")
-    public CoinResponseDTO getById(@PathVariable long id) {
-        return assetsService.getById(id);
+    public RestResponse getById(@PathVariable long id) {
+        return RestResponse.encapsulate(assetsService.getById(id));
     }
 
     @GetMapping("/getByName/{name}")
-    public CoinResponseDTO getByName(@PathVariable String name) {
-        return assetsService.getByName(name);
+    public RestResponse getByName(@PathVariable String name) {
+        return RestResponse.encapsulate(assetsService.getByName(name));
     }
 
     @GetMapping("/getBySymbol/{symbol}")
-    public CoinResponseDTO getBySymbol(@PathVariable String symbol) {
-        return assetsService.getBySymbol(symbol);
-    }
-
-    @GetMapping("/getHistoryStart")
-    public Flux<HistoryInfoDTO> getHistori(String symbol, String interval, Long start, Long end) {
-        return assetsService.getAllHistory(symbol, interval, start, end);
+    public RestResponse getBySymbol(@PathVariable String symbol) {
+        return RestResponse.encapsulate(assetsService.getBySymbol(symbol));
     }
 
     @GetMapping("/getHistory")
-    public Flux<HistoryInfoDTO> getHistori(String symbol, String interval) {
-        return assetsService.getAllHistory(symbol, interval);
+    public Flux<RestResponse> getHistory(String symbol, String interval,
+                                           @RequestParam Optional<Long> start,
+                                           @RequestParam Optional<Long> end) {
+        return assetsService.getAllHistory(symbol, interval, start, end)
+                .map(RestResponse::encapsulate);
     }
 
     @GetMapping("/getCandle")
