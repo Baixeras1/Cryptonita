@@ -21,9 +21,9 @@ public interface IAssetsService {
 
      CoinResponseDTO getByName(String name);
 
-     Flux<HistoryInfoDTO> getAllHistorys(String symbol, String interval, Long start, Long end);
+     Flux<HistoryInfoDTO> getAllHistori(String symbol, String interval, Long start, Long end);
 
-     Flux<HistoryInfoDTO> getAllHistorys(String symbol, String interval);
+     Flux<HistoryInfoDTO> getAllHistori(String symbol, String interval);
 
      Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId, Long start, Long end);
 

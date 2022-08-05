@@ -44,12 +44,12 @@ public class AssetsServiceImpl implements IAssetsService {
     }
 
     @Override
-    public Flux<HistoryInfoDTO> getAllHistorys(String symbol, String interval, Long start, Long end) {
+    public Flux<HistoryInfoDTO> getAllHistori(String symbol, String interval, Long start, Long end) {
         return historyServiceInfo.getAll(symbol, interval, start, end);
     }
 
     @Override
-    public Flux<HistoryInfoDTO> getAllHistorys(String symbol, String interval) {
+    public Flux<HistoryInfoDTO> getAllHistori(String symbol, String interval) {
         return historyServiceInfo.getAll(symbol, interval);
     }
 
