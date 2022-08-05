@@ -9,7 +9,7 @@ import reactor.core.publisher.Flux;
 
 @Service
 @AllArgsConstructor
-public class HistoryServiceImpl implements IHistoryServiceInfo {
+public class HistoryServiceInfoImpl implements IHistoryServiceInfo {
 
     private final IHistoryAdapter historyAdapter;
     @Override
