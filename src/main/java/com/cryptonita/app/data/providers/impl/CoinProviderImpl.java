@@ -5,16 +5,22 @@ import com.cryptonita.app.data.entities.CoinModel;
 import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
+import com.cryptonita.app.exceptions.data.CoinAlreadyExistsException;
+import com.cryptonita.app.exceptions.data.NoCoinFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class CoinProviderImpl implements ICoinProvider {
+
+    private static final String NO_COIN_FOUND = "The coin %s is not supported";
+    private static final String COIN_ALREADY_EXISTS = "The coin %s already exists!";
 
     private final ICoinDAO coinDAO;
     private final IMapper<CoinModel, CoinResponseDTO> responseDTOIMapper;
@@ -22,7 +28,7 @@ public class CoinProviderImpl implements ICoinProvider {
     @Override
     public CoinResponseDTO createCoin(String name, String symbol, int rank) {
         if (coinDAO.findByName(name).isPresent())
-            throw new RuntimeException("Esa moneda ya existe");
+            throw new CoinAlreadyExistsException(String.format(COIN_ALREADY_EXISTS, name));
 
         CoinModel coin = CoinModel.builder()
                 .name(name)
@@ -37,22 +43,16 @@ public class CoinProviderImpl implements ICoinProvider {
 
     @Override
     public List<CoinResponseDTO> getAllCoins() {
-        List<CoinModel> listaCoin = coinDAO.findAll();
-        List<CoinResponseDTO> listaDTO = new ArrayList<>();
-
-        for (CoinModel coinModel : listaCoin) {
-            CoinResponseDTO dto = responseDTOIMapper.mapToDto(coinModel);
-            listaDTO.add(dto);
-        }
-        return listaDTO;
+        return coinDAO.findAll().stream()
+                .map(responseDTOIMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public CoinResponseDTO deleteByName(String name) {
-        CoinModel coin = coinDAO.findByName(name).orElse(null);
-        if (coin == null)
-            throw new RuntimeException("Esa moneda no existe");
+        CoinModel coin = coinDAO.findByName(name)
+                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, name)));
 
         coinDAO.deleteByName(name);
 
@@ -61,35 +61,30 @@ public class CoinProviderImpl implements ICoinProvider {
 
     @Override
     public CoinResponseDTO getCoinByName(String name) {
-        CoinModel coin = coinDAO.findByName(name).orElse(null);
-        if (coin == null)
-            throw new RuntimeException("Esa moneda no existe");
-        return responseDTOIMapper.mapToDto(coin);
+        return coinDAO.findByName(name)
+                .map(responseDTOIMapper::mapToDto)
+                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, name)));
     }
 
     @Override
     public CoinResponseDTO getCoinById(long id) {
-        CoinModel coin = coinDAO.findById(id).orElse(null);
-        if (coin == null)
-            throw new RuntimeException("Esa moneda no existe");
-
-        return responseDTOIMapper.mapToDto(coin);
+        return coinDAO.findById(id)
+                .map(responseDTOIMapper::mapToDto)
+                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, id)));
     }
 
     @Override
     public CoinResponseDTO getByRank(int rank) {
-        CoinModel coin = coinDAO.findByRank(rank).orElse(null);
-        if (coin == null)
-            throw new RuntimeException("Esa moneda no tiene rango");
-        return responseDTOIMapper.mapToDto(coin);
+        return coinDAO.findByRank(rank)
+                .map(responseDTOIMapper::mapToDto)
+                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, rank)));
     }
 
     @Override
     public CoinResponseDTO getBySymbol(String symbol) {
-        CoinModel coin = coinDAO.findBySymbol(symbol).orElse(null);
-        if (coin == null)
-            throw new RuntimeException("Esa moneda no existe");
-        return responseDTOIMapper.mapToDto(coin);
+        return coinDAO.findBySymbol(symbol)
+                .map(responseDTOIMapper::mapToDto)
+                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, symbol)));
     }
 
 }
