@@ -1,17 +1,15 @@
 package com.cryptonita.app.core.controllers;
 
 import com.cryptonita.app.core.controllers.services.IAssetsService;
+import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
-import com.cryptonita.app.dto.integration.CandleInfoDTO;
 import com.cryptonita.app.dto.integration.HistoryInfoDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -40,23 +38,24 @@ public class AssentCotroller {
         return assetsService.getBySymbol(symbol);
     }
 
-    @GetMapping("/getHistoriStart")
+    @GetMapping("/getHistoryStart")
     public Flux<HistoryInfoDTO> getHistori(String symbol, String interval, Long start, Long end) {
-        return assetsService.getAllHistori(symbol, interval, start, end);
+        return assetsService.getAllHistory(symbol, interval, start, end);
     }
 
-    @GetMapping("/getHistori")
+    @GetMapping("/getHistory")
     public Flux<HistoryInfoDTO> getHistori(String symbol, String interval) {
-        return assetsService.getAllHistori(symbol, interval);
+        return assetsService.getAllHistory(symbol, interval);
     }
 
     @GetMapping("/getCandle")
-    public Flux<CandleInfoDTO> getCandle(String exchange, String interval, String baseId, String quoteId) {
-        return assetsService.getAllCandles(exchange, interval, baseId, quoteId);
-    }
+    public Flux<RestResponse> getCandle(String exchange, String interval,
+                                         String baseId, String quoteId,
+                                         @RequestParam(required = false) Optional<Long> start,
+                                         @RequestParam(required = false) Optional<Long> end) {
+            return assetsService.getAllCandles(exchange, interval, baseId, quoteId, start, end)
+                    .map(RestResponse::encapsulate);
+        }
 
-    @GetMapping("/getCandleStart")
-    public Flux<CandleInfoDTO> getCandle(String exchange, String interval, String baseId, String quoteId, long start, long end) {
-        return assetsService.getAllCandles(exchange, interval, baseId, quoteId, start, end);
-    }
+
 }
