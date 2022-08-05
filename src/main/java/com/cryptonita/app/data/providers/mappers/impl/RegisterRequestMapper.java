@@ -15,12 +15,8 @@ public class RegisterRequestMapper implements IMapper<HistoryModel, RegisterRequ
 
     @Override
     public HistoryModel mapToEntity(RegisterRequestDTO registerResponseDTO) {
-        UserModel model = UserModel.builder()
-                .username(registerResponseDTO.getUser())
-                .build();
-
         return HistoryModel.builder()
-                .user(model)
+                //.user(registerResponseDTO.getUser())
                 .date(registerResponseDTO.getDate())
                 .origin(registerResponseDTO.getOrigin())
                 .destiny(registerResponseDTO.getDestiny())
