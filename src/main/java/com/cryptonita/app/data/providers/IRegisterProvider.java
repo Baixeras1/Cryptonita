@@ -11,10 +11,12 @@ public interface IRegisterProvider {
 
     /**
      * Convenient method to get the list of logs from a user
-     * @param registerResponseDTO
+     * @param registerRequestDTO
      */
-    RegisterResponseDTO log (RegisterRequestDTO registerResponseDTO);
+    RegisterResponseDTO log (RegisterRequestDTO registerRequestDTO);
 
-    List <RegisterRequestDTO> getLogsFromUsers (String user, LocalDate start,LocalDate end);
+    List <RegisterResponseDTO> getLogsFromUsers (String user, LocalDate start,LocalDate end);
+
+    RegisterResponseDTO getOneRegister(long id);
 
 }

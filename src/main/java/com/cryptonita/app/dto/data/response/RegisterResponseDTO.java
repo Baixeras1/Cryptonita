@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Data
 public class RegisterResponseDTO
 {
+    public final long id;
     public final UserResponseDTO user;
     public final LocalDate date;
     public final String origin;
