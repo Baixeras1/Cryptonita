@@ -25,22 +25,23 @@ public class RegisterProviderImp implements IRegisterProvider {
 
     private IHistoryDao historyDao;
     private IUserDao userDao;
-
-    private IMapper<HistoryModel, RegisterRequestDTO> iMapper;
-
     private IMapper<HistoryModel, RegisterResponseDTO> responseMapper;
     private IMapper<UserModel, UserResponseDTO> userResponseDTOIMapper;
 
     @Transactional
     @Override
-    public RegisterResponseDTO log(RegisterRequestDTO registerRequestDTO) {
+    public RegisterResponseDTO log(String username,LocalDate date, String origin,String destiny,double quantity) {
 
-        UserModel userModel = userDao.findByUsername(registerRequestDTO.getUser()).orElse(null);
-        if(userModel == null)
-            throw new RuntimeException("Ese usuario no existe en la BBDD");
+        UserModel userModel = userDao.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Ese usuario no existe en la BBDD"));
 
-        HistoryModel model = iMapper.mapToEntity(registerRequestDTO);
-        model.setUser(userModel);
+        HistoryModel model = HistoryModel.builder()
+                .user(userModel)
+                .date(date)
+                .origin(origin)
+                .destiny(destiny)
+                .quantity(quantity)
+                .build();
 
         historyDao.save(model);
 

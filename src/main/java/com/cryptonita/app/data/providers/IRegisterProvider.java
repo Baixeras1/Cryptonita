@@ -9,11 +9,8 @@ import java.util.List;
 
 public interface IRegisterProvider {
 
-    /**
-     * Convenient method to get the list of logs from a user
-     * @param registerRequestDTO
-     */
-    RegisterResponseDTO log (RegisterRequestDTO registerRequestDTO);
+
+    RegisterResponseDTO log (String username,LocalDate date, String origin,String destiny,double quantity);
 
     List <RegisterResponseDTO> getLogsFromUsers (String user, LocalDate start,LocalDate end);
 
