@@ -39,8 +39,4 @@ public class FavoritesController {
         return favoritesService.delete(name, coin);
     }
 
-
-
-    
-    
 }

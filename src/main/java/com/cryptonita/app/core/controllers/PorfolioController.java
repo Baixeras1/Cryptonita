@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/porfolio")
+@RequestMapping("/api/portfolio")
 public class PorfolioController {
 
     private final IPorfolioService porfolioService;
