@@ -5,6 +5,7 @@ import com.cryptonita.app.core.loaders.UsersLoader;
 import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
+import com.cryptonita.app.integration.services.ICandleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -40,7 +41,7 @@ public class AppApplication {
                     })
                     .subscribe();
 
-            candleService.getAll("poloniex","m1","ethereum","bitcoin")
+            candleService.getAll("poloniex","m1","ethereum","bitcoin",1528410925604L,1528411045604L)
                     .subscribe(candleInfoDTO -> log.info(candleInfoDTO.toString()));
 
         };
