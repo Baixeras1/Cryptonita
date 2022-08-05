@@ -6,6 +6,7 @@ import com.cryptonita.app.dto.integration.HistoryInfoDTO;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class represents all the relevant methods to get information about User and Account from the database.
@@ -21,12 +22,9 @@ public interface IAssetsService {
 
      CoinResponseDTO getByName(String name);
 
-     Flux<HistoryInfoDTO> getAllHistori(String symbol, String interval, Long start, Long end);
+     Flux<HistoryInfoDTO> getAllHistory(String symbol, String interval, Optional<Long> start, Optional<Long> end);
 
-     Flux<HistoryInfoDTO> getAllHistori(String symbol, String interval);
 
-     Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId, Long start, Long end);
-
-     Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId);
+     Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId, Optional<Long> start, Optional<Long> end);
 
 }

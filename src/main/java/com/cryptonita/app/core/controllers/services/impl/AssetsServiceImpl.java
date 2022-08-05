@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,22 +45,23 @@ public class AssetsServiceImpl implements IAssetsService {
     }
 
     @Override
-    public Flux<HistoryInfoDTO> getAllHistori(String symbol, String interval, Long start, Long end) {
-        return historyServiceInfo.getAll(symbol, interval, start, end);
+    public Flux<HistoryInfoDTO> getAllHistory(String symbol, String interval, Optional<Long> start, Optional<Long> end) {
+        if (!start.isPresent() || !end.isPresent())
+            return historyServiceInfo.getAll(symbol, interval);
+
+        return historyServiceInfo.getAll(symbol, interval, start.get(), end.get());
     }
 
-    @Override
-    public Flux<HistoryInfoDTO> getAllHistori(String symbol, String interval) {
-        return historyServiceInfo.getAll(symbol, interval);
-    }
 
     @Override
-    public Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId, Long start, Long end) {
-        return candleService.getAll(exchange, interval, baseId, quoteId, start, end);
+    public Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId,
+                                             Optional<Long> start, Optional<Long> end) {
+
+        if (!start.isPresent() || !end.isPresent())
+            return candleService.getAll(exchange, interval, baseId, quoteId);
+
+        return candleService.getAll(exchange, interval, baseId, quoteId, start.get(), end.get());
     }
 
-    @Override
-    public Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId) {
-        return candleService.getAll(exchange, interval, baseId, quoteId);
-    }
+
 }
