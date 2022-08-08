@@ -3,6 +3,7 @@ package com.cryptonita.app.core.controllers.services.impl;
 import com.cryptonita.app.core.controllers.services.IHistoryService;
 import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
+import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,11 @@ import java.util.List;
 public class HistoryServiceImpl implements IHistoryService {
 
     private final IRegisterProvider registerProvider;
+    private final SecurityContextHelper securityContextHelper;
 
     @Override
-    public List<RegisterResponseDTO> getAllRegisterUser(String username, LocalDate start, LocalDate end) {
-        return
-                registerProvider.getLogsFromUsers(username,start,end);
+    public List<RegisterResponseDTO> getAllRegisterUser(LocalDate start, LocalDate end) {
+        return registerProvider.getLogsFromUsers(securityContextHelper.getUser().getUsername(),start,end);
     }
 
     @Override

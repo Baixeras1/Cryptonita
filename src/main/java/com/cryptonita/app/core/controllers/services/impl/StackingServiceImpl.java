@@ -5,7 +5,9 @@ import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.data.providers.IStackingProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.dto.data.response.StackingDTO;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.request.RegisterRequestDTO;
+import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class StackingServiceImpl implements IStackingService {
     private final IRegisterProvider registerProvider;
 
     private final IStackingProvider stackingProvider;
-
+    private final SecurityContextHelper securityContextHelper;
 
     /**
      * Este metodo muestra una lista de todos los stakes
@@ -37,8 +39,8 @@ public class StackingServiceImpl implements IStackingService {
      * @return todos los stakes del usuario
      */
     @Override
-    public List<StackingDTO> findAllByUser(String username) {
-        return stackingProvider.getAllUserStakes(username); //TODO Security
+    public List<StackingDTO> findAllByUser() {
+        return stackingProvider.getAllUserStakes(securityContextHelper.getUser().getUsername()); //TODO Security
     }
 
     /**
@@ -50,21 +52,21 @@ public class StackingServiceImpl implements IStackingService {
      * @return el stake creado
      */
     @Override
-    public StackingDTO stake(String username, String coinName, double quantity, int daysToExpires) {
-
-        StackingDTO stackingDTO = stackingProvider.stake(username,coinName,quantity,daysToExpires);
+    public StackingDTO stake(String coinName, double quantity, int daysToExpires) {
+        String userName = securityContextHelper.getUser().getUsername();
+        StackingDTO stackingDTO = stackingProvider.stake(userName,coinName,quantity,daysToExpires);
 
         RegisterRequestDTO registerResponseDTO = RegisterRequestDTO.builder()
-                .user(username)
+                .user(userName)
                 .date(LocalDate.now())
                 .quantity(quantity)
                 .destiny("Staking id: " + String.valueOf(stackingDTO.getId())) //TODO Security
-                .origin("Wallet id: " + stackingDTO.getUser().username) //TODO Security & MAP
+                .origin("Wallet id: " + stackingDTO.getUser().username)
                 .build();
 
         //registerProvider.log(registerResponseDTO);
 
-        return stackingDTO; //TODO Security
+        return stackingDTO;
     }
 
     /**
@@ -74,12 +76,12 @@ public class StackingServiceImpl implements IStackingService {
      * @return el stake que se ha borrado
      */
     @Override
-    public StackingDTO unStake(long id, String username) {
-
-        StackingDTO dto = stackingProvider.unStake(id,username);
+    public StackingDTO unStake(long id) {
+        String userName = securityContextHelper.getUser().getUsername();
+        StackingDTO dto = stackingProvider.unStake(id,userName);
 
         RegisterRequestDTO registerResponseDTO = RegisterRequestDTO.builder()
-                .user(username)
+                .user(userName)
                 .origin("Staking id: " + dto.getId())
                 .destiny("Wallet id: " + dto.getUser().username) //TODO MAP
                 .build();
@@ -96,8 +98,8 @@ public class StackingServiceImpl implements IStackingService {
      * @return el stake buscado
      */
     @Override
-    public StackingDTO findUserStakeById(long id, String username) {
+    public StackingDTO findUserStakeById(long id) {
 
-        return stackingProvider.getUserStake(id,username); //TODO Security
+        return stackingProvider.getUserStake(id,securityContextHelper.getUser().getUsername());
     }
 }

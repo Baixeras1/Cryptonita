@@ -48,7 +48,7 @@ public class CoinProviderImpl implements ICoinProvider {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public CoinResponseDTO deleteByName(String name) {
         CoinModel coin = coinDAO.findByName(name)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, name)));

@@ -11,7 +11,7 @@ public interface ICoinDAO extends JpaRepository<CoinModel,Long> {
     @Query("SELECT c from CoinModel c WHERE lower(c.name) LIKE lower(?1)")
     Optional<CoinModel> findByName(String name);
 
-    @Query("DELETE from CoinModel c WHERE lower(c.name) LIKE lower(?1)")
+    //@Query("DELETE  from CoinModel c WHERE c.name = (?1)")
     void deleteByName(String name);
 
     Optional<CoinModel> findByRank(int rank);

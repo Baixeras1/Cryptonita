@@ -1,5 +1,6 @@
 package com.cryptonita.app.security;
 
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +13,8 @@ public class SecurityContextHelper {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public UserDetails getUser() {
-        return (UserDetails) getAuthentication().getPrincipal();
+    public UserResponseDTO getUser() {
+        return (UserResponseDTO) getAuthentication().getPrincipal();
     }
 
 }

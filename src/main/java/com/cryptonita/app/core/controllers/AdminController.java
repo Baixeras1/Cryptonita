@@ -1,10 +1,13 @@
 package com.cryptonita.app.core.controllers;
 
 import com.cryptonita.app.core.controllers.services.IAdminService;
+import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.dto.data.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
+import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,27 +18,27 @@ public class AdminController {
     private final IAdminService adminService;
 
     @PostMapping("/assets/create")
-    public CoinResponseDTO createCoin(String name,String symbol,int rank){
-        return adminService.createCoin(name,symbol,rank);
+    public RestResponse createCoin(String name,String symbol,int rank){
+        return RestResponse.encapsulate(adminService.createCoin(name,symbol,rank));
     }
 
     @DeleteMapping("/assets/delete")
-    public CoinResponseDTO deleteCoin(String name){
-        return adminService.deleteCoin(name);
+    public RestResponse deleteCoin(String name){
+        return RestResponse.encapsulate(adminService.deleteCoin(name));
     }
 
     @PostMapping("/users/ban")
-    public BannedUserResponseDTO banUser (String mail){
-        return adminService.banUser(mail);
+    public RestResponse banUser (String mail){
+        return RestResponse.encapsulate(adminService.banUser(mail));
     }
 
     @PostMapping("/users/unBan")
-    public BannedUserResponseDTO unBanUser(String mail){
-        return adminService.unBanUser(mail);
+    public RestResponse unBanUser(String mail){
+        return RestResponse.encapsulate(adminService.unBanUser(mail));
     }
 
     @GetMapping("/users/get{id}")
-    public UserResponseDTO getUserById(long id){
-        return adminService.getUserById(id);
+    public RestResponse getUserById(long id){
+        return RestResponse.encapsulate(adminService.getUserById(id));
     }
 }
