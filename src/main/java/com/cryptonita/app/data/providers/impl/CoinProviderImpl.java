@@ -6,12 +6,11 @@ import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.exceptions.data.CoinAlreadyExistsException;
-import com.cryptonita.app.exceptions.data.NoCoinFoundException;
+import com.cryptonita.app.exceptions.data.CoinNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +51,7 @@ public class CoinProviderImpl implements ICoinProvider {
     @Transactional
     public CoinResponseDTO deleteByName(String name) {
         CoinModel coin = coinDAO.findByName(name)
-                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, name)));
+                .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, name)));
 
         coinDAO.deleteByName(name);
 
@@ -63,28 +62,28 @@ public class CoinProviderImpl implements ICoinProvider {
     public CoinResponseDTO getCoinByName(String name) {
         return coinDAO.findByName(name)
                 .map(responseDTOIMapper::mapToDto)
-                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, name)));
+                .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, name)));
     }
 
     @Override
     public CoinResponseDTO getCoinById(long id) {
         return coinDAO.findById(id)
                 .map(responseDTOIMapper::mapToDto)
-                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, id)));
+                .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, id)));
     }
 
     @Override
     public CoinResponseDTO getByRank(int rank) {
         return coinDAO.findByRank(rank)
                 .map(responseDTOIMapper::mapToDto)
-                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, rank)));
+                .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, rank)));
     }
 
     @Override
     public CoinResponseDTO getBySymbol(String symbol) {
         return coinDAO.findBySymbol(symbol)
                 .map(responseDTOIMapper::mapToDto)
-                .orElseThrow(() -> new NoCoinFoundException(String.format(NO_COIN_FOUND, symbol)));
+                .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, symbol)));
     }
 
 }
