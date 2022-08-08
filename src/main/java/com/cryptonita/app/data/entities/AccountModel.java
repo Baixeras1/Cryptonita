@@ -24,7 +24,7 @@ public class AccountModel {
     @JoinColumn(name = "User_ID")
     private UserModel user;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     @MapKeyJoinColumn(name = "id")
     private Map<CoinModel, WalletModel> wallets = new HashMap<>();
 

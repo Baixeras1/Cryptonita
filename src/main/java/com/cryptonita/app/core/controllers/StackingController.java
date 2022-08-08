@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/stacking")
+@RequestMapping("/api/stacking")
 public class StackingController {
 
     private final IStackingService stackingService;

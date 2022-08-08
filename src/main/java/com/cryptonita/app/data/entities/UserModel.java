@@ -38,7 +38,7 @@ public class UserModel {
     @OneToOne(mappedBy = "user")
     private AccountModel account;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<FavouritesModel> favourites = new ArrayList<>();
 
     @Builder

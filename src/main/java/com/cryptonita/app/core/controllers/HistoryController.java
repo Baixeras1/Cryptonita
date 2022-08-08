@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/history")
+@RequestMapping("/api/history")
 public class HistoryController {
 
     private final IHistoryService historyService;

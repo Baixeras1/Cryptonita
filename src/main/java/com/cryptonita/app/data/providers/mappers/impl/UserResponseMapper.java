@@ -10,6 +10,7 @@ import com.cryptonita.app.dto.data.response.WallerResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
