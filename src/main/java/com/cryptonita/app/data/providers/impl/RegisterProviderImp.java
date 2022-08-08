@@ -9,6 +9,8 @@ import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.request.RegisterRequestDTO;
+import com.cryptonita.app.exceptions.data.HistoryNotFoundException;
+import com.cryptonita.app.exceptions.data.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RegisterProviderImp implements IRegisterProvider {
 
+    private static final String USER_ALREADY_EXISTS = "The user already exists!";
+    private static final String HISTORY_ALREADY_EXISTS = "The history %s already exists!";
+
     private IHistoryDao historyDao;
     private IUserDao userDao;
     private IMapper<HistoryModel, RegisterResponseDTO> responseMapper;
@@ -33,7 +38,7 @@ public class RegisterProviderImp implements IRegisterProvider {
     public RegisterResponseDTO log(String username,LocalDate date, String origin,String destiny,double quantity) {
 
         UserModel userModel = userDao.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Ese usuario no existe en la BBDD"));
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
         HistoryModel model = HistoryModel.builder()
                 .user(userModel)
@@ -57,9 +62,8 @@ public class RegisterProviderImp implements IRegisterProvider {
     @Override
     public List<RegisterResponseDTO> getLogsFromUsers(String user, LocalDate start, LocalDate end) {
 
-        UserModel userModel = userDao.findByUsername(user).orElse(null);
-        if(userModel == null)
-            throw new RuntimeException("Usuario no existe");
+        UserModel userModel = userDao.findByUsername(user)
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
         return historyDao.findAllByUser_UsernameAndDateAfterAndDateBefore(user,start,end).stream()
                 .map(responseMapper::mapToDto)
@@ -68,9 +72,8 @@ public class RegisterProviderImp implements IRegisterProvider {
 
     @Override
     public RegisterResponseDTO getOneRegister(long id) {
-        HistoryModel historyModel = historyDao.findById(id).orElse(null);
-        if(historyModel == null)
-            throw new RuntimeException("No existe ningun registro con ese ID");
+        HistoryModel historyModel = historyDao.findById(id)
+                .orElseThrow(() -> new HistoryNotFoundException(String.format(HISTORY_ALREADY_EXISTS,id)));
 
         return responseMapper.mapToDto(historyModel);
     }
