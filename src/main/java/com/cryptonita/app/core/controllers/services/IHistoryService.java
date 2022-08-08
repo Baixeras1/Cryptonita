@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IHistoryService {
 
-    List<RegisterResponseDTO> getAllRegisterUser(String username, LocalDate start, LocalDate end);
+    List<RegisterResponseDTO> getAllRegisterUser(LocalDate start, LocalDate end);
 
     RegisterResponseDTO getOneRegister(long id);
 }

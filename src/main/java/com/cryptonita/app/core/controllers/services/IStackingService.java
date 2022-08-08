@@ -8,11 +8,11 @@ public interface IStackingService {
 
     List<StackingDTO> findAll();
 
-    List<StackingDTO> findAllByUser(String username);
+    List<StackingDTO> findAllByUser();
 
-    StackingDTO stake(String username,String coiname, double quantity,int daysToExpire);
+    StackingDTO stake(String coiname, double quantity,int daysToExpire);
 
-    StackingDTO unStake(long id,String username);
+    StackingDTO unStake(long id);
 
-    StackingDTO findUserStakeById(long id,String username);
+    StackingDTO findUserStakeById(long id);
 }

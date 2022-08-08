@@ -16,6 +16,7 @@ public class StackingController {
 
     private final IStackingService stackingService;
 
+
     @GetMapping("/all")
     public RestResponse getAll() {
         return RestResponse.encapsulate(stackingService.findAll());
@@ -23,17 +24,17 @@ public class StackingController {
 
     @GetMapping("/allUser")
     public RestResponse getAllById(String username) {
-        return RestResponse.encapsulate(stackingService.findAllByUser(username));
+        return RestResponse.encapsulate(stackingService.findAllByUser());
     }
 
     @PostMapping("/stake")
-    public RestResponse stake(String username, String coinName, double quantity, int daysToExpire) {
-        return RestResponse.encapsulate(stackingService.stake(username, coinName, quantity, daysToExpire));
+    public RestResponse stake(String coinName, double quantity, int daysToExpire) {
+        return RestResponse.encapsulate(stackingService.stake(coinName, quantity, daysToExpire));
     }
 
     @DeleteMapping("/unStake")
-    public RestResponse unStake(long id, String username) {
-        return RestResponse.encapsulate(stackingService.unStake(id, username));
+    public RestResponse unStake(long id) {
+        return RestResponse.encapsulate(stackingService.unStake(id));
     }
 
 }

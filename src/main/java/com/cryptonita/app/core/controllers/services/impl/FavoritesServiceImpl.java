@@ -3,6 +3,8 @@ package com.cryptonita.app.core.controllers.services.impl;
 import com.cryptonita.app.core.controllers.services.IFavoritesService;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.dto.data.response.FavoritesResponseDto;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
+import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,29 +15,23 @@ import java.util.List;
 public class FavoritesServiceImpl implements IFavoritesService {
 
     private final IUserProvider userProvider;
+    private final SecurityContextHelper securityContextHelper;
 
     @Override
-    public List<FavoritesResponseDto> getById(long id) {
-        return userProvider.getById(id).getFavorites();
+    public List<FavoritesResponseDto> getByName() {
+
+        return securityContextHelper.getUser().getFavorites();
     }
 
     @Override
-    public List<FavoritesResponseDto> getByMail(String mail) {
-        return userProvider.getByEmail(mail).getFavorites();
+    public FavoritesResponseDto delete(String coin) {
+
+        return userProvider.removeFavorite(securityContextHelper.getUser().getUsername(),coin);
     }
 
     @Override
-    public List<FavoritesResponseDto> getByName(String name) {
-        return userProvider.getByName(name).getFavorites();
-    }
+    public FavoritesResponseDto create(String coin) {
 
-    @Override
-    public FavoritesResponseDto delete(String name, String coin) {
-        return userProvider.removeFavorite(name,coin);
-    }
-
-    @Override
-    public FavoritesResponseDto create(String name, String coin) {
-        return userProvider.addFavourite(name, coin);
+        return userProvider.addFavourite(securityContextHelper.getUser().getUsername(), coin);
     }
 }

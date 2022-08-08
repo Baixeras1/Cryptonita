@@ -20,11 +20,11 @@ public class HistoryController {
 
     private final IHistoryService historyService;
 
-    @GetMapping("/history/{id}")
-    public RestResponse getHistoryByUserName(String username, LocalDate start, LocalDate end){
-        return RestResponse.encapsulate(historyService.getAllRegisterUser(username,start,end));
+    @GetMapping("/history")
+    public RestResponse getHistoryByUserName(LocalDate start, LocalDate end){
+        return RestResponse.encapsulate(historyService.getAllRegisterUser(start,end));
     }
 
     @GetMapping("/dowload")
-    public RestResponse dowloadHistory(String username,LocalDate start,LocalDate end){return null;}
+    public RestResponse dowloadHistory(LocalDate start,LocalDate end){return null;}
 }
