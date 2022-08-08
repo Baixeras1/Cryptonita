@@ -2,6 +2,7 @@ package com.cryptonita.app.data.providers;
 
 import com.cryptonita.app.core.utils.Validate;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public interface ICoinProvider {
      * @param  name of coin
      * @return the deleted coin
      */
+    @Transactional
     CoinResponseDTO deleteByName(String name);
 
     /**

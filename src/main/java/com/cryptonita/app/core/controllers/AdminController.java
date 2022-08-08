@@ -1,10 +1,13 @@
 package com.cryptonita.app.core.controllers;
 
 import com.cryptonita.app.core.controllers.services.IAdminService;
+import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.dto.data.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
+import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final IAdminService adminService;
+    private final SecurityContextHelper securityContextHelper;
 
     @PostMapping("/assets/create")
     public CoinResponseDTO createCoin(String name,String symbol,int rank){
@@ -20,8 +24,8 @@ public class AdminController {
     }
 
     @DeleteMapping("/assets/delete")
-    public CoinResponseDTO deleteCoin(String name){
-        return adminService.deleteCoin(name);
+    public RestResponse deleteCoin(String name){
+        return RestResponse.encapsulate(adminService.deleteCoin(name));
     }
 
     @PostMapping("/users/ban")
