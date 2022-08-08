@@ -3,6 +3,7 @@ package com.cryptonita.app.core.controllers.services.impl;
 import com.cryptonita.app.core.controllers.services.IAutentificationService;
 import com.cryptonita.app.data.providers.impl.UserProviderImpl;
 import com.cryptonita.app.dto.data.request.UserRegisterDTO;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class AutentificationServiceImpl implements IAutentificationService {
     UserProviderImpl userProvider;
 
     @Override
-    public UserRegisterDTO register(UserRegisterDTO userRegisterDTO) {
+    public UserResponseDTO register(UserRegisterDTO userRegisterDTO) {
 
         UserRegisterDTO newUser = UserRegisterDTO.builder()
                 .mail(userRegisterDTO.mail)
@@ -24,8 +25,6 @@ public class AutentificationServiceImpl implements IAutentificationService {
                 .username(userRegisterDTO.username)
                 .build();
 
-        userProvider.register(newUser);
-
-        return newUser;
+        return userProvider.register(newUser);
     }
 }

@@ -1,9 +1,10 @@
 package com.cryptonita.app.core.controllers.services;
 
 import com.cryptonita.app.dto.data.request.UserRegisterDTO;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
 
 public interface IAutentificationService {
 
-    public UserRegisterDTO register(UserRegisterDTO userRegisterDTO);
+    public UserResponseDTO register(UserRegisterDTO userRegisterDTO);
 
 }

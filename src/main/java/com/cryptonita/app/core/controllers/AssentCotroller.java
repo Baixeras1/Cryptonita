@@ -18,6 +18,7 @@ public class AssentCotroller {
 
     private final IAssetsService assetsService;
 
+    @CrossOrigin("*")
     @GetMapping("/getAll")
     public RestResponse getALL() {
         return RestResponse.encapsulate(assetsService.getAll());
