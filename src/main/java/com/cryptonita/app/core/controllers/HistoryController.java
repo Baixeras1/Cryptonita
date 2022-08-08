@@ -1,6 +1,7 @@
 package com.cryptonita.app.core.controllers;
 
 import com.cryptonita.app.core.controllers.services.IHistoryService;
+import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
 import com.cryptonita.app.dto.integration.HistoryInfoDTO;
 import com.cryptonita.app.dto.request.RegisterRequestDTO;
@@ -20,10 +21,10 @@ public class HistoryController {
     private final IHistoryService historyService;
 
     @GetMapping("/history/{id}")
-    public List<RegisterResponseDTO> getHistoryByUserName(String username, LocalDate start, LocalDate end){
-        return historyService.getAllRegisterUser(username,start,end);
+    public RestResponse getHistoryByUserName(String username, LocalDate start, LocalDate end){
+        return RestResponse.encapsulate(historyService.getAllRegisterUser(username,start,end));
     }
 
     @GetMapping("/dowload")
-    public HistoryInfoDTO dowloadHistory(String username,LocalDate start,LocalDate end){return null;}
+    public RestResponse dowloadHistory(String username,LocalDate start,LocalDate end){return null;}
 }

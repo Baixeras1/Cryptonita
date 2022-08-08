@@ -8,8 +8,8 @@ import java.util.List;
  * This class represents all the relevant methods to get information about User and Account from the database.
  */
 public interface IPorfolioService {
-    WallerResponseDto get(String user, String coin);
+    WallerResponseDto get(String coin);
 
-    List<WallerResponseDto> getAll(String user);
+    List<WallerResponseDto> getAll();
 
 }

@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final IAdminService adminService;
-    private final SecurityContextHelper securityContextHelper;
 
     @PostMapping("/assets/create")
-    public CoinResponseDTO createCoin(String name,String symbol,int rank){
-        return adminService.createCoin(name,symbol,rank);
+    public RestResponse createCoin(String name,String symbol,int rank){
+        return RestResponse.encapsulate(adminService.createCoin(name,symbol,rank));
     }
 
     @DeleteMapping("/assets/delete")
@@ -29,17 +28,17 @@ public class AdminController {
     }
 
     @PostMapping("/users/ban")
-    public BannedUserResponseDTO banUser (String mail){
-        return adminService.banUser(mail);
+    public RestResponse banUser (String mail){
+        return RestResponse.encapsulate(adminService.banUser(mail));
     }
 
     @PostMapping("/users/unBan")
-    public BannedUserResponseDTO unBanUser(String mail){
-        return adminService.unBanUser(mail);
+    public RestResponse unBanUser(String mail){
+        return RestResponse.encapsulate(adminService.unBanUser(mail));
     }
 
     @GetMapping("/users/get{id}")
-    public UserResponseDTO getUserById(long id){
-        return adminService.getUserById(id);
+    public RestResponse getUserById(long id){
+        return RestResponse.encapsulate(adminService.getUserById(id));
     }
 }
