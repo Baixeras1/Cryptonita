@@ -10,6 +10,10 @@ import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.IStackingProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.StackingDTO;
+import com.cryptonita.app.exceptions.data.CoinNotFoundException;
+import com.cryptonita.app.exceptions.data.StackingNotFoundException;
+import com.cryptonita.app.exceptions.data.UserNotFoundException;
+import com.cryptonita.app.exceptions.data.WalletNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +25,11 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class StackingProviderImpl implements IStackingProvider {
+
+    private static final String USER_ALREADY_EXISTS = "The user already exists!";
+    private static final String COIN_ALREADY_EXISTS = "The coin %s already exists!";
+    private static final String WALLET_ALREADY_EXISTS = "The wallet already exists!";
+    private static final String STACKING_ALREADY_EXISTS = "The stacking with %S already exists!";
 
     private final IMapper<StackingModel, StackingDTO> stackingDTOIMapper;
     private final IStackingDAO stackingDAO;
@@ -36,21 +45,19 @@ public class StackingProviderImpl implements IStackingProvider {
     @Transactional
     @Override
     public StackingDTO stake(String userName, String coinName, double quantity,int daysToExpire) {
-        UserModel userModel = userDao.findByUsername(userName).orElse(null);
-        if(userModel == null)
-            throw new RuntimeException("El usuario no existe");
-        CoinModel coinModel = coinDAO.findByName(coinName).orElse(null);
-        if (coinModel==null)
-            throw new RuntimeException("La moneda no existe");
+        UserModel userModel = userDao.findByUsername(userName)
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
+        CoinModel coinModel = coinDAO.findByName(coinName)
+                .orElseThrow(() -> new CoinNotFoundException(COIN_ALREADY_EXISTS));
 
         WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
 
         if(wallet == null)
-            throw new RuntimeException("No tienes wallet");
+            throw new WalletNotFoundException(WALLET_ALREADY_EXISTS);
 
         if(wallet.getQuantity() < quantity)
-            throw new RuntimeException("Lo siento, no tienes saldo suficiente");
+            throw new WalletNotFoundException("Lo siento, no tienes saldo suficiente");
 
 
         StackingModel stackingModel = StackingModel.builder()
@@ -76,16 +83,14 @@ public class StackingProviderImpl implements IStackingProvider {
     @Override
     public StackingDTO unStake(long id,String userName) {
 
-        UserModel userModel = userDao.findByUsername(userName).orElse(null);
-        if(userModel == null)
-            throw new RuntimeException("El usuario no existe");
-        StackingModel stackingModel = stackingDAO.findById(id).orElse(null);
-        if(stackingModel == null)
-            throw new RuntimeException("Ese stake no existe");
+        UserModel userModel = userDao.findByUsername(userName)
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
-        StackingModel stackingModelUser = stackingDAO.findByUserUsername(userName).orElse(null);
-        if (stackingModelUser == null)
-            throw new RuntimeException("Ese usuario no tiene un stake con esa moneda");
+        StackingModel stackingModel = stackingDAO.findById(id)
+                .orElseThrow(() -> new StackingNotFoundException(String.format(STACKING_ALREADY_EXISTS,id)));
+
+        StackingModel stackingModelUser = stackingDAO.findByUserUsername(userName)
+                .orElseThrow(() -> new StackingNotFoundException("Ese usuario no tiene un stake con esa moneda"));
 
         stackingDAO.delete(stackingModel);
 
@@ -99,9 +104,9 @@ public class StackingProviderImpl implements IStackingProvider {
      */
     @Override
     public List<StackingDTO> getAllUserStakes(String username) {
-        UserModel userModel = userDao.findByUsername(username).orElse(null);
-        if(userModel == null)
-            throw new RuntimeException("El usuario no existe");
+        UserModel userModel = userDao.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
+
 
         List<StackingModel> stackingModelList = stackingDAO.findAllByUserId(userModel.getId());
         List<StackingDTO> stackingDTOList = new ArrayList<>();
@@ -121,13 +126,12 @@ public class StackingProviderImpl implements IStackingProvider {
      */
     @Override
     public StackingDTO getUserStake(long id,String username) {
-        UserModel userModel = userDao.findByUsername(username).orElse(null);
-        if(userModel == null)
-            throw new RuntimeException("El usuario no existe");
+        UserModel userModel = userDao.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
-        StackingModel stackingModel = stackingDAO.findById(id).orElse(null);
-        if (stackingModel == null)
-            throw new RuntimeException("No existe ese Stake");
+
+        StackingModel stackingModel = stackingDAO.findById(id)
+                .orElseThrow(() -> new StackingNotFoundException(STACKING_ALREADY_EXISTS));
 
         return stackingDTOIMapper.mapToDto(stackingModel);
     }

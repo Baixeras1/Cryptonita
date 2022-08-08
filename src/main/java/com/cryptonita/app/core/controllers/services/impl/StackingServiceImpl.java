@@ -62,7 +62,7 @@ public class StackingServiceImpl implements IStackingService {
                 .origin("Wallet id: " + stackingDTO.getUser().username) //TODO Security & MAP
                 .build();
 
-        registerProvider.log(registerResponseDTO);
+        //registerProvider.log(registerResponseDTO);
 
         return stackingDTO; //TODO Security
     }
@@ -84,7 +84,7 @@ public class StackingServiceImpl implements IStackingService {
                 .destiny("Wallet id: " + dto.getUser().username) //TODO MAP
                 .build();
 
-        registerProvider.log(registerResponseDTO);
+        //registerProvider.log(registerResponseDTO);
 
         return dto; //TODO Security
     }

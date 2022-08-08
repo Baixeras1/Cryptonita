@@ -8,6 +8,10 @@ import com.cryptonita.app.dto.data.request.UserRegisterDTO;
 import com.cryptonita.app.dto.data.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.data.response.FavoritesResponseDto;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
+import com.cryptonita.app.exceptions.data.BannedUserNotFoundException;
+import com.cryptonita.app.exceptions.data.CoinNotFoundException;
+import com.cryptonita.app.exceptions.data.FavoritesNotFoundException;
+import com.cryptonita.app.exceptions.data.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +26,11 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class UserProviderImpl implements IUserProvider {
+
+    private static final String COIN_ALREADY_EXISTS = "The coin %s already exists!";
+    private static final String USER_ALREADY_EXISTS = "The user already exists!";
+    private static final String BANED_USER_ALREADY_EXISTS = "The banned user already exists!";
+    private static final String FAVORIES_ALREADY_EXISTS = "The favorites with userName %s and coinName %s already exist";
 
     private final IUserDao userDao;
     private final IBannedUserDao bannedUserDao;
@@ -39,10 +48,10 @@ public class UserProviderImpl implements IUserProvider {
     @Override
     public UserResponseDTO register(UserRegisterDTO dto) {
         if (userDao.findByMail(dto.mail).isPresent())
-            throw new RuntimeException("user by that mail exists!"); // TODO
+            throw new UserNotFoundException(USER_ALREADY_EXISTS);
 
         if (userDao.findByUsername(dto.username).isPresent())
-            throw new RuntimeException("user by that username exists!"); // TODO
+            throw new UserNotFoundException(USER_ALREADY_EXISTS);
 
         UserModel user = registerDTOIMapper.mapToEntity(dto);
         user.setPassword(encoder.encode(user.getPassword()));
@@ -53,48 +62,27 @@ public class UserProviderImpl implements IUserProvider {
         return responseDTOIMapper.mapToDto(user);
     }
 
-    /**
-     * Inner method to create a user account
-     */
-    private AccountModel createAccount(UserModel user) {
-        AccountModel account = AccountModel.builder()
-                .user(user)
-                .build();
 
-        return accountDao.save(account);
-    }
 
     @Override
     public UserResponseDTO getById(long id) {
-        UserModel user = userDao.findById(id).orElse(null);
-        if (user == null)
-            throw new RuntimeException("That user does not exists!"); //TODO
-
         return userDao.findById(id)
                 .map(responseDTOIMapper::mapToDto)
-                .orElse(null);
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
     }
 
     @Override
     public UserResponseDTO getByName(String name) {
-        UserModel user = userDao.findByUsername(name).orElse(null);
-        if (user == null)
-            throw new RuntimeException("That user does not exists!"); //TODO
-
         return userDao.findByUsername(name)
                 .map(responseDTOIMapper::mapToDto)
-                .orElse(null);
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
     }
 
     @Override
     public UserResponseDTO getByEmail(String mail) {
-        UserModel user = userDao.findByMail(mail).orElse(null);
-        if (user == null)
-            throw new RuntimeException("That user does not exists!"); //TODO
-
         return userDao.findByMail(mail)
                 .map(responseDTOIMapper::mapToDto)
-                .orElse(null);
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
     }
 
     @Override
@@ -149,7 +137,7 @@ public class UserProviderImpl implements IUserProvider {
      */
     private BannedUserResponseDTO innerBanUser(UserModel user) {
         if (user == null)
-            throw new RuntimeException("No user with that mail!"); // TODO
+            throw new UserNotFoundException(USER_ALREADY_EXISTS);
 
         BannedUsersModel bannedUser = BannedUsersModel.builder()
                 .user(user)
@@ -167,7 +155,7 @@ public class UserProviderImpl implements IUserProvider {
      */
     private BannedUserResponseDTO innerUnbanUser(BannedUsersModel bannedUser) {
         if (bannedUser == null)
-            throw new RuntimeException("No user with that mail!"); // TODO
+            new BannedUserNotFoundException(BANED_USER_ALREADY_EXISTS);
 
         bannedUserDao.delete(bannedUser);
 
@@ -195,28 +183,26 @@ public class UserProviderImpl implements IUserProvider {
     public BannedUserResponseDTO get(String mail) {
         return bannedUserDao.findByUserMail(mail)
                 .map(banResponseDTOIMapper::mapToDto)
-                .orElse(null); // TODO
+                .orElseThrow(() -> new BannedUserNotFoundException(BANED_USER_ALREADY_EXISTS));
     }
 
     @Override
     public BannedUserResponseDTO getByUsername(String username) {
         return bannedUserDao.findByUser_Username(username)
                 .map(banResponseDTOIMapper::mapToDto)
-                .orElse(null); // TODO
+                .orElseThrow(() -> new BannedUserNotFoundException(BANED_USER_ALREADY_EXISTS));
     }
 
     @Override
     public FavoritesResponseDto addFavourite(String name, String coinStr) {
-        UserModel user = userDao.findByUsername(name).orElse(null);
-        if (user == null)
-            throw new RuntimeException("That user does not exists!"); //TODO
+        UserModel user = userDao.findByUsername(name)
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
-        CoinModel coin = coinDAO.findByName(coinStr).orElse(null);
-        if (coin == null)
-            throw new RuntimeException("That coin does not exists!"); //TODO
+        CoinModel coin = coinDAO.findByName(coinStr)
+                .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coinStr)));
 
         if (favoritesDao.findByUser_UsernameAndCoinName(name, coinStr).isPresent())
-            throw new RuntimeException("Coin already exists!"); //TODO
+            throw new FavoritesNotFoundException(String.format(FAVORIES_ALREADY_EXISTS,name,coinStr));
 
         FavouritesModel favourite = FavouritesModel.builder()
                 .user(user)
@@ -230,21 +216,30 @@ public class UserProviderImpl implements IUserProvider {
 
     @Override
     public FavoritesResponseDto removeFavorite(String name, String coinStr) {
-        UserModel user = userDao.findByUsername(name).orElse(null);
-        if (user == null)
-            throw new RuntimeException("That user does not exists!"); //TODO
+        UserModel user = userDao.findByUsername(name)
+                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
-        CoinModel coin = coinDAO.findByName(coinStr).orElse(null);
-        if (coin == null)
-            throw new RuntimeException("That coin does not exists!"); //TODO
+        CoinModel coin = coinDAO.findByName(coinStr)
+                .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coinStr)));
 
         FavouritesModel favourite = favoritesDao.findByUser_UsernameAndCoinName(name, coinStr).orElse(null);
         if (favourite == null)
-            throw new RuntimeException("Coin already exists!"); //TODO
+            throw new FavoritesNotFoundException(String.format(FAVORIES_ALREADY_EXISTS,name,coinStr));
 
         favoritesDao.delete(favourite);
 
         return favoritesResponseDtoIMapper.mapToDto(favourite);
+    }
+
+    /**
+     * Inner method to create a user account
+     */
+    private AccountModel createAccount(UserModel user) {
+        AccountModel account = AccountModel.builder()
+                .user(user)
+                .build();
+
+        return accountDao.save(account);
     }
 
 

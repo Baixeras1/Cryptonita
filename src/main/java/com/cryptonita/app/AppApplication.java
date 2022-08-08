@@ -51,7 +51,7 @@ public class AppApplication {
                                 .user("sergio.bernal")
                                 .build();
 
-                        registerProvider.log(registerRequestDTO);
+                        //registerProvider.log(registerRequestDTO);
                     })
                     .subscribe();
 
