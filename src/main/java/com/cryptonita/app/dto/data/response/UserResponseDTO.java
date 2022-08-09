@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Builder
@@ -18,6 +19,6 @@ public class UserResponseDTO {
     public final UserRole role;
     public final UserType type;
     public final List<FavoritesResponseDto> favorites;
-    public final List<WallerResponseDto> wallet;
+    public final Map<String, WallerResponseDto> wallet;
 
 }

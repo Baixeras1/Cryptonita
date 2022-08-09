@@ -29,7 +29,7 @@ public class WalletModel {
     @ManyToOne
     private CoinModel coin;
 
-    private float quantity;
+    private double quantity;
 
     @Builder
     public WalletModel(AccountModel account, CoinModel coin, float quantity) {

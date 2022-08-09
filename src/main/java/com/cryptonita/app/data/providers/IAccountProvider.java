@@ -34,7 +34,7 @@ public interface IAccountProvider {
      * @param ammount the amount of the user's coins
      * @return the dto with all the information of the account
      */
-    WallerResponseDto deposit(String user, String coin, long ammount);
+    WallerResponseDto deposit(String user, String coin, double amount);
 
     /**
      *
@@ -45,7 +45,7 @@ public interface IAccountProvider {
      * @param ammount the amount of the user's coins
      * @return the dto with all the information of the account
      */
-    WallerResponseDto withDraw(String user, String coin, long ammount);
+    WallerResponseDto withDraw(String user, String coin, double amount);
 
     /**
      * Convenient method for clear
