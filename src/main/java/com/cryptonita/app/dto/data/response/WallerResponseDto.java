@@ -9,6 +9,6 @@ public class WallerResponseDto {
 
     private long id;
     private String coinName;
-    private float quality;
+    private double quantity;
 
 }

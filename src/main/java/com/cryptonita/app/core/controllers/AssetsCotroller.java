@@ -2,19 +2,16 @@ package com.cryptonita.app.core.controllers;
 
 import com.cryptonita.app.core.controllers.services.IAssetsService;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
-import com.cryptonita.app.dto.data.response.CoinResponseDTO;
-import com.cryptonita.app.dto.integration.HistoryInfoDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/assent")
-public class AssentCotroller {
+public class AssetsCotroller {
 
     private final IAssetsService assetsService;
 
