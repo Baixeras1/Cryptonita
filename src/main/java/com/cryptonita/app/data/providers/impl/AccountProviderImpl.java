@@ -70,7 +70,7 @@ public class AccountProviderImpl implements IAccountProvider {
 
         WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
         if(wallet == null)
-            throw new WalletNotFoundException(WALLET_ALREADY_EXISTS);
+            this.create(user,coin);
 
         wallet.setQuantity(ammount);
 
