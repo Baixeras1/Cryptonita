@@ -21,8 +21,6 @@ public class PorfolioController {
 
     @GetMapping("/get")
     public RestResponse get(String coin) {
-
-
         return RestResponse.encapsulate(porfolioService.get(coin));
     }
 

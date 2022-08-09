@@ -37,9 +37,9 @@ public class AccountProviderImpl implements IAccountProvider {
 
     @Override
     public WallerResponseDto get(String user, String coin) {
-        return walletDao.findByCoin_NameAndAccount_User_Username(user,coin)
+        return walletDao.findByAccount_User_UsernameAndCoin_Name(user,coin)
                 .map(walletMapper::mapToDto)
-                .orElseThrow(() -> new WalletNotFoundException(WALLET_ALREADY_EXISTS));
+                .orElseThrow(() -> new WalletNotFoundException("The Wallet dont exist"));
     }
 
     @Override
