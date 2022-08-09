@@ -20,6 +20,11 @@ public class SwapController {
         return RestResponse.encapsulate(swapService.swap(from, to, amount));
     }
 
+    @GetMapping("/tradeUsers")
+    public RestResponse tradeUsers(String userTo,String from, String to, Double amount) {
+        return RestResponse.encapsulate(swapService.swap(userTo,from,to,amount));
+    }
+
 
 
 }
