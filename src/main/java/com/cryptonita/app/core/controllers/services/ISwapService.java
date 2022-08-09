@@ -1,6 +1,7 @@
 package com.cryptonita.app.core.controllers.services;
 
 import com.cryptonita.app.dto.data.response.SwapResponseDto;
+import com.cryptonita.app.dto.data.response.SwapUsersResponseDto;
 
 public interface ISwapService {
 
@@ -22,6 +23,6 @@ public interface ISwapService {
      * @param to the coin to swap to
      * @param amount the amount to swap
      */
-    SwapResponseDto swap(String userTarget, String from, String to, double amount);
+    SwapUsersResponseDto swap(String userTarget, String from, String to, double amount);
 
 }

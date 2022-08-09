@@ -6,6 +6,7 @@ import com.cryptonita.app.data.entities.enums.UserType;
 import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.dto.data.response.SwapResponseDto;
+import com.cryptonita.app.dto.data.response.SwapUsersResponseDto;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.data.response.WalletResponseDto;
 import com.cryptonita.app.dto.integration.ConversorDTO;
@@ -46,14 +47,24 @@ public class SwapServiceImpl implements ISwapService {
     }
 
     @Override
-    public SwapResponseDto swap(String userTarget, String from, String to, double amount) {
-        WalletResponseDto withdrawDto = accountProvider.withDraw(userTarget, from, amount);
+    public SwapUsersResponseDto swap(String userTarget, String from, String to, double amount) {
+        UserResponseDTO userFrom = securityContextHelper.getUser();
+        ConversorDTO conversorDTO = convertorService.convert(from,to,amount).block();
+        UserResponseDTO userTo = userProvider.getByName(userTarget);
 
-        double amountToDeposit = amount * 0.985;
-        WalletResponseDto depositDto = accountProvider.deposit("sergio.bernal", to, amountToDeposit);
+        double toDeposit = conversorDTO.price * userTo.getType().getComission();
 
-        return null;
-        // TODO return something
+        accountProvider.withDraw(userFrom.username,from,amount);
+        accountProvider.deposit(userTo.username,to,toDeposit);
+
+        return SwapUsersResponseDto.builder()
+                .userFrom(userFrom.getUsername())
+                .userTo(userTo.getUsername())
+                .walletFrom(from)
+                .walletTo(to)
+                .amountFrom(amount)
+                .amountTo(toDeposit)
+                .build();
     }
 
 }
