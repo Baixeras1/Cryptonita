@@ -1,7 +1,7 @@
 package com.cryptonita.app.data.providers;
 
 import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
-import com.cryptonita.app.dto.request.RegisterRequestDTO;
+import com.cryptonita.app.dto.data.request.RegisterRequestDTO;
 
 
 import java.time.LocalDate;

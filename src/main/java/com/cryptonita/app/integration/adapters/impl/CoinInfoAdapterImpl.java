@@ -11,6 +11,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
+import java.util.Locale;
+
 @Service
 @AllArgsConstructor
 public class CoinInfoAdapterImpl implements ICoinInfoAdapter {
@@ -42,7 +44,7 @@ public class CoinInfoAdapterImpl implements ICoinInfoAdapter {
     @Override
     public Mono<CoinInfoDTO> getByName(String symbol) {
         return webClient.get()
-                .uri("/" + symbol)
+                .uri("/" + symbol.toLowerCase())
                 .retrieve()
                 .bodyToMono(String.class)
                 .map(mapper::mapToDto);

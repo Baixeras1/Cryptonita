@@ -6,8 +6,8 @@ import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
-import com.cryptonita.app.dto.request.RegisterRequestDTO;
-import com.cryptonita.app.integration.services.ICandleService;
+import com.cryptonita.app.dto.data.request.RegisterRequestDTO;
+import com.cryptonita.app.integration.services.ICoinMarketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -33,8 +33,7 @@ public class AppApplication {
             CoinLoader coinLoader,
             UsersLoader usersLoader,
             IAccountProvider accountProvider,
-            IRegisterProvider registerProvider
-
+            ICoinMarketService coinMarketService
     ) {
         return (args) -> {
             Flux<CoinInfoDTO> coinFlux = coinLoader.load();
@@ -56,7 +55,6 @@ public class AppApplication {
                         //registerProvider.log(registerRequestDTO);
                     })
                     .subscribe();
-
 
         };
     }
