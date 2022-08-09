@@ -19,6 +19,6 @@ public class UserResponseDTO {
     public final UserRole role;
     public final UserType type;
     public final List<FavoritesResponseDto> favorites;
-    public final Map<String, WallerResponseDto> wallet;
+    public final Map<String, WalletResponseDto> wallet;
 
 }

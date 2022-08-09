@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class WallerResponseDto {
+public class WalletResponseDto {
 
     private long id;
     private String coinName;

@@ -4,7 +4,7 @@ import com.cryptonita.app.core.controllers.services.IConvertorService;
 import com.cryptonita.app.core.controllers.services.ISwapService;
 import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
-import com.cryptonita.app.dto.data.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WalletResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +24,10 @@ public class SwapServiceImpl implements ISwapService {
 
     @Override
     public void swap(String userTarget, String from, String to, double amount) {
-        WallerResponseDto withdrawDto = accountProvider.withDraw(userTarget, from, amount);
+        WalletResponseDto withdrawDto = accountProvider.withDraw(userTarget, from, amount);
 
         double amountToDeposit = amount * 0.985;
-        WallerResponseDto depositDto = accountProvider.deposit("sergio.bernal", to, amountToDeposit);
+        WalletResponseDto depositDto = accountProvider.deposit("sergio.bernal", to, amountToDeposit);
 
         // TODO return something
     }
