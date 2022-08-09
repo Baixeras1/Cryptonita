@@ -1,9 +1,10 @@
 package com.cryptonita.app.integration.adapters;
 
-import com.cryptonita.app.dto.integration.CoinMetadataDTO;
+import com.cryptonita.app.dto.integration.CoinMarketDTO;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ICoinCapMetaAdapter {
+public interface ICoinMarketAdapter {
 
     /**
      * Returns the metadata of a certain coin
@@ -11,7 +12,7 @@ public interface ICoinCapMetaAdapter {
      * @param symbol the symbol of the coin to search the metadata of
      * @return the dto with the metadata info
      */
-    Mono<CoinMetadataDTO> getCoinMetadataBySymbol(String symbol);
+    Mono<CoinMarketDTO> getCoinMetadataBySymbol(String symbol);
 
     /**
      * Returns the metadata of a certain coin
@@ -19,7 +20,7 @@ public interface ICoinCapMetaAdapter {
      * @param name the name of the coin to search the metadata of
      * @return the dto with the metadata info
      */
-    Mono<CoinMetadataDTO> getCoinMetadataByName(String name);
+    Mono<CoinMarketDTO> getCoinMetadataByName(String name);
 
     /**
      * Returns the metadata of a certain coin
@@ -27,6 +28,8 @@ public interface ICoinCapMetaAdapter {
      * @param rank the rank of the coin to search the metadata of
      * @return the dto with the metadata info
      */
-    Mono<CoinMetadataDTO> getCoinMetadata(int rank);
+    Mono<CoinMarketDTO> getCoinMetadata(int rank);
+
+    Flux<CoinMarketDTO> getManyCoinsMetadata(String manyDtos);
 
 }

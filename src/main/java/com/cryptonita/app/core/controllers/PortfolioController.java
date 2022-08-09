@@ -3,14 +3,16 @@ package com.cryptonita.app.core.controllers;
 import com.cryptonita.app.core.controllers.services.IPorfolioService;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/porfolio")
-public class PorfolioController {
+@RequestMapping("/api/portfolio")
+@CrossOrigin("*")
+public class PortfolioController {
 
     private final IPorfolioService porfolioService;
 

@@ -64,7 +64,7 @@ public class CoinInfoMapper implements AdapterMapper<CoinInfoDTO> {
 
     private CoinInfoDTO mapToDto(JsonNode node) {
         return CoinInfoDTO.builder()
-                .name(node.get("name").asText())
+                .name(node.get("id").asText())
                 .symbol(node.get("symbol").asText())
                 .rank(node.get("rank").asInt())
                 .build();

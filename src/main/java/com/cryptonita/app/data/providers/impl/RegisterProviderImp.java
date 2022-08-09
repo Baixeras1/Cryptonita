@@ -8,7 +8,6 @@ import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
-import com.cryptonita.app.dto.request.RegisterRequestDTO;
 import com.cryptonita.app.exceptions.data.HistoryNotFoundException;
 import com.cryptonita.app.exceptions.data.UserNotFoundException;
 import lombok.AllArgsConstructor;

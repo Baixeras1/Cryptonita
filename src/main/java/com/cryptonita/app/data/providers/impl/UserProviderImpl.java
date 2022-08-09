@@ -29,6 +29,7 @@ public class UserProviderImpl implements IUserProvider {
 
     private static final String COIN_ALREADY_EXISTS = "The coin %s already exists!";
     private static final String USER_ALREADY_EXISTS = "The user already exists!";
+    private static final String USER_NOT_EXISTS = "The user does not exists!";
     private static final String BANED_USER_ALREADY_EXISTS = "The banned user already exists!";
     private static final String FAVORIES_ALREADY_EXISTS = "The favorites with userName %s and coinName %s already exist";
 
@@ -68,21 +69,21 @@ public class UserProviderImpl implements IUserProvider {
     public UserResponseDTO getById(long id) {
         return userDao.findById(id)
                 .map(responseDTOIMapper::mapToDto)
-                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS));
     }
 
     @Override
     public UserResponseDTO getByName(String name) {
         return userDao.findByUsername(name)
                 .map(responseDTOIMapper::mapToDto)
-                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS));
     }
 
     @Override
     public UserResponseDTO getByEmail(String mail) {
         return userDao.findByMail(mail)
                 .map(responseDTOIMapper::mapToDto)
-                .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS));
     }
 
     @Override

@@ -5,51 +5,59 @@ import com.cryptonita.app.core.controllers.utils.RestResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/assent")
-public class AssetsCotroller {
+@RequestMapping("/api/assets")
+@CrossOrigin("*")
+public class AssetsController {
 
     private final IAssetsService assetsService;
 
-    @CrossOrigin("*")
     @GetMapping("/getAll")
-    public RestResponse getALL() {
-        return RestResponse.encapsulate(assetsService.getAll());
+    public Mono<RestResponse> getAll() {
+        return assetsService.getAll()
+                .collectList()
+                .map(RestResponse::encapsulate);
     }
 
     @GetMapping("/getById/{id}")
-    public RestResponse getById(@PathVariable long id) {
-        return RestResponse.encapsulate(assetsService.getById(id));
+    public Mono<RestResponse> getById(@PathVariable long id) {
+        return assetsService.getById(id)
+                .map(RestResponse::encapsulate);
     }
 
     @GetMapping("/getByName/{name}")
-    public RestResponse getByName(@PathVariable String name) {
-        return RestResponse.encapsulate(assetsService.getByName(name));
+    public Mono<RestResponse> getByName(@PathVariable String name) {
+        return assetsService.getByName(name)
+                .map(RestResponse::encapsulate);
     }
 
     @GetMapping("/getBySymbol/{symbol}")
-    public RestResponse getBySymbol(@PathVariable String symbol) {
-        return RestResponse.encapsulate(assetsService.getBySymbol(symbol));
+    public Mono<RestResponse> getBySymbol(@PathVariable String symbol) {
+        return assetsService.getBySymbol(symbol)
+                .map(RestResponse::encapsulate);
     }
 
     @GetMapping("/getHistory")
-    public Flux<RestResponse> getHistory(String symbol, String interval,
+    public Mono<RestResponse> getHistory(String symbol, String interval,
                                            @RequestParam Optional<Long> start,
                                            @RequestParam Optional<Long> end) {
         return assetsService.getAllHistory(symbol, interval, start, end)
+                .collectList()
                 .map(RestResponse::encapsulate);
     }
 
     @GetMapping("/getCandle")
-    public Flux<RestResponse> getCandle(String exchange, String interval,
+    public Mono<RestResponse> getCandle(String exchange, String interval,
                                          String baseId, String quoteId,
                                          @RequestParam(required = false) Optional<Long> start,
                                          @RequestParam(required = false) Optional<Long> end) {
             return assetsService.getAllCandles(exchange, interval, baseId, quoteId, start, end)
+                    .collectList()
                     .map(RestResponse::encapsulate);
         }
 
