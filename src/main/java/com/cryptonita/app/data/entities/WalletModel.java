@@ -32,7 +32,7 @@ public class WalletModel {
     private double quantity;
 
     @Builder
-    public WalletModel(AccountModel account, CoinModel coin, float quantity) {
+    public WalletModel(AccountModel account, CoinModel coin, double quantity) {
         this.account = account;
         this.coin = coin;
         this.quantity = quantity;
