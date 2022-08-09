@@ -1,6 +1,6 @@
 package com.cryptonita.app.core.controllers.services;
 
-import com.cryptonita.app.dto.data.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WalletResponseDto;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import java.util.List;
  * This class represents all the relevant methods to get information about User and Account from the database.
  */
 public interface IPorfolioService {
-    WallerResponseDto get(String coin);
+    WalletResponseDto get(String coin);
 
-    List<WallerResponseDto> getAll();
+    List<WalletResponseDto> getAll();
 
 }

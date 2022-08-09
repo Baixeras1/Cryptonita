@@ -6,12 +6,13 @@ import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.FavoritesResponseDto;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
-import com.cryptonita.app.dto.data.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WalletResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,13 +20,14 @@ import java.util.stream.Collectors;
 public class UserResponseMapper implements IMapper<UserModel, UserResponseDTO> {
 
     private final IMapper<FavouritesModel, FavoritesResponseDto> favouritesMapper;
-    private final IMapper<WalletModel, WallerResponseDto> walletMapper;
+    private final IMapper<WalletModel, WalletResponseDto> walletMapper;
 
     @Override
     public UserResponseDTO mapToDto(UserModel userModel) {
-        List<WallerResponseDto> wallerResponseDtos = userModel.getAccount().getWallets().values().stream()
-                .map(walletMapper::mapToDto)
-                .collect(Collectors.toList());
+        Map<String, WalletResponseDto> wallerResponseDtos = userModel.getAccount().getWallets()
+                .entrySet().stream()
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey().getName(), walletMapper.mapToDto(e.getValue())))
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
         List<FavoritesResponseDto> favoritesResponseDtos = userModel.getFavourites().stream()
                 .map(favouritesMapper::mapToDto)

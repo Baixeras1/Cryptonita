@@ -8,11 +8,12 @@ import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.data.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WalletResponseDto;
 import com.cryptonita.app.exceptions.data.CoinNotFoundException;
 import com.cryptonita.app.exceptions.data.UserNotFoundException;
 import com.cryptonita.app.exceptions.data.WalletNotFoundException;
 import lombok.AllArgsConstructor;
+import org.h2.engine.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,17 +34,17 @@ public class AccountProviderImpl implements IAccountProvider {
 
     private ICoinDAO coinDAO;
 
-    private IMapper<WalletModel,WallerResponseDto> walletMapper;
+    private IMapper<WalletModel, WalletResponseDto> walletMapper;
 
     @Override
-    public WallerResponseDto get(String user, String coin) {
+    public WalletResponseDto get(String user, String coin) {
         return walletDao.findByAccount_User_UsernameAndCoin_Name(user,coin)
                 .map(walletMapper::mapToDto)
                 .orElseThrow(() -> new WalletNotFoundException("The Wallet dont exist"));
     }
 
     @Override
-    public WallerResponseDto create(String user, String coin) {
+    public WalletResponseDto create(String user, String coin) {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
@@ -59,44 +60,54 @@ public class AccountProviderImpl implements IAccountProvider {
         return walletMapper.mapToDto(walletDao.save(walletModel));
     }
 
-    @Transactional
+
     @Override
-    public WallerResponseDto deposit(String user, String coin, long ammount) {
+    public WalletResponseDto deposit(String user, String coin, double amount) {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
         CoinModel coinModel = coinDAO.findByName(coin)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
-        WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
-        if(wallet == null)
-            throw new WalletNotFoundException(WALLET_ALREADY_EXISTS);
+        WalletModel walletModel = walletDao.findByAccount_User_UsernameAndCoin_Name(user,coin).orElse(null);
 
-        wallet.setQuantity(ammount);
+        if(walletModel == null) {
+            walletModel = WalletModel.builder()
+                    .account(userModel.getAccount())
+                    .coin(coinModel)
+                    .quantity(0)
+                    .build();
+        }
 
-        return walletMapper.mapToDto(walletDao.save(wallet));
+        walletModel.setQuantity(walletModel.getQuantity()+amount);
+
+        return walletMapper.mapToDto(walletDao.save(walletModel));
     }
 
     @Override
-    public WallerResponseDto withDraw(String user, String coin, long ammount) {
+    public WalletResponseDto withDraw(String user, String coin, double amount) {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
         CoinModel coinModel = coinDAO.findByName(coin).
                 orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
-        WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
-        if(wallet == null)
-           throw new WalletNotFoundException(WALLET_ALREADY_EXISTS);
+        WalletModel walletModel = walletDao.findByAccount_User_UsernameAndCoin_Name(user,coin).orElse(null);
 
-        wallet.setQuantity(wallet.getQuantity()-ammount);
+        if(walletModel == null)
+           throw new WalletNotFoundException("This Wallet doesnt exist");
 
-        return walletMapper.mapToDto(walletDao.save(wallet));
+        if(walletModel.getQuantity()<amount)
+            throw new WalletNotFoundException("This wallet doesnt have sufficient funds ");
+
+        walletModel.setQuantity(walletModel.getQuantity()-amount);
+
+        return walletMapper.mapToDto(walletDao.save(walletModel));
     }
 
 
     @Override
-    public WallerResponseDto clear(String user, String coin) {
+    public WalletResponseDto clear(String user, String coin) {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
@@ -113,7 +124,7 @@ public class AccountProviderImpl implements IAccountProvider {
     }
 
     @Override
-    public List<WallerResponseDto> getAllFromUser(String user) {
+    public List<WalletResponseDto> getAllFromUser(String user) {
         return walletDao.findAllByAccount_User_Username(user).stream()
                 .map(walletMapper::mapToDto)
                 .collect(Collectors.toList());

@@ -1,6 +1,6 @@
 package com.cryptonita.app.data.providers;
 
-import com.cryptonita.app.dto.data.response.WallerResponseDto;
+import com.cryptonita.app.dto.data.response.WalletResponseDto;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface IAccountProvider {
      * @param coin the coin name to get the account from
      * @return the dto with all the information of the account
      */
-    WallerResponseDto get(String user,String coin);
+    WalletResponseDto get(String user, String coin);
 
     /**
      *
@@ -23,7 +23,7 @@ public interface IAccountProvider {
      * @param coin the coin name to get the account from
      * @return the dto with all the information of the account
      */
-    WallerResponseDto create(String user,String coin);
+    WalletResponseDto create(String user, String coin);
 
     /**
      *
@@ -31,10 +31,10 @@ public interface IAccountProvider {
      *
      * @param user the username of the user involved in the transaction
      * @param coin the coin name to get the account from
-     * @param ammount the amount of the user's coins
+     * @param amount the amount of the user's coins
      * @return the dto with all the information of the account
      */
-    WallerResponseDto deposit(String user, String coin, long ammount);
+    WalletResponseDto deposit(String user, String coin, double amount);
 
     /**
      *
@@ -42,10 +42,10 @@ public interface IAccountProvider {
      *
      * @param user the username of the user involved in the transaction
      * @param coin the coin name to get the account from
-     * @param ammount the amount of the user's coins
+     * @param amount the amount of the user's coins
      * @return the dto with all the information of the account
      */
-    WallerResponseDto withDraw(String user, String coin, long ammount);
+    WalletResponseDto withDraw(String user, String coin, double amount);
 
     /**
      * Convenient method for clear
@@ -54,7 +54,7 @@ public interface IAccountProvider {
      * @param coin the coin name to get the account from
      * @return the dto with all the information of the account
      */
-    WallerResponseDto clear(String user, String coin);
+    WalletResponseDto clear(String user, String coin);
 
     /**
      *
@@ -63,6 +63,6 @@ public interface IAccountProvider {
      * @param user the username of the user involved in the transaction
      * @return the dto with all the information of the account
      */
-    List<WallerResponseDto> getAllFromUser(String user);
+    List<WalletResponseDto> getAllFromUser(String user);
 
 }
