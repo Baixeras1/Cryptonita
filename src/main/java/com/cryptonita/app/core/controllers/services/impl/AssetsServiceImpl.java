@@ -52,22 +52,18 @@ public class AssetsServiceImpl implements IAssetsService {
     }
 
     @Override
-    public Flux<HistoryInfoDTO> getAllHistory(String symbol, String interval, Optional<Long> start, Optional<Long> end) {
-        if (!start.isPresent() || !end.isPresent())
-            return historyServiceInfo.getAll(symbol, interval);
+    public Flux<HistoryInfoDTO> getAllHistory(String id, String vs_currency, String days, Optional<String> interval) {
+        if (!interval.isPresent())
+            return historyServiceInfo.getAll(id, vs_currency,days);
 
-        return historyServiceInfo.getAll(symbol, interval, start.get(), end.get());
+        return historyServiceInfo.getAll(id, vs_currency, days, interval.get());
     }
 
 
     @Override
-    public Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId,
-                                             Optional<Long> start, Optional<Long> end) {
+    public Flux<CandleInfoDTO> getAllCandles(String id, String vs_currency, String days) {
 
-        if (!start.isPresent() || !end.isPresent())
-            return candleService.getAll(exchange, interval, baseId, quoteId);
-
-        return candleService.getAll(exchange, interval, baseId, quoteId, start.get(), end.get());
+        return candleService.getAll(id, vs_currency, days);
     }
 
 

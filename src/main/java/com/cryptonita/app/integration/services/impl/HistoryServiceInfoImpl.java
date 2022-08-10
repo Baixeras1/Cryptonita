@@ -13,12 +13,12 @@ public class HistoryServiceInfoImpl implements IHistoryServiceInfo {
 
     private final IHistoryAdapter historyAdapter;
     @Override
-    public Flux<HistoryInfoDTO> getAll(String symbol, String interval, Long start, Long end) {
-        return historyAdapter.getHistoryOfCoin(symbol, interval, start, end);
+    public Flux<HistoryInfoDTO> getAll(String id, String vs_currency, String days, String interval) {
+        return historyAdapter.getHistoryOfCoin(id, interval, days, interval);
     }
 
     @Override
-    public Flux<HistoryInfoDTO> getAll(String symbol, String interval) {
-        return historyAdapter.getHistoryOfCoin(symbol, interval);
+    public Flux<HistoryInfoDTO> getAll(String id, String vs_currency, String days) {
+        return historyAdapter.getHistoryOfCoin(id,vs_currency, days);
     }
 }

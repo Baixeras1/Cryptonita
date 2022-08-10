@@ -12,23 +12,20 @@ public interface IHistoryAdapter {
      *
      * @param symbol the symbol of the coin to search
      * @param interval point-in-time interval.
-     * @param start UNIX startup time in milliseconds.
-     * @param end UNIX timeout in milliseconds.
      *
      * @return a reactive flux with the dtos carrying the info
      */
-    Flux<HistoryInfoDTO> getHistoryOfCoin(String symbol, String interval, Long start, Long end);
+    Flux<HistoryInfoDTO> getHistoryOfCoin(String id, String vs_currency, String days, String interval);
 
     /**
      *
      * Retrieves a history of the desired crypto
      *
      * @param symbol the symbol of the coin to search
-     * @param interval point-in-time interval.
      *
      * @return a reactive flux with the dtos carrying the info
      */
-    Flux<HistoryInfoDTO> getHistoryOfCoin(String symbol, String interval);
+    Flux<HistoryInfoDTO> getHistoryOfCoin(String id, String vs_currency, String days);
 
 
 

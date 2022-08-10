@@ -14,7 +14,7 @@ import reactor.netty.http.client.HttpClient;
 @AllArgsConstructor
 public class CandleCapMetaAdapterImpl implements ICandleCapMetaAdapter {
 
-    private final String URL = "api.coincap.io/v2";
+    private final String URL = "https://api.coingecko.com/api/v3/";
 
     private final WebClient webClient = WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
@@ -26,32 +26,12 @@ public class CandleCapMetaAdapterImpl implements ICandleCapMetaAdapter {
     private final AdapterMapper<CandleInfoDTO> mapper;
 
     @Override
-    public Flux<CandleInfoDTO> getCandleOfCoin(String exchange, String interval, String baseId, String quoteId, Long start, Long end) {
+    public Flux<CandleInfoDTO> getCandleOfCoin(String id, String vs_currency, String days) {
         return webClient.get()
                 .uri(uriBuilder ->
-                        uriBuilder.path("/candles")
-                                .queryParam("exchange", exchange)
-                                .queryParam("interval", interval)
-                                .queryParam("baseId", baseId)
-                                .queryParam("quoteId", quoteId)
-                                .queryParam("start", start)
-                                .queryParam("end", end)
-                                .build()
-                )
-                .retrieve()
-                .bodyToFlux(String.class)
-                .flatMap(s -> Flux.fromStream(mapper.mapManyToDto(s).stream()));
-    }
-
-    @Override
-    public Flux<CandleInfoDTO> getCandleOfCoin(String exchange, String interval, String baseId, String quoteId) {
-        return webClient.get()
-                .uri(uriBuilder ->
-                        uriBuilder.path("/candles")
-                                .queryParam("exchange", exchange)
-                                .queryParam("interval", interval)
-                                .queryParam("baseId", baseId)
-                                .queryParam("quoteId", quoteId)
+                        uriBuilder.path(String.format("/coins/%s/ohlc", id))
+                                .queryParam("vs_currency", vs_currency)
+                                .queryParam("days", days)
                                 .build()
                 )
                 .retrieve()

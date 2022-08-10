@@ -25,8 +25,8 @@ public interface IAssetsService {
 
      Mono<CoinDto> getByName(String name);
 
-     Flux<HistoryInfoDTO> getAllHistory(String symbol, String interval, Optional<Long> start, Optional<Long> end);
+     Flux<HistoryInfoDTO> getAllHistory(String id, String vs_currency, String days, Optional<String> interval);
 
-     Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId, Optional<Long> start, Optional<Long> end);
+     Flux<CandleInfoDTO> getAllCandles(String id, String vs_currency, String days);
 
 }

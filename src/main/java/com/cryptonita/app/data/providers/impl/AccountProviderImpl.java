@@ -69,7 +69,7 @@ public class AccountProviderImpl implements IAccountProvider {
         CoinModel coinModel = coinDAO.findByName(coin)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
-        WalletModel walletModel = walletDao.findByAccount_User_UsernameAndCoin_Name(user,coin).orElse(null);
+        WalletModel walletModel = userModel.getAccount().getWallets().get(coinModel);
 
         if(walletModel == null) {
             walletModel = WalletModel.builder()
@@ -92,7 +92,7 @@ public class AccountProviderImpl implements IAccountProvider {
         CoinModel coinModel = coinDAO.findByName(coin).
                 orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
-        WalletModel walletModel = walletDao.findByAccount_User_UsernameAndCoin_Name(user,coin).orElse(null);
+        WalletModel walletModel = userModel.getAccount().getWallets().get(coinModel);
 
         if(walletModel == null)
            throw new WalletNotFoundException("This Wallet doesnt exist");

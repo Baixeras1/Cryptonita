@@ -24,31 +24,32 @@ public class CandleCapMetaMapper implements AdapterMapper<CandleInfoDTO>{
     @Override
     public CandleInfoDTO mapToDto(String s) {
         JsonNode jsonNode = jsonMapper.readTree(s);
-        JsonNode data = jsonNode.get("data");
+        ArrayNode data = (ArrayNode) jsonNode.get(1);
 
-        return mapper(data);
+        return mapper(data.iterator().next());
     }
 
     @SneakyThrows
     @Override
     public List<CandleInfoDTO> mapManyToDto(String s) {
         JsonNode jsonNode = jsonMapper.readTree(s);
-        ArrayNode data = (ArrayNode) jsonNode.get("data");
+        ArrayNode data = (ArrayNode) jsonNode;
 
         List<CandleInfoDTO> candles = new ArrayList<>();
         data.forEach(node -> candles.add(mapper(node)));
+
 
         return candles;
     }
 
     private CandleInfoDTO mapper(JsonNode jsonNode) {
+
         return CandleInfoDTO.builder()
-                .open(jsonNode.get("open").asDouble())
-                .high(jsonNode.get("high").asDouble())
-                .low(jsonNode.get("low").asDouble())
-                .close(jsonNode.get("close").asDouble())
-                .volume(jsonNode.get("volume").asDouble())
-                .period(jsonNode.get("period").asDouble())
+                .time(jsonNode.get(0).asDouble())
+                .open(jsonNode.get(1).asDouble())
+                .high(jsonNode.get(2).asDouble())
+                .low(jsonNode.get(3).asDouble())
+                .close(jsonNode.get(4).asDouble())
                 .build();
     }
 }

@@ -43,20 +43,18 @@ public class AssetsController {
     }
 
     @GetMapping("/getHistory")
-    public Mono<RestResponse> getHistory(String symbol, String interval,
-                                           @RequestParam Optional<Long> start,
-                                           @RequestParam Optional<Long> end) {
-        return assetsService.getAllHistory(symbol, interval, start, end)
+    public Mono<RestResponse> getHistory(String id, String vs_currency,
+                                           String days,
+                                           @RequestParam Optional<String> interval) {
+
+        return assetsService.getAllHistory(id, vs_currency, days, interval)
                 .collectList()
                 .map(RestResponse::encapsulate);
     }
 
     @GetMapping("/getCandle")
-    public Mono<RestResponse> getCandle(String exchange, String interval,
-                                         String baseId, String quoteId,
-                                         @RequestParam(required = false) Optional<Long> start,
-                                         @RequestParam(required = false) Optional<Long> end) {
-            return assetsService.getAllCandles(exchange, interval, baseId, quoteId, start, end)
+    public Mono<RestResponse> getCandle(String id, String vs_currency, String days) {
+            return assetsService.getAllCandles(id, vs_currency, days)
                     .collectList()
                     .map(RestResponse::encapsulate);
         }
