@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -25,16 +27,16 @@ public class HistoryAdapterMapper implements AdapterMapper<HistoryInfoDTO>{
     @Override
     public HistoryInfoDTO mapToDto(String s) {
         JsonNode jsonNode = jsonMapper.readTree(s);
-        JsonNode data = jsonNode.get("data");
+        ArrayNode data = (ArrayNode) jsonNode.get("prices");
 
-        return maper(data);
+        return maper(data.iterator().next());
     }
 
     @SneakyThrows
     @Override
     public List<HistoryInfoDTO> mapManyToDto(String s) {
         JsonNode jsonNode = jsonMapper.readTree(s);
-        ArrayNode data = (ArrayNode) jsonNode.get("data");
+        ArrayNode data = (ArrayNode) jsonNode.get("prices");
 
         List<HistoryInfoDTO> historys = new ArrayList<>();
         data.forEach(node -> historys.add(maper(node)));
@@ -44,9 +46,13 @@ public class HistoryAdapterMapper implements AdapterMapper<HistoryInfoDTO>{
 
 
     private HistoryInfoDTO maper(JsonNode node) {
+        //Iterator<Map.Entry<String, JsonNode>> iterator = node.fields();
+
+
+        System.out.println(node);
         return HistoryInfoDTO.builder()
-                .priceUsd(node.get("priceUsd").asDouble())
-                .time(node.get("time").asDouble())
+                .priceUsd(node.get(1).asDouble())
+                .time(node.get(0).asDouble())
                 .build();
     }
 }

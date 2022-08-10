@@ -43,10 +43,11 @@ public class AssetsController {
     }
 
     @GetMapping("/getHistory")
-    public Mono<RestResponse> getHistory(String symbol, String interval,
-                                           @RequestParam Optional<Long> start,
-                                           @RequestParam Optional<Long> end) {
-        return assetsService.getAllHistory(symbol, interval, start, end)
+    public Mono<RestResponse> getHistory(String id, String vs_currency,
+                                           String days,
+                                           @RequestParam Optional<String> interval) {
+
+        return assetsService.getAllHistory(id, vs_currency, days, interval)
                 .collectList()
                 .map(RestResponse::encapsulate);
     }

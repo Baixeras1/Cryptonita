@@ -5,7 +5,7 @@ import reactor.core.publisher.Flux;
 
 public interface IHistoryServiceInfo {
 
-    Flux<HistoryInfoDTO> getAll(String symbol, String interval, Long start, Long end);
+    Flux<HistoryInfoDTO> getAll(String id, String vs_currency, String days, String interval);
 
-    Flux<HistoryInfoDTO> getAll(String symbol, String interval);
+    Flux<HistoryInfoDTO> getAll(String id, String vs_currency, String days);
 }

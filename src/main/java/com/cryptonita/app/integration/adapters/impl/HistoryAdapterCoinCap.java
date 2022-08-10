@@ -26,13 +26,13 @@ public class HistoryAdapterCoinCap implements IHistoryAdapter {
     private final AdapterMapper<HistoryInfoDTO> mapper;
 
     @Override
-    public Flux<HistoryInfoDTO> getHistoryOfCoin(String symbol, String interval, Long start, Long end) {
+    public Flux<HistoryInfoDTO> getHistoryOfCoin(String id, String vs_currency, String days, String interval) {
         return webClient.get()
                 .uri(uriBuilder ->
-                        uriBuilder.path(String.format("/%s/history", symbol))
+                        uriBuilder.path(String.format("/coins/%s/market_chart", id))
+                                .queryParam("vs_currency",vs_currency)
+                                .queryParam("days",days)
                                 .queryParam("interval",interval)
-                                .queryParam("start",start)
-                                .queryParam("end",end)
                                 .build()
 
                 )
@@ -42,11 +42,12 @@ public class HistoryAdapterCoinCap implements IHistoryAdapter {
     }
 
     @Override
-    public Flux<HistoryInfoDTO> getHistoryOfCoin(String symbol, String interval) {
+    public Flux<HistoryInfoDTO> getHistoryOfCoin(String id, String vs_currency, String days) {
         return webClient.get()
                 .uri(uriBuilder ->
-                    uriBuilder.path(String.format("/%s/history", symbol))
-                            .queryParam("interval",interval)
+                    uriBuilder.path(String.format("/coins/%s/market_chart", id))
+                            .queryParam("vs_currency",vs_currency)
+                            .queryParam("days",days)
                             .build()
                 )
                 .retrieve()
