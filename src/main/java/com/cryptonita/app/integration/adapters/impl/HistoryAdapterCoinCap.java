@@ -14,7 +14,7 @@ import reactor.netty.http.client.HttpClient;
 @AllArgsConstructor
 public class HistoryAdapterCoinCap implements IHistoryAdapter {
 
-    private static final String URL = "api.coincap.io/v2/assets";
+    private static final String URL = "https://api.coingecko.com/api/v3/";
 
     private final WebClient webClient = WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
