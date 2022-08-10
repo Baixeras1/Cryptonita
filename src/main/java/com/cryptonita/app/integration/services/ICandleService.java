@@ -5,7 +5,6 @@ import reactor.core.publisher.Flux;
 
 public interface ICandleService {
 
-    Flux<CandleInfoDTO> getAll(String exchange, String interval, String baseId, String quoteId, Long start, Long end);
+    Flux<CandleInfoDTO> getAll(String id, String vs_currency, String days);
 
-    Flux<CandleInfoDTO> getAll(String exchange, String interval, String baseId, String quoteId);
 }

@@ -9,29 +9,13 @@ public interface ICandleCapMetaAdapter {
      *
      * Retrieves a candle of the desired crypto
      *
-     * @param exchange 	exchange id
-     * @param interval candle interval
-     * @param baseId base id
-     * @param quoteId quote id
-     * @param start UNIX startup time in milliseconds.
-     * @param end UNIX timeout in milliseconds.
+     * @param id exchange id
+     * @param vs_currency price in foreign currency
+     * @param days time in milliseconds.
      *
      * @return a reactive flux with the dtos carrying the info
      */
 
-    Flux<CandleInfoDTO> getCandleOfCoin(String exchange, String interval, String baseId, String quoteId, Long start, Long end);
+    Flux<CandleInfoDTO> getCandleOfCoin(String id, String vs_currency, String days);
 
-    /**
-     *
-     * Retrieves a candle of the desired crypto
-     *
-     * @param exchange 	exchange id
-     * @param interval candle interval
-     * @param baseId base id
-     * @param quoteId quote id
-     *
-     * @return a reactive flux with the dtos carrying the info
-     */
-
-    Flux<CandleInfoDTO> getCandleOfCoin(String exchange, String interval, String baseId, String quoteId);
 }

@@ -29,6 +29,7 @@ public class HistoryAdapterMapper implements AdapterMapper<HistoryInfoDTO>{
         JsonNode jsonNode = jsonMapper.readTree(s);
         ArrayNode data = (ArrayNode) jsonNode.get("prices");
 
+        System.out.println(data.get(0));
         return maper(data.iterator().next());
     }
 
@@ -46,10 +47,6 @@ public class HistoryAdapterMapper implements AdapterMapper<HistoryInfoDTO>{
 
 
     private HistoryInfoDTO maper(JsonNode node) {
-        //Iterator<Map.Entry<String, JsonNode>> iterator = node.fields();
-
-
-        System.out.println(node);
         return HistoryInfoDTO.builder()
                 .priceUsd(node.get(1).asDouble())
                 .time(node.get(0).asDouble())

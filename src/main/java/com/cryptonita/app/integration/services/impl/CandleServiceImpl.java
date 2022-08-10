@@ -14,12 +14,8 @@ public class CandleServiceImpl implements ICandleService {
     private final ICandleCapMetaAdapter candleCapMetaAdapter;
 
     @Override
-    public Flux<CandleInfoDTO> getAll(String exchange, String interval, String baseId, String quoteId, Long start, Long end) {
-        return candleCapMetaAdapter.getCandleOfCoin(exchange, interval, baseId, quoteId, start, end);
+    public Flux<CandleInfoDTO> getAll(String id, String vs_currency, String days) {
+        return candleCapMetaAdapter.getCandleOfCoin(id, vs_currency, days);
     }
 
-    @Override
-    public Flux<CandleInfoDTO> getAll(String exchange, String interval, String baseId, String quoteId) {
-        return candleCapMetaAdapter.getCandleOfCoin(exchange, interval, baseId, quoteId);
-    }
 }

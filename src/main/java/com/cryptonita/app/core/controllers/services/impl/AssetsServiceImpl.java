@@ -61,13 +61,9 @@ public class AssetsServiceImpl implements IAssetsService {
 
 
     @Override
-    public Flux<CandleInfoDTO> getAllCandles(String exchange, String interval, String baseId, String quoteId,
-                                             Optional<Long> start, Optional<Long> end) {
+    public Flux<CandleInfoDTO> getAllCandles(String id, String vs_currency, String days) {
 
-        if (!start.isPresent() || !end.isPresent())
-            return candleService.getAll(exchange, interval, baseId, quoteId);
-
-        return candleService.getAll(exchange, interval, baseId, quoteId, start.get(), end.get());
+        return candleService.getAll(id, vs_currency, days);
     }
 
 
