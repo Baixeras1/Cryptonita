@@ -21,7 +21,6 @@ import java.util.List;
 @EqualsAndHashCode(of = {"id", "username"})
 @ToString(exclude = {"account", "favourites"})
 @Table(name = "USERS")
-@Valid
 public class UserModel {
 
     @Id
@@ -36,8 +35,7 @@ public class UserModel {
     @Column(unique = true)
     private String username;
 
-    @Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])){4,12}$",
-            message = "password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
+    @NotEmpty(message = "EL campo contraseña no puede ir vacio")
     private String password;
 
     @Enumerated(EnumType.STRING)
