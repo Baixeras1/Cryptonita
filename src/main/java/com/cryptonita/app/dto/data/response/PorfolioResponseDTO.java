@@ -2,19 +2,20 @@ package com.cryptonita.app.dto.data.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 
 import java.util.List;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
 @Builder
-@AllArgsConstructor
+@Data
 public class PorfolioResponseDTO {
 
-    private double balance = generarBalance();
-    private List<CoinDetailsDTO> coinDetailsDTOList;
+    private double balance ;
+    private final List<CoinDetailsDTO> coinDetailsDTOList;
 
-    public double generarBalance() {
-        return 0;
-    }
+
 
 
 }
