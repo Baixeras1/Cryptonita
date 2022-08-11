@@ -5,14 +5,19 @@ import com.cryptonita.app.data.entities.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+
 @AllArgsConstructor
 @Builder
 public class UserRegisterDTO {
 
-    public final String mail;
-    public final String username;
-    public final String password;
-    public final UserRole role;
-    public final UserType type;
+    public String mail;
+    public String username;
+    public String password;
+    public UserRole role;
+    public UserType type;
 
 }

@@ -6,10 +6,9 @@ import com.cryptonita.app.data.entities.enums.UserRole;
 import com.cryptonita.app.data.entities.enums.UserType;
 import com.cryptonita.app.dto.data.request.UserRegisterDTO;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @AllArgsConstructor
@@ -18,7 +17,8 @@ public class AutentificationController {
     private final IAutentificationService autentificationService;
 
     @PostMapping ("/register")
-    public RestResponse register(String mail, String username, String password){
+    public RestResponse register(String mail, String username,String password){
+
         return RestResponse.encapsulate(autentificationService.register(
                 UserRegisterDTO.builder()
                         .username(username)
