@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,10 +25,11 @@ public class UserResponseMapper implements IMapper<UserModel, UserResponseDTO> {
 
     @Override
     public UserResponseDTO mapToDto(UserModel userModel) {
-        Map<String, WalletResponseDto> wallerResponseDtos = userModel.getAccount().getWallets()
-                .entrySet().stream()
-                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey().getName(), walletMapper.mapToDto(e.getValue())))
-                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+        Map<String, WalletResponseDto> wallerResponseDtos = new HashMap<>();
+
+        userModel.getAccount().getWallets().forEach(wallet ->
+                wallerResponseDtos.put(wallet.getCoin().getName(), walletMapper.mapToDto(wallet))
+        );
 
         List<FavoritesResponseDto> favoritesResponseDtos = userModel.getFavourites().stream()
                 .map(favouritesMapper::mapToDto)

@@ -59,8 +59,8 @@ public class AccountProviderImpl implements IAccountProvider {
 
         return walletMapper.mapToDto(walletDao.save(walletModel));
     }
-
-
+    
+    @Transactional
     @Override
     public WalletResponseDto deposit(String user, String coin, double amount) {
         UserModel userModel = userDao.findByUsername(user)
@@ -69,7 +69,10 @@ public class AccountProviderImpl implements IAccountProvider {
         CoinModel coinModel = coinDAO.findByName(coin)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
-        WalletModel walletModel = userModel.getAccount().getWallets().get(coinModel);
+        WalletModel walletModel = userModel.getAccount().getWallets().stream()
+                .filter(walletModel1 -> walletModel1.getCoin().equals(coinModel))
+                .findFirst()
+                .orElse(null);
 
         if(walletModel == null) {
             walletModel = WalletModel.builder()
@@ -92,7 +95,10 @@ public class AccountProviderImpl implements IAccountProvider {
         CoinModel coinModel = coinDAO.findByName(coin).
                 orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
-        WalletModel walletModel = userModel.getAccount().getWallets().get(coinModel);
+        WalletModel walletModel = userModel.getAccount().getWallets().stream()
+                .filter(walletModel1 -> walletModel1.getCoin().equals(coinModel))
+                .findFirst()
+                .orElse(null);
 
         if(walletModel == null)
            throw new WalletNotFoundException("This Wallet doesnt exist");
@@ -114,7 +120,11 @@ public class AccountProviderImpl implements IAccountProvider {
         CoinModel coinModel = coinDAO.findByName(coin)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
-        WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
+        WalletModel wallet = userModel.getAccount().getWallets().stream()
+                .filter(walletModel1 -> walletModel1.getCoin().equals(coinModel))
+                .findFirst()
+                .orElse(null);
+
         if(wallet == null)
             throw new WalletNotFoundException(WALLET_ALREADY_EXISTS);
 
