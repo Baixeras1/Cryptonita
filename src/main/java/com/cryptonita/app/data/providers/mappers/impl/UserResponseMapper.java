@@ -27,9 +27,7 @@ public class UserResponseMapper implements IMapper<UserModel, UserResponseDTO> {
     public UserResponseDTO mapToDto(UserModel userModel) {
         Map<String, WalletResponseDto> wallerResponseDtos = new HashMap<>();
 
-        userModel.getAccount().getWallets().forEach(wallet ->
-                wallerResponseDtos.put(wallet.getCoin().getName(), walletMapper.mapToDto(wallet))
-        );
+        userModel.getAccount().getWallets();
 
         List<FavoritesResponseDto> favoritesResponseDtos = userModel.getFavourites().stream()
                 .map(favouritesMapper::mapToDto)
