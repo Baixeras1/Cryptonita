@@ -3,6 +3,9 @@ package com.cryptonita.app;
 import com.cryptonita.app.core.loaders.CoinLoader;
 import com.cryptonita.app.core.loaders.UsersLoader;
 import com.cryptonita.app.data.providers.IAccountProvider;
+import com.cryptonita.app.data.providers.IRegisterProvider;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
+import com.cryptonita.app.dto.integration.CoinInfoDTO;
 import com.cryptonita.app.dto.data.request.RegisterRequestDTO;
 import com.cryptonita.app.integration.services.ICoinMarketService;
 import com.cryptonita.app.integration.websocket.CoinCapConsumer;
@@ -13,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDate;
 
@@ -40,6 +44,14 @@ public class AppApplication {
 
             accountProvider.create("sergio.bernal", "Bitcoin");
             accountProvider.deposit("sergio.bernal", "Bitcoin", 12);
+
+            accountProvider.create("sergio.bernal", "cardano");
+            accountProvider.deposit("sergio.bernal", "cardano", 12);
+
+            accountProvider.create("sergio.bernal", "binance-coin");
+            accountProvider.deposit("sergio.bernal", "binance-coin", 12);
+
+            accountProvider.getAllFromUser("sergio.bernal");
 
             RegisterRequestDTO registerRequestDTO = RegisterRequestDTO.builder()
                     .date(LocalDate.now())

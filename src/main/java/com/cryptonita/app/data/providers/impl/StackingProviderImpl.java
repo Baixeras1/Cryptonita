@@ -51,7 +51,10 @@ public class StackingProviderImpl implements IStackingProvider {
         CoinModel coinModel = coinDAO.findByName(coinName)
                 .orElseThrow(() -> new CoinNotFoundException(COIN_ALREADY_EXISTS));
 
-        WalletModel wallet = userModel.getAccount().getWallets().get(coinModel);
+        WalletModel wallet = userModel.getAccount().getWallets().stream()
+                .filter(walletModel1 -> walletModel1.getCoin().equals(coinModel))
+                .findFirst()
+                .orElse(null);
 
         if(wallet == null)
             throw new WalletNotFoundException(WALLET_ALREADY_EXISTS);
