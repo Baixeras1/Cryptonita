@@ -1,5 +1,6 @@
 package com.cryptonita.app;
 
+import com.cryptonita.app.core.controllers.services.IPorfolioService;
 import com.cryptonita.app.core.loaders.CoinLoader;
 import com.cryptonita.app.core.loaders.UsersLoader;
 import com.cryptonita.app.data.providers.IAccountProvider;
@@ -34,7 +35,8 @@ public class AppApplication {
             CoinLoader coinLoader,
             UsersLoader usersLoader,
             IAccountProvider accountProvider,
-            CoinCapConsumer coinCapConsumer
+            CoinCapConsumer coinCapConsumer,
+            IPorfolioService porfolioService
     ) {
         return (args) -> {
             coinCapConsumer.start();
@@ -42,16 +44,13 @@ public class AppApplication {
             coinLoader.load().blockLast();
             usersLoader.load().blockLast();
 
-            accountProvider.create("sergio.bernal", "Bitcoin");
+
+
             accountProvider.deposit("sergio.bernal", "Bitcoin", 12);
 
-            accountProvider.create("sergio.bernal", "cardano");
-            accountProvider.deposit("sergio.bernal", "cardano", 12);
+            accountProvider.deposit("sergio.bernal", "ethereum", 120);
 
-            accountProvider.create("sergio.bernal", "binance-coin");
-            accountProvider.deposit("sergio.bernal", "binance-coin", 12);
-
-            accountProvider.getAllFromUser("sergio.bernal");
+            porfolioService.getPorfolio();
 
             RegisterRequestDTO registerRequestDTO = RegisterRequestDTO.builder()
                     .date(LocalDate.now())
@@ -62,6 +61,7 @@ public class AppApplication {
                     .build();
 
             //registerProvider.log(registerRequestDTO);
+
 
         };
     }

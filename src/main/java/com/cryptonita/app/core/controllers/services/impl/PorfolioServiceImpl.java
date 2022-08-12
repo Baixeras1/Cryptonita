@@ -3,6 +3,7 @@ package com.cryptonita.app.core.controllers.services.impl;
 import com.cryptonita.app.core.controllers.services.IConvertorService;
 import com.cryptonita.app.core.controllers.services.IPorfolioService;
 import com.cryptonita.app.data.providers.IAccountProvider;
+import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.dto.data.response.CoinDetailsDTO;
 import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PorfolioServiceImpl implements IPorfolioService {
 
+    private IUserProvider userProvider;
     private final IAccountProvider acountProvider;
     private final ICoinMarketService marketService;
     private final SecurityContextHelper securityContextHelper;
@@ -40,16 +42,21 @@ public class PorfolioServiceImpl implements IPorfolioService {
     @Override
     public PorfolioResponseDTO getPorfolio() {
         double balance;
-        UserResponseDTO userResponseDTO = securityContextHelper.getUser();
+        UserResponseDTO userResponseDTO = userProvider.getByName("sergio.bernal");
+        //UserResponseDTO userResponseDTO = securityContextHelper.getUser();
         Map<String,WalletResponseDto> walletResponseDtos = userResponseDTO.getWallet();
+        System.out.println();
+
+        System.out.println(walletResponseDtos);
 
         List<CoinDetailsDTO> coinDetailsDTOList = walletResponseDtos.values().stream()
+                .peek(System.out::println)
                 .map(this::mapToDetails)
                 .collect(Collectors.toList());
 
         //balance = generarBalance(coinDetailsDTOList);
 
-        System.out.println(coinDetailsDTOList.get(1));
+
         PorfolioResponseDTO porfolioResponseDTO = PorfolioResponseDTO.builder()
                 //.balance(balance)
                 .coinDetailsDTOList(coinDetailsDTOList)
@@ -60,7 +67,6 @@ public class PorfolioServiceImpl implements IPorfolioService {
     }
 
     private CoinDetailsDTO mapToDetails(WalletResponseDto dto) {
-
         return CoinDetailsDTO.builder()
                 .id(dto.getId())
                 .name(dto.getCoinName())

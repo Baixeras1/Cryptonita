@@ -21,6 +21,7 @@ public class CoinMarketMapper implements AdapterMapper<CoinMarketDTO> {
     @Override
     public CoinMarketDTO mapToDto(String s) {
         ArrayNode json = (ArrayNode) objectMapper.readTree(s);
+        System.out.println(json);
         JsonNode data = json.iterator().next();
 
         return innerMap(data);
