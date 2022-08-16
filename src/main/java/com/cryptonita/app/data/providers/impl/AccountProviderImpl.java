@@ -38,14 +38,14 @@ public class AccountProviderImpl implements IAccountProvider {
     private IMapper<WalletModel, WalletResponseDto> walletMapper;
 
     @Override
-    public WalletResponseDto get(String user, String coin) {
+    public synchronized WalletResponseDto get(String user, String coin) {
         return walletDao.findByUser_UsernameAndCoinName(user,coin)
                 .map(walletMapper::mapToDto)
                 .orElseThrow(() -> new WalletNotFoundException("The Wallet dont exist"));
     }
 
     @Override
-    public WalletResponseDto create(String user, String coin) {
+    public synchronized WalletResponseDto create(String user, String coin) {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
@@ -62,7 +62,7 @@ public class AccountProviderImpl implements IAccountProvider {
     }
 
     @Override
-    public WalletResponseDto deposit(String user, String coin, double amount) {
+    public synchronized WalletResponseDto deposit(String user, String coin, double amount) {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
@@ -88,7 +88,7 @@ public class AccountProviderImpl implements IAccountProvider {
     }
 
     @Override
-    public WalletResponseDto withDraw(String user, String coin, double amount) {
+    public synchronized WalletResponseDto withDraw(String user, String coin, double amount) {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
@@ -113,7 +113,7 @@ public class AccountProviderImpl implements IAccountProvider {
 
 
     @Override
-    public WalletResponseDto clear(String user, String coin) {
+    public synchronized WalletResponseDto clear(String user, String coin) {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
@@ -134,7 +134,7 @@ public class AccountProviderImpl implements IAccountProvider {
     }
 
     @Override
-    public List<WalletResponseDto> getAllFromUser(String user) {
+    public synchronized List<WalletResponseDto> getAllFromUser(String user) {
         return walletDao.findAllByUserUsername(user).stream()
                 .map(walletMapper::mapToDto)
                 .collect(Collectors.toList());

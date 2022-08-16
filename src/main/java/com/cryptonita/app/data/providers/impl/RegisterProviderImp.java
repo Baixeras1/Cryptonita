@@ -35,7 +35,7 @@ public class RegisterProviderImp implements IRegisterProvider {
 
     @Transactional
     @Override
-    public RegisterResponseDTO log(String username,LocalDate date, String origin,String destiny,double quantity) {
+    public synchronized RegisterResponseDTO log(String username,LocalDate date, String origin,String destiny,double quantity) {
 
         UserModel userModel = userDao.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
@@ -60,7 +60,7 @@ public class RegisterProviderImp implements IRegisterProvider {
     }
 
     @Override
-    public List<RegisterResponseDTO> getLogsFromUsers(String user, LocalDate start, LocalDate end) {
+    public synchronized List<RegisterResponseDTO> getLogsFromUsers(String user, LocalDate start, LocalDate end) {
 
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
@@ -71,7 +71,7 @@ public class RegisterProviderImp implements IRegisterProvider {
     }
 
     @Override
-    public RegisterResponseDTO getOneRegister(long id) {
+    public synchronized RegisterResponseDTO getOneRegister(long id) {
         HistoryModel historyModel = historyDao.findById(id)
                 .orElseThrow(() -> new HistoryNotFoundException(String.format(HISTORY_ALREADY_EXISTS,id)));
 
