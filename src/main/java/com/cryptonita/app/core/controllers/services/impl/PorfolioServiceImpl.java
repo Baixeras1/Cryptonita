@@ -4,6 +4,7 @@ import com.cryptonita.app.core.controllers.services.IConvertorService;
 import com.cryptonita.app.core.controllers.services.IPorfolioService;
 import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
+import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.CoinDetailsDTO;
 import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
@@ -27,6 +28,7 @@ public class PorfolioServiceImpl implements IPorfolioService {
     private final SecurityContextHelper securityContextHelper;
 
     private final IConvertorService convertorService;
+    private final IMapper<Map<String,WalletResponseDto>, PorfolioResponseDTO> mapper;
 
     @Override
     public WalletResponseDto get(String coin) {
@@ -36,47 +38,11 @@ public class PorfolioServiceImpl implements IPorfolioService {
     @Override
     public PorfolioResponseDTO getAll() {
         UserResponseDTO userResponseDTO = securityContextHelper.getUser();
-        Map<String,WalletResponseDto> walletResponseDtos = userResponseDTO.getWallet();
+        Map<String,WalletResponseDto> wallets = userResponseDTO.getWallet();
 
-        List<CoinDetailsDTO> coinDetailsDTOList = walletResponseDtos.values().stream()
-                .map(this::mapToDetails)
-                .collect(Collectors.toList());
-
-        double totalBalance = calculateBalance(coinDetailsDTOList);
-
-        calculateAllocation(coinDetailsDTOList, totalBalance);
-
-        return PorfolioResponseDTO.builder()
-                .balance(totalBalance)
-                .coinDetailsDTOList(coinDetailsDTOList)
-                .build();
+        return mapper.mapToDto(wallets);
     }
 
-    private CoinDetailsDTO mapToDetails(WalletResponseDto dto) {
-        return CoinDetailsDTO.builder()
-                .id(dto.getId())
-                .name(dto.getCoinName())
-                .quantity(dto.getQuantity())
-                .coinMarketDTO(marketService.getCoinMetadataByName(dto.getCoinName()).block())
-                .build();
-    }
-
-    public double calculateBalance(List<CoinDetailsDTO> coinDetailsDTOList) {
-        return coinDetailsDTOList.stream()
-                .map(coinDetailsDTO -> coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketDTO().priceUsd)
-                .reduce(Double::sum)
-                .orElse(0.0);
-
-    }
-
-    private void calculateAllocation(List<CoinDetailsDTO> coinDetailsDTOList, double totalBalance) {
-        for (CoinDetailsDTO coinDetailsDTO : coinDetailsDTOList) {
-            double individualPrice = coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketDTO().priceUsd;
-            double allocation = (individualPrice / totalBalance) * 100;
-
-            coinDetailsDTO.setAllocation(allocation);
-        }
-    }
 
 
 }

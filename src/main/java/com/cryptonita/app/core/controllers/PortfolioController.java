@@ -28,12 +28,7 @@ public class PortfolioController {
     @GetMapping("/getAll")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Gets the portfolio (totalBalance, coins, coin market data and allocation) for the current user ")
-    public RestResponse getAll() {
-        return RestResponse.encapsulate(porfolioService.getAll());
-    }
-
-    @GetMapping("/getPortfolio")
     public PorfolioResponseDTO getPortfolio() {
-        return porfolioService.getPorfolio();
+        return porfolioService.getAll();
     }
 }
