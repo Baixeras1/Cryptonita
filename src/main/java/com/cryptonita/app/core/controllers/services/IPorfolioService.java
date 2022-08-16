@@ -10,9 +10,6 @@ import java.util.List;
  */
 public interface IPorfolioService {
     WalletResponseDto get(String coin);
-
-    List<WalletResponseDto> getAll();
-
-    PorfolioResponseDTO getPorfolio();
+    PorfolioResponseDTO getAll();
 
 }

@@ -34,12 +34,7 @@ public class PorfolioServiceImpl implements IPorfolioService {
     }
 
     @Override
-    public List<WalletResponseDto> getAll() {
-        return acountProvider.getAllFromUser(securityContextHelper.getUser().getUsername());
-    }
-
-    @Override
-    public PorfolioResponseDTO getPorfolio() {
+    public PorfolioResponseDTO getAll() {
         UserResponseDTO userResponseDTO = securityContextHelper.getUser();
         Map<String,WalletResponseDto> walletResponseDtos = userResponseDTO.getWallet();
 
