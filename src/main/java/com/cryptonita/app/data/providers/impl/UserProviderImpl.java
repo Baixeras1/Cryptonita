@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserProviderImpl implements IUserProvider {
 
     private static final String COIN_ALREADY_EXISTS = "The coin %s already exists!";
@@ -35,7 +37,6 @@ public class UserProviderImpl implements IUserProvider {
 
     private final IUserDao userDao;
     private final IBannedUserDao bannedUserDao;
-    private final IAccountDao accountDao;
     private final IFavoritesDao favoritesDao;
     private final ICoinDAO coinDAO;
 
@@ -58,7 +59,6 @@ public class UserProviderImpl implements IUserProvider {
         user.setPassword(encoder.encode(user.getPassword()));
 
         user = userDao.save(user);
-        user.setAccount(createAccount(user));
 
         return responseDTOIMapper.mapToDto(user);
     }
@@ -230,17 +230,6 @@ public class UserProviderImpl implements IUserProvider {
         favoritesDao.delete(favourite);
 
         return favoritesResponseDtoIMapper.mapToDto(favourite);
-    }
-
-    /**
-     * Inner method to create a user account
-     */
-    private AccountModel createAccount(UserModel user) {
-        AccountModel account = AccountModel.builder()
-                .user(user)
-                .build();
-
-        return accountDao.save(account);
     }
 
 

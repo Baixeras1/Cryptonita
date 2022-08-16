@@ -1,5 +1,6 @@
 package com.cryptonita.app.data.providers.mappers.impl;
 
+import com.cryptonita.app.data.entities.CoinModel;
 import com.cryptonita.app.data.entities.FavouritesModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.entities.WalletModel;
@@ -10,10 +11,7 @@ import com.cryptonita.app.dto.data.response.WalletResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,9 +23,11 @@ public class UserResponseMapper implements IMapper<UserModel, UserResponseDTO> {
 
     @Override
     public UserResponseDTO mapToDto(UserModel userModel) {
-        Map<String, WalletResponseDto> wallerResponseDtos = new HashMap<>();
+        Map<String, WalletResponseDto> walletMap = new HashMap<>();
 
-        userModel.getAccount().getWallets();
+        userModel.getWallets().forEach(walletModel ->
+                walletMap.put(walletModel.getCoin().getName(), walletMapper.mapToDto(walletModel))
+        );
 
         List<FavoritesResponseDto> favoritesResponseDtos = userModel.getFavourites().stream()
                 .map(favouritesMapper::mapToDto)
@@ -39,7 +39,7 @@ public class UserResponseMapper implements IMapper<UserModel, UserResponseDTO> {
                 .role(userModel.getRole())
                 .type(userModel.getType())
                 .favorites(favoritesResponseDtos)
-                .wallet(wallerResponseDtos)
+                .wallet(walletMap)
                 .build();
     }
 

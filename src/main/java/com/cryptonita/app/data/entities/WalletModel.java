@@ -24,16 +24,18 @@ public class WalletModel {
     private long id;
 
     @ManyToOne
-    private AccountModel account;
+    @JoinColumn
+    private UserModel user;
 
     @ManyToOne
+    @JoinColumn
     private CoinModel coin;
 
     private double quantity;
 
     @Builder
-    public WalletModel(AccountModel account, CoinModel coin, double quantity) {
-        this.account = account;
+    public WalletModel(UserModel user, CoinModel coin, double quantity) {
+        this.user = user;
         this.coin = coin;
         this.quantity = quantity;
     }

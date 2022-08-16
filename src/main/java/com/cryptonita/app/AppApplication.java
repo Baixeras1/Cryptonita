@@ -44,8 +44,6 @@ public class AppApplication {
             coinLoader.load().blockLast();
             usersLoader.load().blockLast();
 
-
-
             accountProvider.deposit("sergio.bernal", "Bitcoin", 12);
 
             accountProvider.deposit("sergio.bernal", "ethereum", 120);

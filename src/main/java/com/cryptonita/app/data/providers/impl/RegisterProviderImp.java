@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
+@Transactional
 public class RegisterProviderImp implements IRegisterProvider {
 
     private static final String USER_ALREADY_EXISTS = "The user already exists!";

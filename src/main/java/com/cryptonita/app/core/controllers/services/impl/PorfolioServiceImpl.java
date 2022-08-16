@@ -45,7 +45,6 @@ public class PorfolioServiceImpl implements IPorfolioService {
         UserResponseDTO userResponseDTO = userProvider.getByName("sergio.bernal");
         //UserResponseDTO userResponseDTO = securityContextHelper.getUser();
         Map<String,WalletResponseDto> walletResponseDtos = userResponseDTO.getWallet();
-        System.out.println();
 
         System.out.println(walletResponseDtos);
 
