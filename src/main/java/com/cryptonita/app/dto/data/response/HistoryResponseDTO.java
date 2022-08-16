@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Builder
 @Data
-public class RegisterResponseDTO
+public class HistoryResponseDTO
 {
     public final long id;
     public final UserResponseDTO user;
@@ -16,4 +16,5 @@ public class RegisterResponseDTO
     public final String origin;
     public final String destiny;
     public final double quantity;
+    public final String portfolio;
 }

@@ -7,6 +7,7 @@ import com.cryptonita.app.data.entities.CoinModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.entities.WalletModel;
 import com.cryptonita.app.data.providers.IAccountProvider;
+import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.WalletResponseDto;
 import com.cryptonita.app.exceptions.data.CoinNotFoundException;
@@ -30,12 +31,12 @@ public class AccountProviderImpl implements IAccountProvider {
     private static final String USER_ALREADY_EXISTS = "The user %s already exists!";
     private static final String WALLET_ALREADY_EXISTS = "The wallet already exists!";
 
-    private IWalletDao walletDao;
-    private IUserDao userDao;
+    private final IWalletDao walletDao;
+    private final IUserDao userDao;
 
-    private ICoinDAO coinDAO;
+    private final ICoinDAO coinDAO;
 
-    private IMapper<WalletModel, WalletResponseDto> walletMapper;
+    private final IMapper<WalletModel, WalletResponseDto> walletMapper;
 
     @Override
     public synchronized WalletResponseDto get(String user, String coin) {

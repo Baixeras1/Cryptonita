@@ -1,6 +1,6 @@
 package com.cryptonita.app.core.controllers;
 
-import com.cryptonita.app.core.controllers.services.IPorfolioService;
+import com.cryptonita.app.core.controllers.services.IPortfolioService;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Portfolio")
 public class PortfolioController {
 
-    private final IPorfolioService porfolioService;
+    private final IPortfolioService porfolioService;
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)

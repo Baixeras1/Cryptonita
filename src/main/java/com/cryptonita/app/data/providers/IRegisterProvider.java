@@ -1,6 +1,6 @@
 package com.cryptonita.app.data.providers;
 
-import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
+import com.cryptonita.app.dto.data.response.HistoryResponseDTO;
 import com.cryptonita.app.dto.data.request.RegisterRequestDTO;
 
 
@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface IRegisterProvider {
 
-    default RegisterResponseDTO log(RegisterRequestDTO dto) {
+    default HistoryResponseDTO log(RegisterRequestDTO dto) {
         return log(dto.user, dto.date, dto.origin, dto.destiny, dto.quantity);
     }
 
-    RegisterResponseDTO log(String username, LocalDate date, String origin, String destiny, double quantity);
+    HistoryResponseDTO log(String username, LocalDate date, String origin, String destiny, double quantity);
 
-    List<RegisterResponseDTO> getLogsFromUsers(String user, LocalDate start, LocalDate end);
+    List<HistoryResponseDTO> getLogsFromUsers(String user, LocalDate start, LocalDate end);
 
-    RegisterResponseDTO getOneRegister(long id);
+    HistoryResponseDTO getOneRegister(long id);
 
 }
