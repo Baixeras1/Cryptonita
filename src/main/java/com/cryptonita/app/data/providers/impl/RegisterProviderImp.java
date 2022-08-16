@@ -1,16 +1,20 @@
 package com.cryptonita.app.data.providers.impl;
 
+import com.cryptonita.app.core.controllers.services.IPortfolioService;
 import com.cryptonita.app.data.daos.IHistoryDao;
 import com.cryptonita.app.data.daos.IUserDao;
 import com.cryptonita.app.data.entities.HistoryModel;
 import com.cryptonita.app.data.entities.UserModel;
+import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.data.response.RegisterResponseDTO;
+import com.cryptonita.app.dto.data.response.HistoryResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.exceptions.data.HistoryNotFoundException;
 import com.cryptonita.app.exceptions.data.UserNotFoundException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +32,17 @@ public class RegisterProviderImp implements IRegisterProvider {
     private static final String USER_ALREADY_EXISTS = "The user already exists!";
     private static final String HISTORY_ALREADY_EXISTS = "The history %s already exists!";
 
-    private IHistoryDao historyDao;
-    private IUserDao userDao;
-    private IMapper<HistoryModel, RegisterResponseDTO> responseMapper;
-    private IMapper<UserModel, UserResponseDTO> userResponseDTOIMapper;
+    private final IHistoryDao historyDao;
+    private final IUserDao userDao;
+    private final IMapper<HistoryModel, HistoryResponseDTO> responseMapper;
+    private final IMapper<UserModel, UserResponseDTO> userResponseDTOIMapper;
+    private final IAccountProvider accountProvider;
+    private final ObjectMapper jsonMapper;
 
+    @SneakyThrows
     @Transactional
     @Override
-    public synchronized RegisterResponseDTO log(String username,LocalDate date, String origin,String destiny,double quantity) {
+    public synchronized HistoryResponseDTO log(String username, LocalDate date, String origin, String destiny, double quantity) {
 
         UserModel userModel = userDao.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
@@ -46,11 +53,12 @@ public class RegisterProviderImp implements IRegisterProvider {
                 .origin(origin)
                 .destiny(destiny)
                 .quantity(quantity)
+                .portfolio(jsonMapper.writeValueAsString(accountProvider.getAllFromUser(userModel.getUsername())))
                 .build();
 
         historyDao.save(model);
 
-        return RegisterResponseDTO.builder()
+        return HistoryResponseDTO.builder()
                 .user(userResponseDTOIMapper.mapToDto(userModel))
                 .destiny(model.getDestiny())
                 .origin(model.getOrigin())
@@ -60,7 +68,7 @@ public class RegisterProviderImp implements IRegisterProvider {
     }
 
     @Override
-    public synchronized List<RegisterResponseDTO> getLogsFromUsers(String user, LocalDate start, LocalDate end) {
+    public synchronized List<HistoryResponseDTO> getLogsFromUsers(String user, LocalDate start, LocalDate end) {
 
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
@@ -71,7 +79,7 @@ public class RegisterProviderImp implements IRegisterProvider {
     }
 
     @Override
-    public synchronized RegisterResponseDTO getOneRegister(long id) {
+    public synchronized HistoryResponseDTO getOneRegister(long id) {
         HistoryModel historyModel = historyDao.findById(id)
                 .orElseThrow(() -> new HistoryNotFoundException(String.format(HISTORY_ALREADY_EXISTS,id)));
 

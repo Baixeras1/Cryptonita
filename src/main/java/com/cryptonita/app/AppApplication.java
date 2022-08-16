@@ -1,6 +1,6 @@
 package com.cryptonita.app;
 
-import com.cryptonita.app.core.controllers.services.IPorfolioService;
+import com.cryptonita.app.core.controllers.services.IPortfolioService;
 import com.cryptonita.app.core.loaders.CoinLoader;
 import com.cryptonita.app.core.loaders.UsersLoader;
 import com.cryptonita.app.data.providers.IAccountProvider;
@@ -31,7 +31,7 @@ public class AppApplication {
             UsersLoader usersLoader,
             IAccountProvider accountProvider,
             CoinCapConsumer coinCapConsumer,
-            IPorfolioService porfolioService
+            IPortfolioService porfolioService
     ) {
         return (args) -> {
             coinCapConsumer.start();
