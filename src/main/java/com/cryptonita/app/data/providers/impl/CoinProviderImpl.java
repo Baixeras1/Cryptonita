@@ -27,7 +27,7 @@ public class CoinProviderImpl implements ICoinProvider {
     private final IMapper<CoinModel, CoinResponseDTO> responseDTOIMapper;
 
     @Override
-    public CoinResponseDTO createCoin(String name, String symbol, int rank) {
+    public synchronized CoinResponseDTO createCoin(String name, String symbol, int rank) {
         if (coinDAO.findByName(name).isPresent())
             throw new CoinAlreadyExistsException(String.format(COIN_ALREADY_EXISTS, name));
 
@@ -43,7 +43,7 @@ public class CoinProviderImpl implements ICoinProvider {
     }
 
     @Override
-    public List<CoinResponseDTO> getAllCoins() {
+    public synchronized List<CoinResponseDTO> getAllCoins() {
         return coinDAO.findAll().stream()
                 .map(responseDTOIMapper::mapToDto)
                 .collect(Collectors.toList());
@@ -61,28 +61,28 @@ public class CoinProviderImpl implements ICoinProvider {
     }
 
     @Override
-    public CoinResponseDTO getCoinByName(String name) {
+    public synchronized CoinResponseDTO getCoinByName(String name) {
         return coinDAO.findByName(name)
                 .map(responseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, name)));
     }
 
     @Override
-    public CoinResponseDTO getCoinById(long id) {
+    public synchronized CoinResponseDTO getCoinById(long id) {
         return coinDAO.findById(id)
                 .map(responseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, id)));
     }
 
     @Override
-    public CoinResponseDTO getByRank(int rank) {
+    public synchronized CoinResponseDTO getByRank(int rank) {
         return coinDAO.findByRank(rank)
                 .map(responseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, rank)));
     }
 
     @Override
-    public CoinResponseDTO getBySymbol(String symbol) {
+    public synchronized CoinResponseDTO getBySymbol(String symbol) {
         return coinDAO.findBySymbol(symbol)
                 .map(responseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, symbol)));

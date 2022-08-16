@@ -45,7 +45,7 @@ public class StackingProviderImpl implements IStackingProvider {
      */
     @Transactional
     @Override
-    public StackingDTO stake(String userName, String coinName, double quantity,int daysToExpire) {
+    public synchronized StackingDTO stake(String userName, String coinName, double quantity,int daysToExpire) {
         UserModel userModel = userDao.findByUsername(userName)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
@@ -85,7 +85,7 @@ public class StackingProviderImpl implements IStackingProvider {
      * @return retorna el stake eliminado
      */
     @Override
-    public StackingDTO unStake(long id,String userName) {
+    public synchronized StackingDTO unStake(long id,String userName) {
 
         UserModel userModel = userDao.findByUsername(userName)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
@@ -107,7 +107,7 @@ public class StackingProviderImpl implements IStackingProvider {
      * @return una lista de stakes de ese usuario
      */
     @Override
-    public List<StackingDTO> getAllUserStakes(String username) {
+    public synchronized List<StackingDTO> getAllUserStakes(String username) {
         UserModel userModel = userDao.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
@@ -129,7 +129,7 @@ public class StackingProviderImpl implements IStackingProvider {
      * @return el stake buscado con el id
      */
     @Override
-    public StackingDTO getUserStake(long id,String username) {
+    public synchronized StackingDTO getUserStake(long id,String username) {
         UserModel userModel = userDao.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
@@ -146,7 +146,7 @@ public class StackingProviderImpl implements IStackingProvider {
      */
 
     @Override
-    public List<StackingDTO> findAll() {
+    public synchronized List<StackingDTO> findAll() {
         List<StackingModel> stackingModelList = stackingDAO.findAll();
         List<StackingDTO> stackingDTOList = new ArrayList<>();
 

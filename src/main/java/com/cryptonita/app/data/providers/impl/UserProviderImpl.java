@@ -48,7 +48,7 @@ public class UserProviderImpl implements IUserProvider {
     private final PasswordEncoder encoder;
 
     @Override
-    public UserResponseDTO register(UserRegisterDTO dto) {
+    public synchronized UserResponseDTO register(UserRegisterDTO dto) {
         if (userDao.findByMail(dto.mail).isPresent())
             throw new UserNotFoundException(USER_ALREADY_EXISTS);
 
@@ -66,70 +66,70 @@ public class UserProviderImpl implements IUserProvider {
 
 
     @Override
-    public UserResponseDTO getById(long id) {
+    public synchronized UserResponseDTO getById(long id) {
         return userDao.findById(id)
                 .map(responseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS));
     }
 
     @Override
-    public UserResponseDTO getByName(String name) {
+    public synchronized UserResponseDTO getByName(String name) {
         return userDao.findByUsername(name)
                 .map(responseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS));
     }
 
     @Override
-    public UserResponseDTO getByEmail(String mail) {
+    public synchronized UserResponseDTO getByEmail(String mail) {
         return userDao.findByMail(mail)
                 .map(responseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS));
     }
 
     @Override
-    public boolean matchesPassword(String mail, String password) {
+    public synchronized boolean matchesPassword(String mail, String password) {
         return innerMatchPassword(userDao.findByMail(mail), password);
     }
 
     @Override
-    public boolean matchesPasswordByUsername(String username, String password) {
+    public synchronized boolean matchesPasswordByUsername(String username, String password) {
         return innerMatchPassword(userDao.findByUsername(username), password);
     }
 
     /**
      * Inner method to check password
      */
-    private boolean innerMatchPassword(Optional<UserModel> user, String rawPassword) {
+    private synchronized boolean innerMatchPassword(Optional<UserModel> user, String rawPassword) {
         return user.isPresent() && encoder.matches(rawPassword, user.get().getPassword());
     }
 
     @Override
-    public boolean exists(String mail) {
+    public synchronized boolean exists(String mail) {
         return userDao.findByMail(mail).isPresent();
     }
 
     @Override
-    public boolean existsByUsername(String username) {
+    public synchronized boolean existsByUsername(String username) {
         return userDao.findByUsername(username).isPresent();
     }
 
     @Override
-    public BannedUserResponseDTO banUser(String mail) {
+    public synchronized BannedUserResponseDTO banUser(String mail) {
         return innerBanUser(userDao.findByMail(mail).orElse(null));
     }
 
     @Override
-    public BannedUserResponseDTO unBanUser(String mail) {
+    public synchronized BannedUserResponseDTO unBanUser(String mail) {
         return innerUnbanUser(bannedUserDao.findByUserMail(mail).orElse(null));
     }
 
     @Override
-    public BannedUserResponseDTO banUserByUsername(String username) {
+    public synchronized BannedUserResponseDTO banUserByUsername(String username) {
         return innerBanUser(userDao.findByUsername(username).orElse(null));
     }
 
     @Override
-    public BannedUserResponseDTO unbanUserByUsername(String username) {
+    public synchronized BannedUserResponseDTO unbanUserByUsername(String username) {
         return innerUnbanUser(bannedUserDao.findByUser_Username(username).orElse(null));
     }
 
@@ -164,38 +164,38 @@ public class UserProviderImpl implements IUserProvider {
     }
 
     @Override
-    public List<BannedUserResponseDTO> getBannedUsers() {
+    public synchronized List<BannedUserResponseDTO> getBannedUsers() {
         return bannedUserDao.findAll().stream()
                 .map(banResponseDTOIMapper::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public boolean isBanned(String mail) {
+    public synchronized boolean isBanned(String mail) {
         return bannedUserDao.findByUserMail(mail).isPresent();
     }
 
     @Override
-    public boolean isBannedByUsername(String username) {
+    public synchronized boolean isBannedByUsername(String username) {
         return bannedUserDao.findByUser_Username(username).isPresent();
     }
 
     @Override
-    public BannedUserResponseDTO get(String mail) {
+    public synchronized BannedUserResponseDTO get(String mail) {
         return bannedUserDao.findByUserMail(mail)
                 .map(banResponseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new BannedUserNotFoundException(BANED_USER_ALREADY_EXISTS));
     }
 
     @Override
-    public BannedUserResponseDTO getByUsername(String username) {
+    public synchronized BannedUserResponseDTO getByUsername(String username) {
         return bannedUserDao.findByUser_Username(username)
                 .map(banResponseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new BannedUserNotFoundException(BANED_USER_ALREADY_EXISTS));
     }
 
     @Override
-    public FavoritesResponseDto addFavourite(String name, String coinStr) {
+    public synchronized FavoritesResponseDto addFavourite(String name, String coinStr) {
         UserModel user = userDao.findByUsername(name)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
@@ -216,7 +216,7 @@ public class UserProviderImpl implements IUserProvider {
     }
 
     @Override
-    public FavoritesResponseDto removeFavorite(String name, String coinStr) {
+    public synchronized FavoritesResponseDto removeFavorite(String name, String coinStr) {
         UserModel user = userDao.findByUsername(name)
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
