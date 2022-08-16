@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/stacking")
+@CrossOrigin("*")
 @Tag(name = "Stacking")
 public class StackingController {
 

@@ -14,6 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/tools")
 @AllArgsConstructor
+@CrossOrigin("*")
 @Tag(name = "Tools")
 public class ToolController {
 

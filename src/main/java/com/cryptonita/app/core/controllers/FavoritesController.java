@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/favorites")
+@CrossOrigin("*")
 @Tag(name = "Favourites")
 public class FavoritesController {
     
