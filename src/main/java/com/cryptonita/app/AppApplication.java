@@ -48,7 +48,7 @@ public class AppApplication {
 
             accountProvider.deposit("sergio.bernal", "ethereum", 120);
 
-            porfolioService.getPorfolio();
+           // porfolioService.getPorfolio();
 
             RegisterRequestDTO registerRequestDTO = RegisterRequestDTO.builder()
                     .date(LocalDate.now())

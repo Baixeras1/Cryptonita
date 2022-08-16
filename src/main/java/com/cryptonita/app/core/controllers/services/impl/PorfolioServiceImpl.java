@@ -42,27 +42,21 @@ public class PorfolioServiceImpl implements IPorfolioService {
     @Override
     public PorfolioResponseDTO getPorfolio() {
         double balance;
-        UserResponseDTO userResponseDTO = userProvider.getByName("sergio.bernal");
-        //UserResponseDTO userResponseDTO = securityContextHelper.getUser();
+        //UserResponseDTO userResponseDTO = userProvider.getByName("sergio.bernal");
+        UserResponseDTO userResponseDTO = securityContextHelper.getUser();
         Map<String,WalletResponseDto> walletResponseDtos = userResponseDTO.getWallet();
 
-        System.out.println(walletResponseDtos);
-
         List<CoinDetailsDTO> coinDetailsDTOList = walletResponseDtos.values().stream()
-                .peek(System.out::println)
                 .map(this::mapToDetails)
                 .collect(Collectors.toList());
 
-        //balance = generarBalance(coinDetailsDTOList);
+        balance = generarBalance(coinDetailsDTOList);
 
 
-        PorfolioResponseDTO porfolioResponseDTO = PorfolioResponseDTO.builder()
-                //.balance(balance)
+        return PorfolioResponseDTO.builder()
+                .balance(balance)
                 .coinDetailsDTOList(coinDetailsDTOList)
                 .build();
-
-
-        return porfolioResponseDTO;
     }
 
     private CoinDetailsDTO mapToDetails(WalletResponseDto dto) {
@@ -76,7 +70,7 @@ public class PorfolioServiceImpl implements IPorfolioService {
 
     public double generarBalance(List<CoinDetailsDTO> coinDetailsDTOList) {
         return coinDetailsDTOList.stream()
-                .map(CoinDetailsDTO::getQuantity)
+                .map(coinDetailsDTO -> coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketDTO().priceUsd)
                 .reduce(Double::sum)
                 .orElse(0.0);
 
