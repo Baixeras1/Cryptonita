@@ -24,6 +24,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class StackingProviderImpl implements IStackingProvider {
 
     private static final String USER_ALREADY_EXISTS = "The user already exists!";
@@ -51,7 +52,7 @@ public class StackingProviderImpl implements IStackingProvider {
         CoinModel coinModel = coinDAO.findByName(coinName)
                 .orElseThrow(() -> new CoinNotFoundException(COIN_ALREADY_EXISTS));
 
-        WalletModel wallet = userModel.getAccount().getWallets().stream()
+        WalletModel wallet = userModel.getWallets().stream()
                 .filter(walletModel1 -> walletModel1.getCoin().equals(coinModel))
                 .findFirst()
                 .orElse(null);

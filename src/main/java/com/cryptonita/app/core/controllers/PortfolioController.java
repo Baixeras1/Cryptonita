@@ -2,6 +2,7 @@ package com.cryptonita.app.core.controllers;
 
 import com.cryptonita.app.core.controllers.services.IPorfolioService;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
+import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -27,9 +28,7 @@ public class PortfolioController {
     @GetMapping("/getAll")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Gets the portfolio (totalBalance, coins, coin market data and allocation) for the current user ")
-    public RestResponse getAll() {
-        return RestResponse.encapsulate(porfolioService.getAll());
+    public PorfolioResponseDTO getPortfolio() {
+        return porfolioService.getAll();
     }
-
-
 }

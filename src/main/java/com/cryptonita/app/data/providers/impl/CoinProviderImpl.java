@@ -9,13 +9,15 @@ import com.cryptonita.app.exceptions.data.CoinAlreadyExistsException;
 import com.cryptonita.app.exceptions.data.CoinNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class CoinProviderImpl implements ICoinProvider {
 
     private static final String NO_COIN_FOUND = "The coin %s is not supported";

@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id", "username"})
-@ToString(exclude = {"account", "favourites"})
+@ToString(exclude = {"wallets"})
 @Table(name = "USERS")
 public class UserModel {
 
@@ -44,8 +44,8 @@ public class UserModel {
     @Enumerated(EnumType.STRING)
     private UserType type;
 
-    @OneToOne(mappedBy = "user")
-    private AccountModel account;
+    @OneToMany(mappedBy = "user")
+    private List<WalletModel> wallets = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<FavouritesModel> favourites = new ArrayList<>();
