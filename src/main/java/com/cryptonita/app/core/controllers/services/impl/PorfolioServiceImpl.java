@@ -13,7 +13,6 @@ import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,8 +40,6 @@ public class PorfolioServiceImpl implements IPorfolioService {
 
     @Override
     public PorfolioResponseDTO getPorfolio() {
-        double balance;
-        //UserResponseDTO userResponseDTO = userProvider.getByName("sergio.bernal");
         UserResponseDTO userResponseDTO = securityContextHelper.getUser();
         Map<String,WalletResponseDto> walletResponseDtos = userResponseDTO.getWallet();
 
@@ -50,11 +47,12 @@ public class PorfolioServiceImpl implements IPorfolioService {
                 .map(this::mapToDetails)
                 .collect(Collectors.toList());
 
-        balance = generarBalance(coinDetailsDTOList);
+        double totalBalance = calculateBalance(coinDetailsDTOList);
 
+        calculateAllocation(coinDetailsDTOList, totalBalance);
 
         return PorfolioResponseDTO.builder()
-                .balance(balance)
+                .balance(totalBalance)
                 .coinDetailsDTOList(coinDetailsDTOList)
                 .build();
     }
@@ -68,12 +66,21 @@ public class PorfolioServiceImpl implements IPorfolioService {
                 .build();
     }
 
-    public double generarBalance(List<CoinDetailsDTO> coinDetailsDTOList) {
+    public double calculateBalance(List<CoinDetailsDTO> coinDetailsDTOList) {
         return coinDetailsDTOList.stream()
                 .map(coinDetailsDTO -> coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketDTO().priceUsd)
                 .reduce(Double::sum)
                 .orElse(0.0);
 
+    }
+
+    private void calculateAllocation(List<CoinDetailsDTO> coinDetailsDTOList, double totalBalance) {
+        for (CoinDetailsDTO coinDetailsDTO : coinDetailsDTOList) {
+            double individualPrice = coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketDTO().priceUsd;
+            double allocation = (individualPrice / totalBalance) * 100;
+
+            coinDetailsDTO.setAllocation(allocation);
+        }
     }
 
 
