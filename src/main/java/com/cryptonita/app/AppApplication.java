@@ -5,6 +5,7 @@ import com.cryptonita.app.core.loaders.CoinLoader;
 import com.cryptonita.app.core.loaders.UsersLoader;
 import com.cryptonita.app.data.providers.IAccountProvider;
 import com.cryptonita.app.dto.data.request.RegisterRequestDTO;
+import com.cryptonita.app.integration.adapters.ICoinMarketAdapterV2;
 import com.cryptonita.app.integration.websocket.CoinCapConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -31,7 +32,8 @@ public class AppApplication {
             UsersLoader usersLoader,
             IAccountProvider accountProvider,
             CoinCapConsumer coinCapConsumer,
-            IPortfolioService porfolioService
+            IPortfolioService porfolioService,
+            ICoinMarketAdapterV2 iCoinMarketAdapterV2
     ) {
         return (args) -> {
             coinCapConsumer.start();
@@ -53,6 +55,10 @@ public class AppApplication {
                     .build();
 
             //registerProvider.log(registerRequestDTO);
+
+            iCoinMarketAdapterV2.getManyCoinsByIds("usd","bitcoin,cardano")
+                    .subscribe(coinMarketIntegrationDTO -> log.info(coinMarketIntegrationDTO.toString()));
+
 
 
         };
