@@ -23,6 +23,8 @@ public class CandleCapMetaAdapterImpl implements ICandleCapMetaAdapter {
             .baseUrl(URL)
             .build();
 
+
+
     private final AdapterMapper<CandleInfoDTO> mapper;
 
     @Override

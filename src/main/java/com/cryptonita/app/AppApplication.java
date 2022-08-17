@@ -36,7 +36,7 @@ public class AppApplication {
             ICoinMarketAdapterV2 iCoinMarketAdapterV2
     ) {
         return (args) -> {
-            coinCapConsumer.start();
+            coinCapConsumer.start(); // Starts websocket
 
             coinLoader.load().blockLast();
             usersLoader.load().blockLast();
@@ -44,7 +44,6 @@ public class AppApplication {
             accountProvider.deposit("sergio.bernal", "Bitcoin", 12);
 
             accountProvider.deposit("sergio.bernal", "ethereum", 120);
-
 
             RegisterRequestDTO registerRequestDTO = RegisterRequestDTO.builder()
                     .date(LocalDate.now())
