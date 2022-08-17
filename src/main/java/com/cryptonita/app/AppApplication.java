@@ -53,13 +53,6 @@ public class AppApplication {
                     .user("sergio.bernal")
                     .build();
 
-            //registerProvider.log(registerRequestDTO);
-
-            iCoinMarketAdapterV2.getManyCoinsByIds("usd","bitcoin,cardano")
-                    .subscribe(coinMarketIntegrationDTO -> log.info(coinMarketIntegrationDTO.toString()));
-
-
-
         };
     }
 

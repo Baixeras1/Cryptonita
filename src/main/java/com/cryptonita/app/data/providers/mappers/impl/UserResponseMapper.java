@@ -1,6 +1,5 @@
 package com.cryptonita.app.data.providers.mappers.impl;
 
-import com.cryptonita.app.data.entities.CoinModel;
 import com.cryptonita.app.data.entities.FavouritesModel;
 import com.cryptonita.app.data.entities.UserModel;
 import com.cryptonita.app.data.entities.WalletModel;
@@ -26,7 +25,7 @@ public class UserResponseMapper implements IMapper<UserModel, UserResponseDTO> {
         Map<String, WalletResponseDto> walletMap = new HashMap<>();
 
         userModel.getWallets().forEach(walletModel ->
-                walletMap.put(walletModel.getCoin().getName(), walletMapper.mapToDto(walletModel))
+                walletMap.put(walletModel.getCoin().getCoinID(), walletMapper.mapToDto(walletModel))
         );
 
         List<FavoritesResponseDto> favoritesResponseDtos = userModel.getFavourites().stream()

@@ -43,7 +43,7 @@ public class CoinMarketMapperV2 implements AdapterMapper<CoinMarketIntegrationDT
 
     private CoinMarketIntegrationDTO innerMap(JsonNode data) {
         return CoinMarketIntegrationDTO.builder()
-                .name(data.get("id").asText())
+                .id(data.get("id").asText())
                 .symbol(data.get("symbol").asText())
                 .name(data.get("name").asText())
                 .image(data.get("image").asText())

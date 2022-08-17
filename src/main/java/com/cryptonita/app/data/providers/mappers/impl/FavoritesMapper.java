@@ -15,7 +15,7 @@ public class FavoritesMapper implements IMapper<FavouritesModel, FavoritesRespon
         return FavoritesResponseDto.builder()
                 .id(favouritesModel.getId())
                 .userName(favouritesModel.getUser().getUsername())
-                .coinName(favouritesModel.getCoin().getName())
+                .coinName(favouritesModel.getCoin().getCoinID())
                 .build();
     }
 

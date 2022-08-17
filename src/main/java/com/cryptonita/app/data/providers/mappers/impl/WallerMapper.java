@@ -12,7 +12,7 @@ public class WallerMapper implements IMapper<WalletModel, WalletResponseDto> {
     public WalletResponseDto mapToDto(WalletModel walletModel) {
         return WalletResponseDto.builder()
                 .id(walletModel.getId())
-                .coinName(walletModel.getCoin().getName())
+                .coinName(walletModel.getCoin().getCoinID())
                 .quantity(walletModel.getQuantity())
                 .build();
     }
