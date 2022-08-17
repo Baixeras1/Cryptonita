@@ -8,6 +8,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
+@Data
 public class CoinMarketIntegrationDTO {
 
     private String id;
@@ -16,7 +17,7 @@ public class CoinMarketIntegrationDTO {
     private String image;
     private double current_price;
     private double market_cap;
-    private int markert_cap_rank;
+    private int market_cap_rank;
     private double fully_diluted_valuation;
     private double total_volume;
     private double high_24h;
