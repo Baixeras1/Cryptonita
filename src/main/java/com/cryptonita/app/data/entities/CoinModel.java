@@ -18,18 +18,18 @@ public class CoinModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(unique = true)
-    private String name;
+    private String coinID;
 
-    @Column(unique = true)
-    private int rank;
+    private String name;
 
     @Column(unique = true)
     private String symbol;
 
     @Builder
-    public CoinModel(String name,int rank){
+    public CoinModel(String coinID, String name, String symbol){
+        this.coinID = coinID;
         this.name = name;
-        this.rank = rank;
+        this.symbol = symbol;
     }
 
 

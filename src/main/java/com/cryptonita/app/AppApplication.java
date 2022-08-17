@@ -36,7 +36,7 @@ public class AppApplication {
             ICoinMarketAdapterV2 iCoinMarketAdapterV2
     ) {
         return (args) -> {
-            coinCapConsumer.start();
+            coinCapConsumer.start(); // Starts websocket
 
             coinLoader.load().blockLast();
             usersLoader.load().blockLast();
@@ -45,7 +45,6 @@ public class AppApplication {
 
             accountProvider.deposit("sergio.bernal", "ethereum", 120);
 
-
             RegisterRequestDTO registerRequestDTO = RegisterRequestDTO.builder()
                     .date(LocalDate.now())
                     .quantity(12)
@@ -53,13 +52,6 @@ public class AppApplication {
                     .origin("Mi cartera")
                     .user("sergio.bernal")
                     .build();
-
-            //registerProvider.log(registerRequestDTO);
-
-            iCoinMarketAdapterV2.getManyCoinsByIds("usd","bitcoin,cardano")
-                    .subscribe(coinMarketIntegrationDTO -> log.info(coinMarketIntegrationDTO.toString()));
-
-
 
         };
     }

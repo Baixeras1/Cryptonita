@@ -27,14 +27,14 @@ public class CoinProviderImpl implements ICoinProvider {
     private final IMapper<CoinModel, CoinResponseDTO> responseDTOIMapper;
 
     @Override
-    public synchronized CoinResponseDTO createCoin(String name, String symbol, int rank) {
+    public synchronized CoinResponseDTO createCoin(String coinID, String name, String symbol) {
         if (coinDAO.findByName(name).isPresent())
             throw new CoinAlreadyExistsException(String.format(COIN_ALREADY_EXISTS, name));
 
         CoinModel coin = CoinModel.builder()
+                .coinID(coinID)
                 .name(name)
                 .symbol(symbol)
-                .rank(rank)
                 .build();
 
         coin = coinDAO.save(coin);

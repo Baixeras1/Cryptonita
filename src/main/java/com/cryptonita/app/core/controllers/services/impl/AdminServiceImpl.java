@@ -25,9 +25,9 @@ public class AdminServiceImpl implements IAdminService {
 
 
     @Override
-    public CoinResponseDTO createCoin(String name,String symbol,int rank) {
+    public CoinResponseDTO createCoin(String coinID, String name, String symbol) {
         //log.info(); //TODO
-        return coinProvider.createCoin(name, symbol,rank);
+        return coinProvider.createCoin(coinID, name, symbol);
     }
 
     @Override

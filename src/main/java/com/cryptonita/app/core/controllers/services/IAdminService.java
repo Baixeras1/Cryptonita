@@ -7,7 +7,7 @@ import org.h2.engine.User;
 
 public interface IAdminService {
 
-    CoinResponseDTO createCoin(String name,String symbol,int rank);
+    CoinResponseDTO createCoin(String coinID, String name, String symbol);
 
     CoinResponseDTO deleteCoin(String name);
 
