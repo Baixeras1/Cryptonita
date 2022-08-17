@@ -21,7 +21,7 @@ public class CoinMarketIntegrationDTO {
     private double fully_diluted_valuation;
     private double total_volume;
     private double high_24h;
-    private double low_24;
+    private double low_24h;
     private double price_change_24h;
     private double price_change_percentage_24h;
     private double market_cap_change_24h;

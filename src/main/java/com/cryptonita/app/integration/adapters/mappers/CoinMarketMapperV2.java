@@ -53,7 +53,7 @@ public class CoinMarketMapperV2 implements AdapterMapper<CoinMarketIntegrationDT
                 .fully_diluted_valuation(data.get("fully_diluted_valuation").asDouble())
                 .total_volume(data.get("total_volume").asDouble())
                 .high_24h(data.get("high_24h").asDouble())
-                .low_24(data.get("low_24").asDouble())
+                .low_24h(data.get("low_24h").asDouble())
                 .price_change_24h(data.get("price_change_24h").asDouble())
                 .price_change_percentage_24h(data.get("price_change_percentage_24h").asDouble())
                 .market_cap_change_24h(data.get("market_cap_change_24h").asDouble())

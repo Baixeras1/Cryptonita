@@ -31,7 +31,7 @@ public class CoinMarketAdapterImplV2 implements ICoinMarketAdapterV2 {
     private final AdapterMapper<CoinMarketIntegrationDTO> mapper;
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getCoinMetadataByName(String vs_currency) {
+    public Flux<CoinMarketIntegrationDTO> getManyCoins(String vs_currency) {
         return webClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
@@ -58,6 +58,20 @@ public class CoinMarketAdapterImplV2 implements ICoinMarketAdapterV2 {
                                 .queryParam("page",page)
                                 .queryParam("sparkline",sparkline)
                                 .queryParam("price_change_percentage",price_change_percentage)
+                                .build()
+                )
+                .retrieve()
+                .bodyToFlux(String.class)
+                .flatMap(s -> Flux.fromStream(mapper.mapManyToDto(s).stream()));
+    }
+
+    @Override
+    public Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String vs_currency, String ids) {
+        return webClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .queryParam("vs_currency",vs_currency)
+                                .queryParam("ids",ids)
                                 .build()
                 )
                 .retrieve()
