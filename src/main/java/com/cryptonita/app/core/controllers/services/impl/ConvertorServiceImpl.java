@@ -12,14 +12,14 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class ConvertorServiceImpl implements IConvertorService {
 
-    private final ICoinConversorService coinConversorService;
+    private final IConvertorService convertorService;
     private final ICoinProvider coinProvider;
 
     @Override
     public Mono<ConversorDTO> convert(String from, double amount) {
         CoinResponseDTO fromCoin = coinProvider.getCoinByName(from);
 
-        return coinConversorService.convert(fromCoin.symbol, amount);
+        return convertorService.convert(fromCoin.symbol, amount);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ConvertorServiceImpl implements IConvertorService {
         CoinResponseDTO fromCoin = coinProvider.getCoinByName(from);
         CoinResponseDTO toCoin = coinProvider.getCoinByName(to);
 
-        return coinConversorService.convert(fromCoin.symbol, toCoin.symbol, amount);
+        return  convertorService.convert(fromCoin.symbol, toCoin.symbol, amount);
     }
 
 }
