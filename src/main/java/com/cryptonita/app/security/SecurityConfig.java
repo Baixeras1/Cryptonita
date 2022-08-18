@@ -1,11 +1,17 @@
 package com.cryptonita.app.security;
 
+import com.cryptonita.app.security.filters.BannerUserFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private BannerUserFilter bannerUserFilter;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -13,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                     .and()
                 .csrf().disable()
+                .addFilterBefore(bannerUserFilter, BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api/**")
                 .hasAnyAuthority("ADMIN", "USER")
