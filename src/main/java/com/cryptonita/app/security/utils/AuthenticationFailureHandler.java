@@ -1,14 +1,18 @@
 package com.cryptonita.app.security.utils;
 
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
 
 @Component
+@AllArgsConstructor
 public class AuthenticationFailureHandler implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
     @Autowired
@@ -21,7 +25,6 @@ public class AuthenticationFailureHandler implements ApplicationListener<Authent
     @SneakyThrows
     @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent e) {
-        System.out.println("woww");
         final String xfHeader = request.getHeader("X-Forwarded-For");
         if (xfHeader == null) {
             loginAttemptsService.loginFailed(request.getRemoteAddr());

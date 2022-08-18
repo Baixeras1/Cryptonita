@@ -32,7 +32,8 @@ public class LoginAttemptsService {
     }
 
     public boolean isBlocked(String key) throws ExecutionException {
-        return attemptsCache.get(key) >= MAX_ATTEMPT;
-    }
 
+        return attemptsCache.get(key) >= MAX_ATTEMPT;
+
+    }
 }
