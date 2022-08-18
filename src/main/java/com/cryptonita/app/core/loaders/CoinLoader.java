@@ -2,7 +2,7 @@ package com.cryptonita.app.core.loaders;
 
 import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
-import com.cryptonita.app.integrationv2.services.ICoinService;
+import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 public class CoinLoader {
 
     private final ICoinProvider coinProvider;
-    private final ICoinService coinService;
+    private final ICoinIntegrationService coinService;
 
     /**
      * Retrieves all the coins info from an external api and saves

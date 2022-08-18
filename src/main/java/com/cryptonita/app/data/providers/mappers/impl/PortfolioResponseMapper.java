@@ -4,6 +4,7 @@ import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.CoinDetailsDTO;
 import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
 import com.cryptonita.app.dto.data.response.WalletResponseDto;
+import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,9 +14,9 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Component
-public class PorfolioResponseMapper implements IMapper<Map<String,WalletResponseDto>, PorfolioResponseDTO> {
+public class PortfolioResponseMapper implements IMapper<Map<String,WalletResponseDto>, PorfolioResponseDTO> {
 
-    private final ICoinMarketService marketService;
+    private final ICoinIntegrationService marketService;
 
     @Override
     public PorfolioResponseDTO mapToDto(Map<String, WalletResponseDto> wallets) {

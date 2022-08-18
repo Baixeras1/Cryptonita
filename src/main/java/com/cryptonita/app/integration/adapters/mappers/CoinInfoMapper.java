@@ -1,4 +1,4 @@
-package com.cryptonita.app.integrationv2.mappers;
+package com.cryptonita.app.integration.adapters.mappers;
 
 import com.cryptonita.app.dto.integration.CoinInfoIntegrationDTO;
 import com.cryptonita.app.integration.adapters.mappers.AdapterMapper;

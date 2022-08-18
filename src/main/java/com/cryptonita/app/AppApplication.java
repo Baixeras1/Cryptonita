@@ -9,7 +9,7 @@ import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.integration.CoinInfoDTO;
 import com.cryptonita.app.dto.data.request.RegisterRequestDTO;
-import com.cryptonita.app.integration.adapters.ICoinMarketAdapterV2;
+import com.cryptonita.app.integration.adapters.ICoinMarketAdapter;
 import com.cryptonita.app.integration.websocket.CoinCapConsumer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -39,6 +39,7 @@ public class AppApplication {
             ICoinMarketAdapterV2 iCoinMarketAdapterV2,
             IUserProvider userProvider,
             CoinCapConsumer coinCapConsumer
+            ICoinMarketAdapter iCoinMarketAdapter
     ) {
         return (args) -> {
             coinCapConsumer.start(); // Starts websocket

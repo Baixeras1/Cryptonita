@@ -1,6 +1,7 @@
-package com.cryptonita.app.integrationv2.adapters.impl;
+package com.cryptonita.app.integration.adapters.impl;
 
 import com.cryptonita.app.dto.integration.CoinInfoIntegrationDTO;
+import com.cryptonita.app.integration.adapters.ICoinInfoAdapter;
 import com.cryptonita.app.integration.adapters.mappers.AdapterMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @AllArgsConstructor
-public class CoinInfoAdapterImpl implements com.cryptonita.app.integrationv2.adapters.ICoinInfoAdapter {
+public class CoinInfoAdapterImpl implements ICoinInfoAdapter {
 
     private static final WebClient webclient = WebClient.builder()
             .baseUrl("https://api.coingecko.com/api/v3/coins/")

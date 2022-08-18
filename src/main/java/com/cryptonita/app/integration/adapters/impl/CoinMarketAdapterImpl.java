@@ -1,23 +1,20 @@
 package com.cryptonita.app.integration.adapters.impl;
 
 import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
-import com.cryptonita.app.dto.integration.HistoryInfoDTO;
-import com.cryptonita.app.integration.adapters.ICoinMarketAdapterV2;
+import com.cryptonita.app.integration.adapters.ICoinMarketAdapter;
 import com.cryptonita.app.integration.adapters.mappers.AdapterMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class CoinMarketAdapterImplV2 implements ICoinMarketAdapterV2 {
+public class CoinMarketAdapterImpl implements ICoinMarketAdapter {
 
     private static final String URL = "https://api.coingecko.com/api/v3/coins/markets";
 

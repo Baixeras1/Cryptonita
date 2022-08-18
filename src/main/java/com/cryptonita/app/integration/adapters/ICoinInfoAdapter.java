@@ -1,4 +1,4 @@
-package com.cryptonita.app.integrationv2.adapters;
+package com.cryptonita.app.integration.adapters;
 
 import com.cryptonita.app.dto.integration.CoinInfoIntegrationDTO;
 import lombok.AllArgsConstructor;

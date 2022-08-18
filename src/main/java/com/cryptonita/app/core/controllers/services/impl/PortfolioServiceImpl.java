@@ -8,7 +8,6 @@ import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.data.response.WalletResponseDto;
-import com.cryptonita.app.integration.services.ICoinMarketService;
 import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
