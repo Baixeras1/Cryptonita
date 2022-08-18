@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Table;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +53,15 @@ public class CoinProviderImpl implements ICoinProvider {
     }
 
     @Override
+    public List<CoinResponseDTO> getCoins(String... ids) {
+        Set<String> idsToSearch = Arrays.stream(ids).collect(Collectors.toSet());
+
+        return getAllCoins().stream()
+                .filter(responseDTO -> idsToSearch.contains(responseDTO.coinID))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     //@Transactional
     public CoinResponseDTO deleteByName(String name) {
         CoinModel coin = coinDAO.findByName(name)
@@ -68,10 +80,10 @@ public class CoinProviderImpl implements ICoinProvider {
     }
 
     @Override
-    public synchronized CoinResponseDTO getCoinById(long id) {
-        return coinDAO.findById(id)
+    public synchronized CoinResponseDTO getCoinById(String coinID) {
+        return coinDAO.findByCoinID(coinID)
                 .map(responseDTOIMapper::mapToDto)
-                .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, id)));
+                .orElseThrow(() -> new CoinNotFoundException(String.format(NO_COIN_FOUND, coinID)));
     }
 
     @Override

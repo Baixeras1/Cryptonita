@@ -22,12 +22,17 @@ public interface ICoinProvider {
      */
     List<CoinResponseDTO> getAllCoins();
 
+    default List<CoinResponseDTO> getCoins(String ids) {
+        return getCoins(ids.split(","));
+    }
+
+    List<CoinResponseDTO> getCoins(String... ids);
+
     /**
      * This method deletes a coin by name
      * @param  name of coin
      * @return the deleted coin
      */
-    @Transactional
     CoinResponseDTO deleteByName(String name);
 
     /**
@@ -42,7 +47,7 @@ public interface ICoinProvider {
      * @param id of coin to search
      * @return The called coin
      */
-    CoinResponseDTO getCoinById(long id);
+    CoinResponseDTO getCoinById(String coinID);
 
     /**
      * This method get a coin by its rank
@@ -64,11 +69,11 @@ public interface ICoinProvider {
      * @param id the id of the coin to search
      * @return true if exists, false if not
      */
-    default boolean exists(long id) {
-        return Validate.testAndTry(() -> getCoinById(id));
+    default boolean exists(String coinID) {
+        return Validate.testAndTry(() -> getCoinById(coinID));
     }
 
-    default boolean exists(String name) {
+    default boolean existsByName(String name) {
         return Validate.testAndTry(() -> getCoinByName(name));
     }
 
@@ -78,7 +83,7 @@ public interface ICoinProvider {
      * @param rank the rank of the coin to search
      * @return true if exists, false if not
      */
-    default boolean exists(int rank) {
+    default boolean existsByRank(int rank) {
         return Validate.testAndTry(() -> getByRank(rank));
     }
 

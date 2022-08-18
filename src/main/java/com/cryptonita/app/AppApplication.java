@@ -35,11 +35,9 @@ public class AppApplication {
             CoinLoader coinLoader,
             UsersLoader usersLoader,
             IAccountProvider accountProvider,
-            IPortfolioService porfolioService,
-            ICoinMarketAdapterV2 iCoinMarketAdapterV2,
+            IPortfolioService portfolioService,
             IUserProvider userProvider,
             CoinCapConsumer coinCapConsumer
-            ICoinMarketAdapter iCoinMarketAdapter
     ) {
         return (args) -> {
             coinCapConsumer.start(); // Starts websocket

@@ -24,7 +24,7 @@ public class CoinManyWithMetaMapper implements IMapper<List<CoinResponseDTO>, Fl
     @Override
     public Flux<CoinDto> mapToDto(List<CoinResponseDTO> coinResponseDTOS) {
         String coins = coinResponseDTOS.stream()
-                .map(responseDTO -> responseDTO.name)
+                .map(responseDTO -> responseDTO.coinID)
                 .collect(Collectors.joining(","));
 
         Map<String, CoinResponseDTO> map = mapCoins(coinResponseDTOS);

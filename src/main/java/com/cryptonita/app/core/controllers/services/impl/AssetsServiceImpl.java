@@ -28,13 +28,25 @@ public class AssetsServiceImpl implements IAssetsService {
     private final IMapper<List<CoinResponseDTO>, Flux<CoinDto>> coinDTOManyMapper;
 
     @Override
-    public Flux<CoinDto> getAll() {
-        return coinDTOManyMapper.mapToDto(coinProvider.getAllCoins());
+    public List<CoinResponseDTO> list() {
+        return coinProvider.getAllCoins();
     }
 
     @Override
-    public Mono<CoinDto> getById(long id) {
-        return coinDTOMapper.mapToDto(coinProvider.getCoinById(id));
+    public Flux<CoinDto> getAll(Optional<String> ids) {
+        return ids
+                .map(s -> coinDTOManyMapper.mapToDto(coinProvider.getCoins(s)))
+                .orElse(coinDTOManyMapper.mapToDto(coinProvider.getAllCoins()));
+    }
+
+    @Override
+    public Mono<CoinDto> getById(String coinID) {
+        return coinDTOMapper.mapToDto(coinProvider.getCoinById(coinID));
+    }
+
+    @Override
+    public Mono<CoinDto> getByRank(int rank) {
+        return coinDTOMapper.mapToDto(coinProvider.getByRank(rank));
     }
 
     @Override
@@ -50,7 +62,7 @@ public class AssetsServiceImpl implements IAssetsService {
     @Override
     public Flux<HistoryInfoDTO> getAllHistory(String id, String vs_currency, String days, Optional<String> interval) {
         if (!interval.isPresent())
-            return coinService.getHistoryOfCoin(id, vs_currency,days);
+            return coinService.getHistoryOfCoin(id, vs_currency, days);
 
         return coinService.getHistoryOfCoin(id, vs_currency, days, interval.get());
     }
