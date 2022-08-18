@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @ToString
-public class CoinInfoIntegrationDTO {
+public class CoinMetadataDTO {
 
     public final String id;
     public final String symbol;

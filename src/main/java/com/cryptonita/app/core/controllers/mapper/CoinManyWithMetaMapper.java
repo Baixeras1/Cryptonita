@@ -1,10 +1,10 @@
 package com.cryptonita.app.core.controllers.mapper;
 
+import com.cryptonita.app.core.utils.MapperFactoryService;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.controller.CoinDto;
+import com.cryptonita.app.dto.controller.CoinDTO;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.integration.CoinMarketDTO;
-import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
 import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
-public class CoinManyWithMetaMapper implements IMapper<List<CoinResponseDTO>, Flux<CoinDto>> {
+public class CoinManyWithMetaMapper implements IMapper<List<CoinResponseDTO>, Flux<CoinDTO>> {
 
     private final ICoinIntegrationService coinService;
 
     @Override
-    public Flux<CoinDto> mapToDto(List<CoinResponseDTO> coinResponseDTOS) {
+    public Flux<CoinDTO> mapToDto(List<CoinResponseDTO> coinResponseDTOS) {
         String coins = coinResponseDTOS.stream()
                 .map(responseDTO -> responseDTO.coinID)
                 .collect(Collectors.joining(","));
@@ -34,7 +34,7 @@ public class CoinManyWithMetaMapper implements IMapper<List<CoinResponseDTO>, Fl
     }
 
     @Override
-    public List<CoinResponseDTO> mapToEntity(Flux<CoinDto> coinDtoFlux) {
+    public List<CoinResponseDTO> mapToEntity(Flux<CoinDTO> coinDtoFlux) {
         throw new UnsupportedOperationException();
     }
 
@@ -45,13 +45,16 @@ public class CoinManyWithMetaMapper implements IMapper<List<CoinResponseDTO>, Fl
         return map;
     }
 
-    private CoinDto mergeCoinAndMetadata(CoinResponseDTO responseDTO, CoinMarketIntegrationDTO marketDTO) {
-        return CoinDto.builder()
+    private CoinDTO mergeCoinAndMetadata(CoinResponseDTO responseDTO, CoinMarketDTO marketDTO) {
+        CoinDTO.CoinMarketDTO marketControllerDTO = new CoinDTO.CoinMarketDTO();
+        MapperFactoryService.doMap(marketDTO, marketControllerDTO);
+
+        return CoinDTO.builder()
                 .id(responseDTO.coinID)
                 .name(responseDTO.name)
                 .symbol(responseDTO.symbol)
                 .rank(responseDTO.id)
-                .marketData(marketDTO)
+                .marketData(marketControllerDTO)
                 .build();
     }
 

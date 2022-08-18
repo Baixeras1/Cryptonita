@@ -1,6 +1,6 @@
 package com.cryptonita.app.integration.adapters.impl;
 
-import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
+import com.cryptonita.app.dto.integration.CoinMarketDTO;
 import com.cryptonita.app.integration.adapters.ICoinMarketAdapter;
 import com.cryptonita.app.integration.adapters.mappers.AdapterMapper;
 import lombok.AllArgsConstructor;
@@ -25,10 +25,10 @@ public class CoinMarketAdapterImpl implements ICoinMarketAdapter {
             .baseUrl(URL)
             .build();
 
-    private final AdapterMapper<CoinMarketIntegrationDTO> mapper;
+    private final AdapterMapper<CoinMarketDTO> mapper;
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getManyCoins(String vs_currency) {
+    public Flux<CoinMarketDTO> getManyCoins(String vs_currency) {
         return webClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
@@ -42,8 +42,8 @@ public class CoinMarketAdapterImpl implements ICoinMarketAdapter {
 
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getManyCoinsMetadata(String vs_currency, String ids, String category, String order, Integer per_page,
-                                                               Integer page, Boolean sparkline, String price_change_percentage) {
+    public Flux<CoinMarketDTO> getManyCoinsMetadata(String vs_currency, String ids, String category, String order, Integer per_page,
+                                                    Integer page, Boolean sparkline, String price_change_percentage) {
         return webClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
@@ -63,7 +63,7 @@ public class CoinMarketAdapterImpl implements ICoinMarketAdapter {
     }
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String vs_currency, String ids) {
+    public Flux<CoinMarketDTO> getManyCoinsByIds(String vs_currency, String ids) {
         return webClient.get()
                 .uri(uriBuilder ->
                         uriBuilder

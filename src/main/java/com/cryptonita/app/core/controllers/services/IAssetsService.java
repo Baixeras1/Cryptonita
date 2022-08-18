@@ -1,9 +1,9 @@
 package com.cryptonita.app.core.controllers.services;
 
-import com.cryptonita.app.dto.controller.CoinDto;
+import com.cryptonita.app.dto.controller.CoinDTO;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.integration.CandleInfoDTO;
-import com.cryptonita.app.dto.integration.CoinInfoDTO;
+import com.cryptonita.app.dto.integration.CoinMetadataDTO;
 import com.cryptonita.app.dto.integration.HistoryInfoDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -19,15 +19,21 @@ public interface IAssetsService {
 
      List<CoinResponseDTO> list();
 
-     Flux<CoinDto> getAll(Optional<String> ids);
+     Mono<CoinMetadataDTO> getMetadata(String coinID);
 
-     Mono<CoinDto> getById(String coinID);
+     Flux<CoinMetadataDTO> getMetadata(String... coinIDs);
 
-     Mono<CoinDto> getByRank(int rank);
+     Flux<CoinDTO> getAll();
 
-     Mono<CoinDto> getBySymbol(String symbol);
+     Flux<CoinDTO> getAll(String ids);
 
-     Mono<CoinDto> getByName(String name);
+     Mono<CoinDTO> getById(String coinID);
+
+     Mono<CoinDTO> getByRank(int rank);
+
+     Mono<CoinDTO> getBySymbol(String symbol);
+
+     Mono<CoinDTO> getByName(String name);
 
      Flux<HistoryInfoDTO> getAllHistory(String id, String vs_currency, String days, Optional<String> interval);
 

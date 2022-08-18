@@ -19,47 +19,47 @@ public class CoinIntegrationServiceImpl implements ICoinIntegrationService {
     private final IHistoryAdapter historyAdapter;
 
     @Override
-    public Mono<CoinInfoIntegrationDTO> getInfo(String coinID) {
+    public Mono<CoinMetadataDTO> getInfo(String coinID) {
         return infoAdapter.get(coinID);
     }
 
     @Override
-    public Flux<CoinInfoIntegrationDTO> getAllInfos(String... coinIDs) {
+    public Flux<CoinMetadataDTO> getAllInfos(String... coinIDs) {
         return infoAdapter.get(coinIDs);
     }
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getAllMarkets() {
+    public Flux<CoinMarketDTO> getAllMarkets() {
         return coinMarketAdapter.getManyCoins();
     }
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getAllMarkets(String vs_currency) {
+    public Flux<CoinMarketDTO> getAllMarkets(String vs_currency) {
         return coinMarketAdapter.getManyCoins(vs_currency);
     }
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getAllMarkets(String vs_currency, String ids, String category, String order, Integer per_page, Integer page, Boolean sparkline, String price_change_percentage) {
+    public Flux<CoinMarketDTO> getAllMarkets(String vs_currency, String ids, String category, String order, Integer per_page, Integer page, Boolean sparkline, String price_change_percentage) {
         return coinMarketAdapter.getManyCoinsMetadata(vs_currency, ids, category, order, per_page, page, sparkline, price_change_percentage);
     }
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getAllMarkets(String vs_currency, String... ids) {
+    public Flux<CoinMarketDTO> getAllMarkets(String vs_currency, String... ids) {
         return coinMarketAdapter.getManyCoinsByIds(vs_currency, ids);
     }
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getAllMarkets(String vs_currency, String ids) {
+    public Flux<CoinMarketDTO> getAllMarkets(String vs_currency, String ids) {
         return coinMarketAdapter.getManyCoinsByIds(vs_currency, ids);
     }
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getAllMarketByIds(String ids) {
+    public Flux<CoinMarketDTO> getAllMarketByIds(String ids) {
         return coinMarketAdapter.getManyCoinsByIds(ids);
     }
 
     @Override
-    public Flux<CoinMarketIntegrationDTO> getAllMarketByIds(String... ids) {
+    public Flux<CoinMarketDTO> getAllMarketByIds(String... ids) {
         return coinMarketAdapter.getManyCoinsByIds(ids);
     }
 
