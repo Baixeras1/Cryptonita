@@ -2,6 +2,7 @@ package com.cryptonita.app.data.providers.impl;
 
 import com.cryptonita.app.data.daos.*;
 import com.cryptonita.app.data.entities.*;
+import com.cryptonita.app.data.entities.enums.UserType;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.request.UserRegisterDTO;
@@ -59,11 +60,9 @@ public class UserProviderImpl implements IUserProvider {
         UserModel user = registerDTOIMapper.mapToEntity(dto);
         user.setPassword(encoder.encode(user.getPassword()));
 
-        user = userDao.save(user);
 
-        return responseDTOIMapper.mapToDto(user);
+        return responseDTOIMapper.mapToDto(userDao.save(user));
     }
-
 
 
     @Override
@@ -85,6 +84,18 @@ public class UserProviderImpl implements IUserProvider {
         return userDao.findByMail(mail)
                 .map(responseDTOIMapper::mapToDto)
                 .orElseThrow(() -> new UserNotFoundException(USER_NOT_EXISTS));
+    }
+
+    @Override
+    public synchronized UserResponseDTO changeUserType(String mail, UserType userType) {
+        UserModel model = userDao.findByMail(mail).orElse(null);
+
+        if (model == null)
+            throw new UserNotFoundException(USER_NOT_EXISTS);
+
+        model.setType(userType);
+
+        return responseDTOIMapper.mapToDto(userDao.save(model));
     }
 
     @Override
@@ -201,19 +212,19 @@ public class UserProviderImpl implements IUserProvider {
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
         CoinModel coin = coinDAO.findByName(coinStr)
-                .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coinStr)));
+                .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS, coinStr)));
 
         if (favoritesDao.findByUser_UsernameAndCoinName(name, coinStr).isPresent())
-            throw new FavoritesNotFoundException(String.format(FAVORIES_ALREADY_EXISTS,name,coinStr));
+            throw new FavoritesNotFoundException(String.format(FAVORIES_ALREADY_EXISTS, name, coinStr));
 
         FavouritesModel favourite = FavouritesModel.builder()
                 .user(user)
                 .coin(coin)
                 .build();
 
-       favourite = favoritesDao.save(favourite);
+        favourite = favoritesDao.save(favourite);
 
-       return favoritesResponseDtoIMapper.mapToDto(favourite);
+        return favoritesResponseDtoIMapper.mapToDto(favourite);
     }
 
     @Override
@@ -222,11 +233,11 @@ public class UserProviderImpl implements IUserProvider {
                 .orElseThrow(() -> new UserNotFoundException(USER_ALREADY_EXISTS));
 
         CoinModel coin = coinDAO.findByName(coinStr)
-                .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coinStr)));
+                .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS, coinStr)));
 
         FavouritesModel favourite = favoritesDao.findByUser_UsernameAndCoinName(name, coinStr).orElse(null);
         if (favourite == null)
-            throw new FavoritesNotFoundException(String.format(FAVORIES_ALREADY_EXISTS,name,coinStr));
+            throw new FavoritesNotFoundException(String.format(FAVORIES_ALREADY_EXISTS, name, coinStr));
 
         favoritesDao.delete(favourite);
 

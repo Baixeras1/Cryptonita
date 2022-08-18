@@ -2,6 +2,8 @@ package com.cryptonita.app.core.controllers;
 
 import com.cryptonita.app.core.controllers.services.IAdminService;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
+import com.cryptonita.app.data.entities.enums.UserRole;
+import com.cryptonita.app.data.entities.enums.UserType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,21 @@ public class AdminController {
     public RestResponse deleteCoin(String name) {
         return RestResponse.encapsulate(adminService.deleteCoin(name));
     }
+
+    @PostMapping("/users/createUser")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Create new user")
+    public RestResponse createUser(String mail, String username, UserRole userRole, UserType userType) {
+        return RestResponse.encapsulate(adminService.createUser(mail, username, userRole, userType));
+    }
+
+    @PutMapping("/users/updateUser")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Create new user")
+    public RestResponse updateUserType(String mail, UserType userType) {
+        return RestResponse.encapsulate(adminService.changeUserType(mail, userType));
+    }
+
 
     @PostMapping("/users/ban")
     @ResponseStatus(HttpStatus.OK)

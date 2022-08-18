@@ -1,5 +1,6 @@
 package com.cryptonita.app.data.providers;
 
+import com.cryptonita.app.data.entities.enums.UserType;
 import com.cryptonita.app.dto.data.request.UserRegisterDTO;
 import com.cryptonita.app.dto.data.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.data.response.FavoritesResponseDto;
@@ -22,6 +23,9 @@ public interface IUserProvider {
     UserResponseDTO getByName(String name);
 
     UserResponseDTO getByEmail(String mail);
+
+    UserResponseDTO changeUserType(String mail, UserType userType);
+
 
     /**
      * Convenient method to check if a raw password matches the user hashed stored password
