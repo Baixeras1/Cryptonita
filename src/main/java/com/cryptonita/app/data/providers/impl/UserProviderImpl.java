@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -142,8 +143,8 @@ public class UserProviderImpl implements IUserProvider {
 
         BannedUsersModel bannedUser = BannedUsersModel.builder()
                 .user(user)
-                .bannedAt(LocalDate.now())
-                .expiresAt(LocalDate.now().plusMonths(1))
+                .bannedAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMonths(1))
                 .build();
 
         bannedUser = bannedUserDao.save(bannedUser);
@@ -156,7 +157,7 @@ public class UserProviderImpl implements IUserProvider {
      */
     private BannedUserResponseDTO innerUnbanUser(BannedUsersModel bannedUser) {
         if (bannedUser == null)
-            new BannedUserNotFoundException(BANED_USER_ALREADY_EXISTS);
+            throw new BannedUserNotFoundException(BANED_USER_ALREADY_EXISTS);
 
         bannedUserDao.delete(bannedUser);
 

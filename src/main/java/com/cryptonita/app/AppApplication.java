@@ -61,6 +61,8 @@ public class AppApplication {
             //registerProvider.log(registerRequestDTO);
 
             userProvider.banUser("antonio.borja@optimissa.com");
+            log.info("" + userProvider.isBannedByUsername("antonio.borja"));
+
         };
     }
 

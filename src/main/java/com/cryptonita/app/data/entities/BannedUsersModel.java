@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -21,12 +22,12 @@ public class BannedUsersModel {
     @JoinColumn(name = "USER_ID")
     private UserModel user;
 
-    private LocalDate bannedAt;
+    private LocalDateTime bannedAt;
 
-    private LocalDate expiresAt;
+    private LocalDateTime expiresAt;
 
     @Builder
-    public BannedUsersModel(LocalDate bannedAt, LocalDate expiresAt, UserModel user) {
+    public BannedUsersModel(LocalDateTime bannedAt, LocalDateTime expiresAt, UserModel user) {
         this.bannedAt = bannedAt;
         this.expiresAt = expiresAt;
         this.user = user;
