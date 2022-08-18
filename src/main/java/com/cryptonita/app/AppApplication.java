@@ -4,6 +4,10 @@ import com.cryptonita.app.core.controllers.services.IPortfolioService;
 import com.cryptonita.app.core.loaders.CoinLoader;
 import com.cryptonita.app.core.loaders.UsersLoader;
 import com.cryptonita.app.data.providers.IAccountProvider;
+import com.cryptonita.app.data.providers.IRegisterProvider;
+import com.cryptonita.app.data.providers.IUserProvider;
+import com.cryptonita.app.dto.data.response.UserResponseDTO;
+import com.cryptonita.app.dto.integration.CoinInfoDTO;
 import com.cryptonita.app.dto.data.request.RegisterRequestDTO;
 import com.cryptonita.app.integration.adapters.ICoinMarketAdapterV2;
 import com.cryptonita.app.integration.websocket.CoinCapConsumer;
@@ -31,9 +35,10 @@ public class AppApplication {
             CoinLoader coinLoader,
             UsersLoader usersLoader,
             IAccountProvider accountProvider,
-            CoinCapConsumer coinCapConsumer,
             IPortfolioService porfolioService,
-            ICoinMarketAdapterV2 iCoinMarketAdapterV2
+            ICoinMarketAdapterV2 iCoinMarketAdapterV2,
+            IUserProvider userProvider,
+            CoinCapConsumer coinCapConsumer
     ) {
         return (args) -> {
             coinCapConsumer.start(); // Starts websocket
@@ -53,6 +58,10 @@ public class AppApplication {
                     .user("sergio.bernal")
                     .build();
 
+
+            //registerProvider.log(registerRequestDTO);
+
+            userProvider.banUser("antonio.borja@optimissa.com");
         };
     }
 
