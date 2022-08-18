@@ -2,8 +2,11 @@ package com.cryptonita.app.core.controllers.services.impl;
 
 
 import com.cryptonita.app.core.controllers.services.IAdminService;
+import com.cryptonita.app.data.entities.enums.UserRole;
+import com.cryptonita.app.data.entities.enums.UserType;
 import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
+import com.cryptonita.app.dto.data.request.UserRegisterDTO;
 import com.cryptonita.app.dto.data.response.BannedUserResponseDTO;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
@@ -49,4 +52,22 @@ public class AdminServiceImpl implements IAdminService {
     public UserResponseDTO getUserById(long id) {
         return userProvider.getById(id);
     }
+
+    @Override
+    public UserResponseDTO createUser(String mail, String username, UserRole userRole, UserType userType) {
+        return userProvider.register(UserRegisterDTO.builder()
+                        .mail(mail)
+                        .username(username)
+                        .role(userRole)
+                        .password("12345")
+                        .type(userType)
+                        .build());
+    }
+
+    @Override
+    public UserResponseDTO changeUserType(String mail, UserType userType) {
+        return userProvider.changeUserType(mail, userType);
+    }
+
+
 }
