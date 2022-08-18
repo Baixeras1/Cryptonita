@@ -8,7 +8,7 @@ import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.dto.data.response.WalletResponseDto;
-import com.cryptonita.app.integration.services.ICoinMarketService;
+import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class PortfolioServiceImpl implements IPortfolioService {
 
     private IUserProvider userProvider;
     private final IAccountProvider acountProvider;
-    private final ICoinMarketService marketService;
+    private final ICoinIntegrationService coinIntegrationService;
     private final SecurityContextHelper securityContextHelper;
 
     private final IConvertorService convertorService;

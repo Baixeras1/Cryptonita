@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AutentificationServiceImpl implements IAutentificationService {
-
+public class AuthenticationServiceImpl implements IAutentificationService {
 
     UserProviderImpl userProvider;
 
@@ -26,5 +25,15 @@ public class AutentificationServiceImpl implements IAutentificationService {
                 .build();
 
         return userProvider.register(newUser);
+    }
+
+    @Override
+    public boolean login(String username, String password) {
+        return userProvider.matchesPasswordByUsername(username, password);
+    }
+
+    @Override
+    public boolean loginv2(String mail, String password) {
+        return userProvider.matchesPassword(mail, password);
     }
 }

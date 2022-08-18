@@ -4,7 +4,8 @@ import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.controller.CoinDto;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.integration.CoinMarketDTO;
-import com.cryptonita.app.integration.services.ICoinMarketService;
+import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
+import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -13,11 +14,12 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class CoinWithMetaMapper implements IMapper<CoinResponseDTO, Mono<CoinDto>> {
 
-    private final ICoinMarketService metadataService;
+    private final ICoinIntegrationService coinService;
 
     @Override
     public Mono<CoinDto> mapToDto(CoinResponseDTO coinResponseDTO) {
-        return metadataService.getCoinMetadataByName(coinResponseDTO.name)
+        return coinService.getAllMarketByIds(coinResponseDTO.coinID)
+                .single()
                 .map(coinMetadataDTO -> mergeCoinAndMetadata(coinResponseDTO, coinMetadataDTO));
     }
 
@@ -26,19 +28,13 @@ public class CoinWithMetaMapper implements IMapper<CoinResponseDTO, Mono<CoinDto
         throw new UnsupportedOperationException();
     }
 
-    private CoinDto mergeCoinAndMetadata(CoinResponseDTO responseDTO, CoinMarketDTO metadataDTO) {
+    private CoinDto mergeCoinAndMetadata(CoinResponseDTO responseDTO, CoinMarketIntegrationDTO marketDTO) {
         return CoinDto.builder()
-                .id(responseDTO.id)
-                .symbol(responseDTO.symbol)
+                .id(responseDTO.coinID)
                 .name(responseDTO.name)
-                .logo(metadataDTO.logo)
-                .rank(responseDTO.rank)
-                .supply(metadataDTO.supply)
-                .maxSupply(metadataDTO.maxSupply)
-                .marketCapUsd(metadataDTO.marketCapUsd)
-                .totalVolumen(metadataDTO.totalVolume)
-                .priceUsd(metadataDTO.priceUsd)
-                .changePercent24Hr(metadataDTO.changePercent24Hr)
+                .symbol(responseDTO.symbol)
+                .rank(responseDTO.id)
+                .marketData(marketDTO)
                 .build();
     }
 

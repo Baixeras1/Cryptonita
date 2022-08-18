@@ -17,9 +17,13 @@ import java.util.Optional;
 
 public interface IAssetsService {
 
-     Flux<CoinDto> getAll();
+     List<CoinResponseDTO> list();
 
-     Mono<CoinDto> getById(long id);
+     Flux<CoinDto> getAll(Optional<String> ids);
+
+     Mono<CoinDto> getById(String coinID);
+
+     Mono<CoinDto> getByRank(int rank);
 
      Mono<CoinDto> getBySymbol(String symbol);
 

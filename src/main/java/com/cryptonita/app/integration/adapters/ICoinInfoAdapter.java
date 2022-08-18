@@ -1,41 +1,52 @@
 package com.cryptonita.app.integration.adapters;
 
-import com.cryptonita.app.dto.integration.CoinInfoDTO;
+import com.cryptonita.app.dto.integration.CoinInfoIntegrationDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.SneakyThrows;
+import org.springframework.web.util.UriBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
+import java.net.URI;
+
 public interface ICoinInfoAdapter {
 
-    /**
-     * Retrieves the most important cryptos and the
-     * basic information of them
-     *
-     * @return a reactive flux with the dtos carrying the info
-     */
-    Flux<CoinInfoDTO> getAll();
+    default Mono<CoinInfoIntegrationDTO> get(String coinID) {
+        return get(coinID, CoinInfoOptions.builder().build());
+    }
 
-    /**
-     * Retrieves the information of one crypto in specific
-     *
-     * @param symbol the symbol of the coin to search
-     * @return a reactive mono with the information wrapped in a dto
-     */
-    Mono<CoinInfoDTO> getBySymbol(String symbol);
+    Mono<CoinInfoIntegrationDTO> get(String coinID, CoinInfoOptions options);
 
-    /**
-     * Retrieves the information of one crypto in specific
-     *
-     * @param symbol the name of the coin to search
-     * @return a reactive mono with the information wrapped in a dto
-     */
-    Mono<CoinInfoDTO> getByName(String symbol);
+    default Flux<CoinInfoIntegrationDTO> get(String... coinIDs) {
+        return get(CoinInfoOptions.builder().build(), coinIDs);
+    }
 
-    /**
-     * Retrieves the information of one crypto in specific
-     *
-     * @param rank the rank of the coin to search
-     * @return a reactive mono with the information wrapped in a dto
-     */
-    Mono<CoinInfoDTO> getByRank(int rank);
+    default Flux<CoinInfoIntegrationDTO> get(CoinInfoOptions option, String... coinIDs) {
+        return Flux.fromArray(coinIDs).flatMap(s -> get(s, option));
+    }
+
+    @AllArgsConstructor
+    @Builder
+    final class CoinInfoOptions {
+
+        public final boolean localization;
+        public final boolean tickers;
+        public final boolean market_data;
+        public final boolean community_data;
+        public final boolean sparkline;
+        public final boolean developer_data;
+
+        @SneakyThrows
+        public URI queryParams(UriBuilder builder) {
+            for (Field declaredField : CoinInfoOptions.class.getDeclaredFields()) {
+                builder.queryParam(declaredField.getName(), declaredField.get(this));
+            }
+
+            return builder.build();
+        }
+
+    }
 
 }

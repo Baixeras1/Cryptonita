@@ -1,35 +1,35 @@
 package com.cryptonita.app.integration.adapters;
 
-import com.cryptonita.app.dto.integration.CoinMarketDTO;
+import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public interface ICoinMarketAdapter {
 
-    /**
-     * Returns the metadata of a certain coin
-     *
-     * @param symbol the symbol of the coin to search the metadata of
-     * @return the dto with the metadata info
-     */
-    Mono<CoinMarketDTO> getCoinMetadataBySymbol(String symbol);
+    default Flux<CoinMarketIntegrationDTO> getManyCoins() {
+        return getManyCoins("usd");
+    }
 
-    /**
-     * Returns the metadata of a certain coin
-     *
-     * @param name the name of the coin to search the metadata of
-     * @return the dto with the metadata info
-     */
-    Mono<CoinMarketDTO> getCoinMetadataByName(String name);
+    Flux<CoinMarketIntegrationDTO> getManyCoins(String vs_currency);
 
-    /**
-     * Returns the metadata of a certain coin
-     *
-     * @param rank the rank of the coin to search the metadata of
-     * @return the dto with the metadata info
-     */
-    Mono<CoinMarketDTO> getCoinMetadata(int rank);
+    Flux<CoinMarketIntegrationDTO> getManyCoinsMetadata(String vs_currency, String ids, String category, String order, Integer per_page,
+                                                        Integer page, Boolean sparkline, String price_change_percentage);
 
-    Flux<CoinMarketDTO> getManyCoinsMetadata(String manyDtos);
+    default Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String vs_currency, String... ids) {
+        return getManyCoinsByIds(vs_currency, String.join(",", ids));
+    }
+
+    Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String vs_currency, String ids);
+
+    default Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String ids) {
+        return getManyCoinsByIds("usd", ids);
+    }
+
+    default Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String... ids) {
+        return getManyCoinsByIds("usd", ids);
+    }
+
 
 }

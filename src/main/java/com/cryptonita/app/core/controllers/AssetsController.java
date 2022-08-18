@@ -14,31 +14,38 @@ import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/assets")
+@RequestMapping("/api/")
 @CrossOrigin("*")
 @Tag(name = "Assets")
 public class AssetsController {
 
     private final IAssetsService assetsService;
 
-    @GetMapping("/getAll")
+    @GetMapping("assets/list")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get current data (name, price, market, ... including exchange tickers) for all the coins supported")
-    public Mono<RestResponse> getAll() {
-        return assetsService.getAll()
+    public RestResponse list() {
+        return RestResponse.encapsulate(assetsService.list());
+    }
+
+    @GetMapping("markets")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get current data (name, price, market, ... including exchange tickers) for all the coins supported")
+    public Mono<RestResponse> getAll(@RequestParam(required = false) Optional<String> ids) {
+        return assetsService.getAll(ids)
                 .collectList()
                 .map(RestResponse::encapsulate);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("markets/getById/{coinID}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get current data (name, price, market, ... including exchange tickers) for a coin by id")
-    public Mono<RestResponse> getById(@PathVariable long id) {
-        return assetsService.getById(id)
+    public Mono<RestResponse> getById(@PathVariable String coinID) {
+        return assetsService.getById(coinID)
                 .map(RestResponse::encapsulate);
     }
 
-    @GetMapping("/getByName/{name}")
+    @GetMapping("markets/getByName/{name}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get current data (name, price, market, ... including exchange tickers) for a coin by name")
     public Mono<RestResponse> getByName(@PathVariable String name) {
@@ -46,7 +53,7 @@ public class AssetsController {
                 .map(RestResponse::encapsulate);
     }
 
-    @GetMapping("/getBySymbol/{symbol}")
+    @GetMapping("markets/getBySymbol/{symbol}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get current data (name, price, market, ... including exchange tickers) for a coin by symbol")
     public Mono<RestResponse> getBySymbol(@PathVariable String symbol) {
@@ -54,7 +61,15 @@ public class AssetsController {
                 .map(RestResponse::encapsulate);
     }
 
-    @GetMapping("/getHistory")
+    @GetMapping("markets/getByRank/{rank}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Get current data (name, price, market, ... including exchange tickers) for a coin by symbol")
+    public Mono<RestResponse> getBySymbol(@PathVariable int rank) {
+        return assetsService.getByRank(rank)
+                .map(RestResponse::encapsulate);
+    }
+
+    @GetMapping("assets/getHistory")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get historical data (name, price, market, stats) at a given date for a coin")
     public Mono<RestResponse> getHistory(String id, String vs_currency,
@@ -66,7 +81,7 @@ public class AssetsController {
                 .map(RestResponse::encapsulate);
     }
 
-    @GetMapping("/getCandle")
+    @GetMapping("assets/getCandle")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get historical ohlc at a given date range for a coin")
     public Mono<RestResponse> getCandle(String id, String vs_currency, String days) {

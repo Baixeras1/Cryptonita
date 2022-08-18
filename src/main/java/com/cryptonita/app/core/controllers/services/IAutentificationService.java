@@ -5,6 +5,10 @@ import com.cryptonita.app.dto.data.response.UserResponseDTO;
 
 public interface IAutentificationService {
 
-    public UserResponseDTO register(UserRegisterDTO userRegisterDTO);
+    UserResponseDTO register(UserRegisterDTO userRegisterDTO);
+
+    boolean login(String username, String password);
+
+    boolean loginv2(String mail, String password);
 
 }

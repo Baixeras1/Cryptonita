@@ -4,7 +4,7 @@ import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.data.response.CoinDetailsDTO;
 import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
 import com.cryptonita.app.dto.data.response.WalletResponseDto;
-import com.cryptonita.app.integration.services.ICoinMarketService;
+import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Component
-public class PorfolioResponseMapper implements IMapper<Map<String,WalletResponseDto>, PorfolioResponseDTO> {
+public class PortfolioResponseMapper implements IMapper<Map<String,WalletResponseDto>, PorfolioResponseDTO> {
 
-    private final ICoinMarketService marketService;
+    private final ICoinIntegrationService coinIntegrationService;
 
     @Override
     public PorfolioResponseDTO mapToDto(Map<String, WalletResponseDto> wallets) {
@@ -44,13 +44,13 @@ public class PorfolioResponseMapper implements IMapper<Map<String,WalletResponse
                 .id(dto.getId())
                 .name(dto.getCoinName())
                 .quantity(dto.getQuantity())
-                .coinMarketDTO(marketService.getCoinMetadataByName(dto.getCoinName()).block())
+                .coinMarketIntegrationDTO(coinIntegrationService.getAllMarkets("usd",dto.getCoinName()).blockFirst())
                 .build();
     }
 
     public double calculateBalance(List<CoinDetailsDTO> coinDetailsDTOList) {
         return coinDetailsDTOList.stream()
-                .map(coinDetailsDTO -> coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketDTO().priceUsd)
+                .map(coinDetailsDTO -> coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketIntegrationDTO().getCurrent_price())
                 .reduce(Double::sum)
                 .orElse(0.0);
 
@@ -58,7 +58,7 @@ public class PorfolioResponseMapper implements IMapper<Map<String,WalletResponse
 
     private void calculateAllocation(List<CoinDetailsDTO> coinDetailsDTOList, double totalBalance) {
         for (CoinDetailsDTO coinDetailsDTO : coinDetailsDTOList) {
-            double individualPrice = coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketDTO().priceUsd;
+            double individualPrice = coinDetailsDTO.getQuantity() * coinDetailsDTO.getCoinMarketIntegrationDTO().getCurrent_price();
             double allocation = (individualPrice / totalBalance) * 100;
 
             coinDetailsDTO.setAllocation(allocation);
