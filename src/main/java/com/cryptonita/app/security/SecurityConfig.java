@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                     .and()
                 .csrf().disable()
-                .addFilterBefore(bannerUserFilter, BasicAuthenticationFilter.class)
+                .addFilterAfter(bannerUserFilter, BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api/**")
                 .hasAnyAuthority("ADMIN", "USER")
