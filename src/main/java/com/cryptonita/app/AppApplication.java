@@ -23,7 +23,7 @@ import java.time.LocalDate;
 
 @Slf4j
 @EnableWebSecurity
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class AppApplication {
 
     public static void main(String[] args) {
