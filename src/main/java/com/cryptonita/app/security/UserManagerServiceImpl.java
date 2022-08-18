@@ -24,12 +24,10 @@ public class UserManagerServiceImpl implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        //Call provider and perform authetificastion
+        if (!userProvider.existsByUsername(name) && !userProvider.matchesPasswordByUsername(name, password))
+            throw new BadCredentialsException("");
 
         UserResponseDTO dto = userProvider.getByName(name);
-
-        if (!userProvider.matchesPasswordByUsername(name, password))
-            throw new BadCredentialsException("");
 
         return new UsernamePasswordAuthenticationToken(dto,null, Collections.singletonList(dto.role::name));
     }
