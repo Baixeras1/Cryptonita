@@ -54,6 +54,16 @@ public class CoinIntegrationServiceImpl implements ICoinIntegrationService {
     }
 
     @Override
+    public Flux<CoinMarketIntegrationDTO> getAllMarketByIds(String ids) {
+        return coinMarketAdapter.getManyCoinsByIds(ids);
+    }
+
+    @Override
+    public Flux<CoinMarketIntegrationDTO> getAllMarketByIds(String... ids) {
+        return coinMarketAdapter.getManyCoinsByIds(ids);
+    }
+
+    @Override
     public Flux<CandleInfoDTO> getCandleOfCoin(String id, String vs_currency, String days) {
         return candleCapMetaAdapter.getCandleOfCoin(id, vs_currency, days);
     }

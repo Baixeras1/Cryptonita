@@ -21,6 +21,10 @@ public interface ICoinIntegrationService {
 
     Flux<CoinMarketIntegrationDTO> getAllMarkets(String vs_currency, String ids);
 
+    Flux<CoinMarketIntegrationDTO> getAllMarketByIds(String ids);
+
+    Flux<CoinMarketIntegrationDTO> getAllMarketByIds(String... ids);
+
     Flux<CandleInfoDTO> getCandleOfCoin(String id, String vs_currency, String days);
 
     /**

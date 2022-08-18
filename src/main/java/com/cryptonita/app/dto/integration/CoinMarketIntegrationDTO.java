@@ -11,32 +11,32 @@ import lombok.ToString;
 @Data
 public class CoinMarketIntegrationDTO {
 
-    private String id;
-    private String symbol;
-    private String name;
-    private String image;
-    private double current_price;
-    private double market_cap;
-    private int market_cap_rank;
-    private double fully_diluted_valuation;
-    private double total_volume;
-    private double high_24h;
-    private double low_24h;
-    private double price_change_24h;
-    private double price_change_percentage_24h;
-    private double market_cap_change_24h;
-    private double market_cap_change_percentage_24h;
-    private double circulating_supply;
-    private double total_supply;
-    private double max_supply;
-    private double ath;
-    private double ath_change_percentage;
-    private String ath_date;
-    private double atl;
-    private double atl_change_percentage;
-    private String atl_date;
-    private String roi;
-    private String last_updated;
+    public String id;
+    public String symbol;
+    public String name;
+    public String image;
+    public double current_price;
+    public double market_cap;
+    public int market_cap_rank;
+    public double fully_diluted_valuation;
+    public double total_volume;
+    public double high_24h;
+    public double low_24h;
+    public double price_change_24h;
+    public double price_change_percentage_24h;
+    public double market_cap_change_24h;
+    public double market_cap_change_percentage_24h;
+    public double circulating_supply;
+    public double total_supply;
+    public double max_supply;
+    public double ath;
+    public double ath_change_percentage;
+    public String ath_date;
+    public double atl;
+    public double atl_change_percentage;
+    public String atl_date;
+    public String roi;
+    public String last_updated;
 
 
 }

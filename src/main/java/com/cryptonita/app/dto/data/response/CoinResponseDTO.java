@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class CoinResponseDTO {
 
     public long id;
+    public String coinID;
     public String name;
     public String symbol;
-    public int rank;
 }

@@ -4,6 +4,8 @@ import com.cryptonita.app.data.providers.mappers.IMapper;
 import com.cryptonita.app.dto.controller.CoinDto;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.integration.CoinMarketDTO;
+import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
+import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CoinManyWithMetaMapper implements IMapper<List<CoinResponseDTO>, Flux<CoinDto>> {
 
-    private final ICoinMarketService metadataService;
+    private final ICoinIntegrationService coinService;
 
     @Override
     public Flux<CoinDto> mapToDto(List<CoinResponseDTO> coinResponseDTOS) {
@@ -27,8 +29,8 @@ public class CoinManyWithMetaMapper implements IMapper<List<CoinResponseDTO>, Fl
 
         Map<String, CoinResponseDTO> map = mapCoins(coinResponseDTOS);
 
-        return metadataService.getManyCoinsMeta(coins)
-                .map(coinMarketDTO -> mergeCoinAndMetadata(map.get(coinMarketDTO.name), coinMarketDTO));
+        return coinService.getAllMarketByIds(coins)
+                .map(coinMarketDTO -> mergeCoinAndMetadata(map.get(coinMarketDTO.id), coinMarketDTO));
     }
 
     @Override
@@ -38,24 +40,18 @@ public class CoinManyWithMetaMapper implements IMapper<List<CoinResponseDTO>, Fl
 
     private Map<String, CoinResponseDTO> mapCoins(List<CoinResponseDTO> coinResponseDTOS) {
         Map<String, CoinResponseDTO> map = new HashMap<>();
-        coinResponseDTOS.forEach(dto -> map.put(dto.name, dto));
+        coinResponseDTOS.forEach(dto -> map.put(dto.coinID, dto));
 
         return map;
     }
 
-    private CoinDto mergeCoinAndMetadata(CoinResponseDTO responseDTO, CoinMarketDTO metadataDTO) {
+    private CoinDto mergeCoinAndMetadata(CoinResponseDTO responseDTO, CoinMarketIntegrationDTO marketDTO) {
         return CoinDto.builder()
-                .id(responseDTO.id)
-                .symbol(responseDTO.symbol)
+                .id(responseDTO.coinID)
                 .name(responseDTO.name)
-                .logo(metadataDTO.logo)
-                .rank(responseDTO.rank)
-                .supply(metadataDTO.supply)
-                .maxSupply(metadataDTO.maxSupply)
-                .marketCapUsd(metadataDTO.marketCapUsd)
-                .totalVolumen(metadataDTO.totalVolume)
-                .priceUsd(metadataDTO.priceUsd)
-                .changePercent24Hr(metadataDTO.changePercent24Hr)
+                .symbol(responseDTO.symbol)
+                .rank(responseDTO.id)
+                .marketData(marketDTO)
                 .build();
     }
 

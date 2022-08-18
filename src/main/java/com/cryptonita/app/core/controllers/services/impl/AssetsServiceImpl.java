@@ -7,6 +7,7 @@ import com.cryptonita.app.dto.controller.CoinDto;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.integration.CandleInfoDTO;
 import com.cryptonita.app.dto.integration.HistoryInfoDTO;
+import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -21,9 +22,7 @@ public class AssetsServiceImpl implements IAssetsService {
 
     private final ICoinProvider coinProvider;
 
-    private final IHistoryServiceInfo historyServiceInfo;
-
-    private final ICandleService candleService;
+    private final ICoinIntegrationService coinService;
 
     private final IMapper<CoinResponseDTO, Mono<CoinDto>> coinDTOMapper;
     private final IMapper<List<CoinResponseDTO>, Flux<CoinDto>> coinDTOManyMapper;
@@ -51,16 +50,15 @@ public class AssetsServiceImpl implements IAssetsService {
     @Override
     public Flux<HistoryInfoDTO> getAllHistory(String id, String vs_currency, String days, Optional<String> interval) {
         if (!interval.isPresent())
-            return historyServiceInfo.getAll(id, vs_currency,days);
+            return coinService.getHistoryOfCoin(id, vs_currency,days);
 
-        return historyServiceInfo.getAll(id, vs_currency, days, interval.get());
+        return coinService.getHistoryOfCoin(id, vs_currency, days, interval.get());
     }
 
 
     @Override
     public Flux<CandleInfoDTO> getAllCandles(String id, String vs_currency, String days) {
-
-        return candleService.getAll(id, vs_currency, days);
+        return coinService.getCandleOfCoin(id, vs_currency, days);
     }
 
 

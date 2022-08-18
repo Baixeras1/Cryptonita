@@ -23,4 +23,13 @@ public interface ICoinMarketAdapter {
 
     Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String vs_currency, String ids);
 
+    default Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String ids) {
+        return getManyCoinsByIds("usd", ids);
+    }
+
+    default Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String... ids) {
+        return getManyCoinsByIds("usd", ids);
+    }
+
+
 }
