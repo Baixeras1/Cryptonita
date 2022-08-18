@@ -1,7 +1,6 @@
 package com.cryptonita.app.integration.adapters.mappers;
 
-import com.cryptonita.app.dto.integration.CoinInfoIntegrationDTO;
-import com.cryptonita.app.integration.adapters.mappers.AdapterMapper;
+import com.cryptonita.app.dto.integration.CoinMetadataDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -15,16 +14,16 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class CoinInfoMapper implements AdapterMapper<CoinInfoIntegrationDTO> {
+public class CoinInfoMapper implements AdapterMapper<CoinMetadataDTO> {
 
     private final ObjectMapper jsonMapper;
 
     @SneakyThrows
     @Override
-    public CoinInfoIntegrationDTO mapToDto(String s) {
+    public CoinMetadataDTO mapToDto(String s) {
         JsonNode json = jsonMapper.readTree(s);
 
-        return CoinInfoIntegrationDTO.builder()
+        return CoinMetadataDTO.builder()
                 .id(json.get("id").asText())
                 .symbol(json.get("symbol").asText())
                 .name(json.get("name").asText())
@@ -48,7 +47,7 @@ public class CoinInfoMapper implements AdapterMapper<CoinInfoIntegrationDTO> {
     }
 
     @Override
-    public List<CoinInfoIntegrationDTO> mapManyToDto(String s) {
+    public List<CoinMetadataDTO> mapManyToDto(String s) {
         throw new UnsupportedOperationException();
     }
 
@@ -76,17 +75,17 @@ public class CoinInfoMapper implements AdapterMapper<CoinInfoIntegrationDTO> {
         return github.iterator().next().asText();
     }
 
-    private List<CoinInfoIntegrationDTO.CoinInfoStatusDTO> getStatus(JsonNode node) {
+    private List<CoinMetadataDTO.CoinInfoStatusDTO> getStatus(JsonNode node) {
         ArrayNode status = (ArrayNode) node.get("status_updates");
 
-        List<CoinInfoIntegrationDTO.CoinInfoStatusDTO> statuses = new ArrayList<>();
+        List<CoinMetadataDTO.CoinInfoStatusDTO> statuses = new ArrayList<>();
         status.forEach(jsonNode -> statuses.add(mapStatus(jsonNode)));
 
         return statuses;
     }
 
-    private CoinInfoIntegrationDTO.CoinInfoStatusDTO mapStatus(JsonNode node) {
-        return CoinInfoIntegrationDTO.CoinInfoStatusDTO.builder()
+    private CoinMetadataDTO.CoinInfoStatusDTO mapStatus(JsonNode node) {
+        return CoinMetadataDTO.CoinInfoStatusDTO.builder()
                 .title(node.get("user_title").asText())
                 .description(node.get("description").asText())
                 .category(node.get("category").asText())

@@ -1,7 +1,7 @@
 package com.cryptonita.app.core.loaders;
 
 import com.cryptonita.app.data.providers.ICoinProvider;
-import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
+import com.cryptonita.app.dto.integration.CoinMarketDTO;
 import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class CoinLoader {
      *
      * @return the flux that saves the coins
      */
-    public Flux<CoinMarketIntegrationDTO> load() {
+    public Flux<CoinMarketDTO> load() {
         return coinService.getAllMarkets()
                 .doOnNext(marketDTO -> {
                             coinProvider.createCoin(

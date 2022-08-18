@@ -1,6 +1,6 @@
 package com.cryptonita.app.integration.adapters;
 
-import com.cryptonita.app.dto.integration.CoinInfoIntegrationDTO;
+import com.cryptonita.app.dto.integration.CoinMetadataDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.SneakyThrows;
@@ -13,17 +13,17 @@ import java.net.URI;
 
 public interface ICoinInfoAdapter {
 
-    default Mono<CoinInfoIntegrationDTO> get(String coinID) {
+    default Mono<CoinMetadataDTO> get(String coinID) {
         return get(coinID, CoinInfoOptions.builder().build());
     }
 
-    Mono<CoinInfoIntegrationDTO> get(String coinID, CoinInfoOptions options);
+    Mono<CoinMetadataDTO> get(String coinID, CoinInfoOptions options);
 
-    default Flux<CoinInfoIntegrationDTO> get(String... coinIDs) {
+    default Flux<CoinMetadataDTO> get(String... coinIDs) {
         return get(CoinInfoOptions.builder().build(), coinIDs);
     }
 
-    default Flux<CoinInfoIntegrationDTO> get(CoinInfoOptions option, String... coinIDs) {
+    default Flux<CoinMetadataDTO> get(CoinInfoOptions option, String... coinIDs) {
         return Flux.fromArray(coinIDs).flatMap(s -> get(s, option));
     }
 

@@ -3,9 +3,10 @@ package com.cryptonita.app.core.controllers.services.impl;
 import com.cryptonita.app.core.controllers.services.IAssetsService;
 import com.cryptonita.app.data.providers.ICoinProvider;
 import com.cryptonita.app.data.providers.mappers.IMapper;
-import com.cryptonita.app.dto.controller.CoinDto;
+import com.cryptonita.app.dto.controller.CoinDTO;
 import com.cryptonita.app.dto.data.response.CoinResponseDTO;
 import com.cryptonita.app.dto.integration.CandleInfoDTO;
+import com.cryptonita.app.dto.integration.CoinMetadataDTO;
 import com.cryptonita.app.dto.integration.HistoryInfoDTO;
 import com.cryptonita.app.integration.services.ICoinIntegrationService;
 import lombok.AllArgsConstructor;
@@ -24,8 +25,8 @@ public class AssetsServiceImpl implements IAssetsService {
 
     private final ICoinIntegrationService coinService;
 
-    private final IMapper<CoinResponseDTO, Mono<CoinDto>> coinDTOMapper;
-    private final IMapper<List<CoinResponseDTO>, Flux<CoinDto>> coinDTOManyMapper;
+    private final IMapper<CoinResponseDTO, Mono<CoinDTO>> coinDTOMapper;
+    private final IMapper<List<CoinResponseDTO>, Flux<CoinDTO>> coinDTOManyMapper;
 
     @Override
     public List<CoinResponseDTO> list() {
@@ -33,29 +34,42 @@ public class AssetsServiceImpl implements IAssetsService {
     }
 
     @Override
-    public Flux<CoinDto> getAll(Optional<String> ids) {
-        return ids
-                .map(s -> coinDTOManyMapper.mapToDto(coinProvider.getCoins(s)))
-                .orElse(coinDTOManyMapper.mapToDto(coinProvider.getAllCoins()));
+    public Mono<CoinMetadataDTO> getMetadata(String coinID) {
+        return coinService.getInfo(coinID);
     }
 
     @Override
-    public Mono<CoinDto> getById(String coinID) {
+    public Flux<CoinMetadataDTO> getMetadata(String... coinIDs) {
+        return coinService.getAllInfos(coinIDs);
+    }
+
+    @Override
+    public Flux<CoinDTO> getAll() {
+        return coinDTOManyMapper.mapToDto(coinProvider.getAllCoins());
+    }
+
+    @Override
+    public Flux<CoinDTO> getAll(String ids) {
+        return coinDTOManyMapper.mapToDto(coinProvider.getCoins(ids));
+    }
+
+    @Override
+    public Mono<CoinDTO> getById(String coinID) {
         return coinDTOMapper.mapToDto(coinProvider.getCoinById(coinID));
     }
 
     @Override
-    public Mono<CoinDto> getByRank(int rank) {
+    public Mono<CoinDTO> getByRank(int rank) {
         return coinDTOMapper.mapToDto(coinProvider.getByRank(rank));
     }
 
     @Override
-    public Mono<CoinDto> getBySymbol(String symbol) {
+    public Mono<CoinDTO> getBySymbol(String symbol) {
         return coinDTOMapper.mapToDto(coinProvider.getBySymbol(symbol));
     }
 
     @Override
-    public Mono<CoinDto> getByName(String name) {
+    public Mono<CoinDTO> getByName(String name) {
         return coinDTOMapper.mapToDto(coinProvider.getCoinByName(name));
     }
 
