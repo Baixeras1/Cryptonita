@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import java.time.LocalDate;
 
 @Slf4j
-@EnableWebSecurity
 @SpringBootApplication
 public class AppApplication {
 
