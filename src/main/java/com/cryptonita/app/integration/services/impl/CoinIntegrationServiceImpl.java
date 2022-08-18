@@ -1,10 +1,10 @@
-package com.cryptonita.app.integrationv2.services.impl;
+package com.cryptonita.app.integration.services.impl;
 
 import com.cryptonita.app.dto.integration.CoinInfoIntegrationDTO;
 import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
-import com.cryptonita.app.integration.adapters.ICoinMarketAdapterV2;
-import com.cryptonita.app.integrationv2.adapters.ICoinInfoAdapterv2;
-import com.cryptonita.app.integrationv2.services.ICoinService;
+import com.cryptonita.app.integration.adapters.ICoinMarketAdapter;
+import com.cryptonita.app.integration.adapters.ICoinInfoAdapter;
+import com.cryptonita.app.integration.services.ICoinService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -12,10 +12,10 @@ import reactor.core.publisher.Mono;
 
 @Service
 @AllArgsConstructor
-public class CoinServiceImplV2 implements ICoinService {
+public class CoinServiceImpl implements ICoinService {
 
-    private final ICoinInfoAdapterv2 infoAdapter;
-    private final ICoinMarketAdapterV2 coinMarketAdapterV2;
+    private final ICoinInfoAdapter infoAdapter;
+    private final ICoinMarketAdapter coinMarketAdapterV2;
 
     @Override
     public Mono<CoinInfoIntegrationDTO> getInfo(String coinID) {

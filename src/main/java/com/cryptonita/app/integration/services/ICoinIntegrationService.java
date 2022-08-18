@@ -1,4 +1,4 @@
-package com.cryptonita.app.integrationv2.services;
+package com.cryptonita.app.integration.services;
 
 import com.cryptonita.app.dto.integration.CoinInfoIntegrationDTO;
 import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;

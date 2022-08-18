@@ -1,73 +1,81 @@
 package com.cryptonita.app.integration.adapters.impl;
 
-import com.cryptonita.app.dto.integration.CoinMarketDTO;
-import com.cryptonita.app.integration.adapters.ICoinMarketAdapter;
-import com.cryptonita.app.integration.adapters.mappers.CoinMarketMapper;
+import com.cryptonita.app.dto.integration.CoinMarketIntegrationDTO;
+import com.cryptonita.app.dto.integration.HistoryInfoDTO;
+import com.cryptonita.app.integration.adapters.ICoinMarketAdapterV2;
+import com.cryptonita.app.integration.adapters.mappers.AdapterMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 @Slf4j
-@Component
-public class CoinMarketAdapterImpl implements ICoinMarketAdapter {
+@Service
+@AllArgsConstructor
+public class CoinMarketAdapterImplV2 implements ICoinMarketAdapterV2 {
 
-    private static final String COIN_CAP_URL = "https://api.coingecko.com/api/v3/coins/markets";
+    private static final String URL = "https://api.coingecko.com/api/v3/coins/markets";
 
-    @Autowired
-    private CoinMarketMapper mapper;
-
-    private final WebClient coinCapClient = WebClient.builder()
+    private final WebClient webClient = WebClient.builder()
             .clientConnector(new ReactorClientHttpConnector(
                     HttpClient.create().followRedirect(true)
             ))
-            .baseUrl(COIN_CAP_URL)
+            .baseUrl(URL)
             .build();
 
+    private final AdapterMapper<CoinMarketIntegrationDTO> mapper;
 
     @Override
-    public Mono<CoinMarketDTO> getCoinMetadataBySymbol(String symbol) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Mono<CoinMarketDTO> getCoinMetadataByName(String name) {
-        return coinCapClient.get()
+    public Flux<CoinMarketIntegrationDTO> getManyCoins(String vs_currency) {
+        return webClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
-                                .queryParam("vs_currency", "usd")
-                                .queryParam("ids", name)
+                                .queryParam("vs_currency",vs_currency)
                                 .build()
                 )
                 .retrieve()
-                .bodyToMono(String.class)
-                .map(mapper::mapToDto);
+                .bodyToFlux(String.class)
+                .flatMap(s -> Flux.fromStream(mapper.mapManyToDto(s).stream()));
     }
 
-    @Override
-    public Mono<CoinMarketDTO> getCoinMetadata(int rank) {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
-    public Flux<CoinMarketDTO> getManyCoinsMetadata(String manyDTOs) {
-        return coinCapClient.get()
+    public Flux<CoinMarketIntegrationDTO> getManyCoinsMetadata(String vs_currency, String ids, String category, String order, Integer per_page,
+                                                               Integer page, Boolean sparkline, String price_change_percentage) {
+        return webClient.get()
                 .uri(uriBuilder ->
                         uriBuilder
-                                .queryParam("vs_currency", "usd")
-                                .queryParam("ids", manyDTOs)
+                                .queryParam("vs_currency",vs_currency)
+                                .queryParam("ids",ids)
+                                .queryParam("category",category)
+                                .queryParam("order",order)
+                                .queryParam("per_page",per_page)
+                                .queryParam("page",page)
+                                .queryParam("sparkline",sparkline)
+                                .queryParam("price_change_percentage",price_change_percentage)
                                 .build()
                 )
                 .retrieve()
-                .bodyToMono(String.class)
-                .map(mapper::mapManyToDto)
-                .flatMapMany(Flux::fromIterable);
+                .bodyToFlux(String.class)
+                .flatMap(s -> Flux.fromStream(mapper.mapManyToDto(s).stream()));
     }
 
-
-
+    @Override
+    public Flux<CoinMarketIntegrationDTO> getManyCoinsByIds(String vs_currency, String ids) {
+        return webClient.get()
+                .uri(uriBuilder ->
+                        uriBuilder
+                                .queryParam("vs_currency",vs_currency)
+                                .queryParam("ids",ids)
+                                .build()
+                )
+                .retrieve()
+                .bodyToFlux(String.class)
+                .flatMap(s -> Flux.fromStream(mapper.mapManyToDto(s).stream()));
+    }
 }
