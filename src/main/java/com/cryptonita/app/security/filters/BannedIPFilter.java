@@ -1,9 +1,7 @@
 package com.cryptonita.app.security.filters;
 
-import com.cryptonita.app.core.services.IEmailService;
+
 import com.cryptonita.app.data.providers.IUserProvider;
-import com.cryptonita.app.dto.data.response.UserResponseDTO;
-import com.cryptonita.app.security.SecurityContextHelper;
 import com.cryptonita.app.security.utils.LoginAttemptsService;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -22,10 +20,13 @@ public class BannedIPFilter extends OncePerRequestFilter {
 
     private LoginAttemptsService loginAttemptsService;
 
+    private IUserProvider iUserProvider;
 
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        System.out.println(getClientIP(request));
         if (loginAttemptsService.isBlocked(getClientIP(request))) {
             System.out.println("Too many request!!!");
             return;
@@ -35,12 +36,12 @@ public class BannedIPFilter extends OncePerRequestFilter {
 
     }
 
-        private String getClientIP(HttpServletRequest request) {
-            String xfHeader = request.getHeader("X-Forwarded-For");
-            if (xfHeader == null){
-                return request.getRemoteAddr();
-            }
-            return xfHeader.split(",")[0];
+    private String getClientIP(HttpServletRequest request) {
+        String xfHeader = request.getHeader("192.168.96.111"/*"X-Forwarded-For"*/);
+        if (xfHeader == null){
+            return request.getRemoteAddr();
         }
+        return xfHeader;
+    }
 
 }

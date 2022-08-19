@@ -30,16 +30,19 @@ public class LoginAttemptsService {
     }
 
     public void loginFailed(String key) throws ExecutionException {
-        System.out.println(isBlocked(key));
         int attempts = 0;
         attempts = attemptsCache.get(key);
         attempts++;
+
         attemptsCache.put(key, attempts);
+
+        System.out.println(key);
+        System.out.println(isBlocked(key));
     }
 
     public boolean isBlocked(String key) throws ExecutionException {
 
-        return attemptsCache.get(key) >= MAX_ATTEMPT;
+        return attemptsCache.get(key) > MAX_ATTEMPT;
 
     }
 }
