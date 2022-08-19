@@ -1,5 +1,6 @@
 package com.cryptonita.app.security;
 
+import com.cryptonita.app.security.filters.BannedIPFilter;
 import com.cryptonita.app.security.filters.BannerUserFilter;
 import com.cryptonita.app.security.filters.RatePerMinuteFilter;
 import com.cryptonita.app.security.handlers.AuthenticationErrorHandling;
@@ -18,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private RatePerMinuteFilter ratePerMinuteFilter;
     private final AuthenticationErrorHandling authenticationErrorHandling;
     private final AuthorizationErrorHandler authorizationErrorHandler;
+    private BannedIPFilter bannedIPFilter;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -26,6 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .csrf()
                     .disable()
+                .csrf().disable()
+                .addFilterBefore(bannedIPFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(bannerUserFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(ratePerMinuteFilter, BannerUserFilter.class)
                 .authorizeRequests()
