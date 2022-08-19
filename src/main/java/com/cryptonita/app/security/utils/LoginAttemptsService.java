@@ -25,6 +25,7 @@ public class LoginAttemptsService {
                 expireAfterWrite(3, TimeUnit.MINUTES)
                 .build(key -> 0);
     }
+
     public void loginSucceeded(String key) {
         attemptsCache.invalidate(key);
     }
@@ -35,14 +36,10 @@ public class LoginAttemptsService {
         attempts++;
 
         attemptsCache.put(key, attempts);
-
-        System.out.println(key);
-        System.out.println(isBlocked(key));
     }
 
     public boolean isBlocked(String key) throws ExecutionException {
-
-        return attemptsCache.get(key) > MAX_ATTEMPT;
+        return attemptsCache.get(key) >= MAX_ATTEMPT;
 
     }
 }

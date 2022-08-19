@@ -1,10 +1,13 @@
 package com.cryptonita.app.security.filters;
 
 
+import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.security.utils.LoginAttemptsService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,16 +22,20 @@ import java.io.IOException;
 public class BannedIPFilter extends OncePerRequestFilter {
 
     private LoginAttemptsService loginAttemptsService;
-
+    private ObjectMapper jsonMapper;
     private IUserProvider iUserProvider;
 
     @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        System.out.println(getClientIP(request));
         if (loginAttemptsService.isBlocked(getClientIP(request))) {
-            System.out.println("Too many request!!!");
+            response.setContentType("application/json");
+            response.getOutputStream().print(
+                    jsonMapper.writeValueAsString(
+                            RestResponse.error(HttpStatus.UNAUTHORIZED.value(), "Too many login attempts!")
+                    )
+            );
             return;
         }
 
@@ -37,11 +44,7 @@ public class BannedIPFilter extends OncePerRequestFilter {
     }
 
     private String getClientIP(HttpServletRequest request) {
-        String xfHeader = request.getHeader("192.168.96.111"/*"X-Forwarded-For"*/);
-        if (xfHeader == null){
-            return request.getRemoteAddr();
-        }
-        return xfHeader;
+        return request.getRemoteAddr();
     }
 
 }
