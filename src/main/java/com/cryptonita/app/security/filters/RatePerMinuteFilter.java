@@ -40,11 +40,11 @@ public class RatePerMinuteFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.getOutputStream().print(
                     jsonMapper.writeValueAsString(
-                            RestResponse.error(HttpStatus.UNAUTHORIZED.value(), "Too many request!")
+                            RestResponse.error(HttpStatus.TOO_MANY_REQUESTS.value(), "You have exceeded your minute rate!")
                     )
             );
 
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
             return;
         }
 

@@ -22,12 +22,6 @@ public class ProjectConfig implements WebMvcConfigurer {
     private final HandlerInterceptorImpl handlerInterceptor;
 
     @Bean
-    PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-
-    @Bean
     InitializingBean initializingBean() {
         return () -> SecurityContextHolder.setStrategyName(
                 SecurityContextHolder.MODE_THREADLOCAL

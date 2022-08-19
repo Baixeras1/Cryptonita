@@ -3,6 +3,7 @@ package com.cryptonita.app.security;
 import com.cryptonita.app.security.filters.BannedIPFilter;
 import com.cryptonita.app.security.filters.BannerUserFilter;
 import com.cryptonita.app.security.filters.RatePerMinuteFilter;
+import com.cryptonita.app.security.filters.RatePerMonthFilter;
 import com.cryptonita.app.security.handlers.AuthenticationErrorHandling;
 import com.cryptonita.app.security.handlers.AuthorizationErrorHandler;
 import lombok.AllArgsConstructor;
@@ -15,11 +16,14 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private BannerUserFilter bannerUserFilter;
-    private RatePerMinuteFilter ratePerMinuteFilter;
+    private final BannerUserFilter bannerUserFilter;
+    private final RatePerMinuteFilter ratePerMinuteFilter;
+    private final BannedIPFilter bannedIPFilter;
+    private final RatePerMonthFilter ratePerMonthFilter;
+
     private final AuthenticationErrorHandling authenticationErrorHandling;
     private final AuthorizationErrorHandler authorizationErrorHandler;
-    private BannedIPFilter bannedIPFilter;
+
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -32,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(bannedIPFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(bannerUserFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(ratePerMinuteFilter, BannerUserFilter.class)
+                .addFilterAfter(ratePerMonthFilter, RatePerMinuteFilter.class)
                 .authorizeRequests()
                     .antMatchers("/api/**")
                     .hasAnyAuthority("ADMIN", "USER")

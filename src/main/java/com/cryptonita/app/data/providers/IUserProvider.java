@@ -29,6 +29,8 @@ public interface IUserProvider {
 
     UserResponseDTO changeUserType(String mail, UserType userType);
 
+    UserResponseDTO changeUserNumRequests(String name);
+
 
     /**
      * Convenient method to check if a raw password matches the user hashed stored password
