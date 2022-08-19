@@ -15,7 +15,7 @@ import java.util.Collections;
 
 @Component
 @AllArgsConstructor
-public class UserManagerServiceImpl implements AuthenticationProvider {
+public class AuthenticationProviderImpl implements AuthenticationProvider {
 
     private final IUserProvider userProvider;
 
@@ -24,7 +24,7 @@ public class UserManagerServiceImpl implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        if (!userProvider.existsByUsername(name) && !userProvider.matchesPasswordByUsername(name, password))
+        if (!userProvider.matchesPasswordByUsername(name, password))
             throw new BadCredentialsException("");
 
         UserResponseDTO dto = userProvider.getByName(name);
@@ -34,6 +34,6 @@ public class UserManagerServiceImpl implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return true;
+        return authentication.isAssignableFrom(UsernamePasswordAuthenticationToken.class);
     }
 }
