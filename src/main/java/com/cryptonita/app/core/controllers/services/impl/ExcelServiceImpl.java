@@ -1,30 +1,52 @@
 package com.cryptonita.app.core.controllers.services.impl;
 
-import com.cryptonita.app.data.providers.IUserProvider;
+import com.cryptonita.app.core.controllers.services.IExcelService;
+import com.cryptonita.app.core.controllers.services.IHistoryService;
+import com.cryptonita.app.core.utils.ExcelGenerator;
+import com.cryptonita.app.data.providers.IRegisterProvider;
+import com.cryptonita.app.dto.data.response.HistoryResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.security.SecurityContextHelper;
 import lombok.AllArgsConstructor;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
-@Service
 @AllArgsConstructor
-public class ExcelServiceImpl extends AbstractXlsView {
+@Service
+public class ExcelServiceImpl implements IExcelService {
 
-    private final IUserProvider userProvider;
+    private final IRegisterProvider registerProvider;
     private final SecurityContextHelper securityContextHelper;
-    @Override
-    protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        UserResponseDTO userResponseDTO = userProvider.getByName(securityContextHelper.getUser().username);
-        response.setHeader("Content-Disposition","attachment; filename=\"" + userResponseDTO + ".xlsx\"");
-        Sheet hoja = workbook.createSheet("Clientes");
+    public void downloadHistory(String start, String end, HttpServletResponse response) throws IOException {
+
+        UserResponseDTO user = securityContextHelper.getUser();
+
+        LocalDate localDateStart = LocalDate.parse(start);
+        LocalDate localDateEnd = LocalDate.parse(end);
+
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=history" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<HistoryResponseDTO> historyResponseDTOList = registerProvider.getLogsFromUsers(user.username,localDateStart, localDateEnd);
+
+        ExcelGenerator generator = new ExcelGenerator(historyResponseDTOList);
+
+        generator.generateExcelFile(response);
+
     }
 }
+
+

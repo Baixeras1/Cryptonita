@@ -1,4 +1,4 @@
-package com.cryptonita.app.core.controllers.services.excel;
+package com.cryptonita.app.core.utils;
 
 import com.cryptonita.app.dto.data.response.HistoryResponseDTO;
 import com.cryptonita.app.dto.integration.HistoryInfoDTO;
