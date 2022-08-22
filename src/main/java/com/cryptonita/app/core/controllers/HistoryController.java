@@ -1,7 +1,8 @@
 package com.cryptonita.app.core.controllers;
 
+import com.cryptonita.app.core.controllers.services.IExcelService;
 import com.cryptonita.app.core.controllers.services.IHistoryService;
-import com.cryptonita.app.core.controllers.services.excel.ExcelGenerator;
+import com.cryptonita.app.core.utils.ExcelGenerator;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.core.controllers.utils.TokenConsume;
 import com.cryptonita.app.dto.data.response.HistoryResponseDTO;
@@ -27,6 +28,7 @@ import java.util.List;
 public class HistoryController {
 
     private final IHistoryService historyService;
+    private final IExcelService excelService;
 
     @GetMapping("/history")
     @ResponseStatus(HttpStatus.OK)
@@ -41,23 +43,6 @@ public class HistoryController {
     @Operation(summary = "Get historical operations of the current user as a excel at a given date range (BETA)")
     @TokenConsume(2)
     public void downloadHistory(String start, String end, HttpServletResponse response) throws IOException {
-
-        LocalDate localDateStart = LocalDate.parse(start);
-        LocalDate localDateEnd = LocalDate.parse(end);
-
-        response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=history" + currentDateTime + ".xlsx";
-        response.setHeader(headerKey, headerValue);
-
-        List<HistoryResponseDTO> historyResponseDTOList = historyService.getAllRegisterUser(localDateStart, localDateEnd);
-
-        ExcelGenerator generator = new ExcelGenerator(historyResponseDTOList);
-
-        generator.generateExcelFile(response);
-
+        excelService.downloadHistory(start, end, response);
     }
 }
