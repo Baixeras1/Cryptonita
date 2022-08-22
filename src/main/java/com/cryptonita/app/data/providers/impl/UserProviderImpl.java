@@ -118,6 +118,18 @@ public class UserProviderImpl implements IUserProvider {
     }
 
     @Override
+    public UserResponseDTO changeUserPassword(String mail) {
+        UserModel model = userDao.findByMail(mail).orElse(null);
+
+        if(model == null)
+            throw new UserNotFoundException(USER_NOT_EXISTS);
+
+        model.setPassword("abcde");
+
+        return responseDTOIMapper.mapToDto(userDao.save(model));
+    }
+
+    @Override
     public UserResponseDTO restartUserNumRequest(String name) {
         UserModel model = userDao.findByUsername(name).orElse(null);
 
