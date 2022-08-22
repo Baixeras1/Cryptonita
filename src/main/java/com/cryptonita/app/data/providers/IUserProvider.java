@@ -12,6 +12,7 @@ import java.util.List;
 public interface IUserProvider {
 
 
+    List<UserResponseDTO> getAll();
 
     /**
      * Registers a user
@@ -31,6 +32,7 @@ public interface IUserProvider {
 
     UserResponseDTO changeUserNumRequests(String name);
 
+    UserResponseDTO restartUserNumRequest(String name);
 
     /**
      * Convenient method to check if a raw password matches the user hashed stored password
