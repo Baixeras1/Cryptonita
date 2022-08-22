@@ -4,6 +4,7 @@ import com.cryptonita.app.core.controllers.services.IHistoryService;
 import com.cryptonita.app.core.controllers.services.excel.ExcelGenerator;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.core.controllers.utils.TokenConsume;
+import com.cryptonita.app.dto.data.response.HistoryResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
