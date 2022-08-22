@@ -9,6 +9,5 @@ public class RestarResponseDTO {
 
     private String month;
     private String year;
-    private boolean restart;
 
 }

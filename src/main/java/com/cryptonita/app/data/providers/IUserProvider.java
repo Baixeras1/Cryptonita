@@ -30,7 +30,7 @@ public interface IUserProvider {
 
     UserResponseDTO changeUserType(String mail, UserType userType);
 
-    UserResponseDTO changeUserNumRequests(String name);
+    UserResponseDTO changeUserNumRequests(String name,int tokens);
 
     UserResponseDTO restartUserNumRequest(String name);
 

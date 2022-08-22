@@ -2,6 +2,7 @@ package com.cryptonita.app.core.schedulers;
 
 import com.cryptonita.app.data.providers.IRestartProvider;
 import com.cryptonita.app.data.providers.IUserProvider;
+import com.cryptonita.app.dto.data.response.RestarResponseDTO;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -23,20 +24,24 @@ public class ScheduledTasks {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private final IRestartProvider restartProvider;
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 72000000)
     public void reportCurrentTime() {
-        log.info("The time is now {}", dateFormat.format(new Date()));
 
         LocalDateTime localDateTime = LocalDateTime.now();
-        //String mes = System.out.println(localDateTime.getMonth());
-        System.out.println(localDateTime.getYear());
+        String month = String.valueOf(localDateTime.getMonth());
+        String year = String.valueOf(localDateTime.getYear());
 
+        RestarResponseDTO restarResponseDTO = restartProvider.findRestart(month, year);
 
+        if (restarResponseDTO != null) return;
 
+        RestarResponseDTO newRestart = RestarResponseDTO.builder()
+                .month(month)
+                .year(year)
+                .build();
 
-
+        restartProvider.newRestart(newRestart);
         restartRequest(userProvider.getAll());
-
 
     }
 

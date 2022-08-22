@@ -1,5 +1,6 @@
 package com.cryptonita.app.core.controllers.utils;
 
+import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.security.SecurityContextHelper;
 import com.cryptonita.app.security.utils.RatePerMinuteMapService;
@@ -20,6 +21,7 @@ import java.lang.reflect.Method;
 public class HandlerInterceptorImpl implements HandlerInterceptor {
 
     private final RatePerMinuteMapService mapService;
+    private final IUserProvider userProvider;
     private final SecurityContextHelper securityContextHelper;
 
     @Override
@@ -43,6 +45,8 @@ public class HandlerInterceptorImpl implements HandlerInterceptor {
 
         UserResponseDTO dto = securityContextHelper.getUser();
         mapService.consume(dto, consume.value());
+
+        userProvider.changeUserNumRequests(dto.username, consume.value());
 
         logTimeElapsed(request);
 

@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface IRestartDAO extends JpaRepository<RestartModel, Long> {
 
-    Optional<RestartModel> findByMonthAndAndYearAndAndRestartIsTrue(String month, String year);
+    Optional<RestartModel> findByMonthAndAndYear(String month, String year);
 
 }

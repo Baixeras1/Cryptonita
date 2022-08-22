@@ -14,7 +14,6 @@ public class RestartResponseMapper implements IMapper<RestartModel, RestarRespon
         return RestarResponseDTO.builder()
                 .month(restartModel.getMonth())
                 .year(restartModel.getYear())
-                .restart(restartModel.isRestart())
                 .build();
     }
 
@@ -23,7 +22,6 @@ public class RestartResponseMapper implements IMapper<RestartModel, RestarRespon
         return RestartModel.builder()
                 .month(restarResponseDTO.getMonth())
                 .year(restarResponseDTO.getYear())
-                .restart(restarResponseDTO.isRestart())
                 .build();
     }
 }

@@ -23,6 +23,4 @@ public class RestartModel {
 
     @Column(name = "Years")
     private String year;
-
-    private boolean restart;
 }

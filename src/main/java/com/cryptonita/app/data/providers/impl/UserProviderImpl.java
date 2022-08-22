@@ -106,13 +106,13 @@ public class UserProviderImpl implements IUserProvider {
     }
 
     @Override
-    public UserResponseDTO changeUserNumRequests(String name) {
+    public UserResponseDTO changeUserNumRequests(String name, int tokens) {
         UserModel model = userDao.findByUsername(name).orElse(null);
 
         if(model == null)
             throw new UserNotFoundException(USER_NOT_EXISTS);
 
-        model.setNumRequests(model.getNumRequests()+1);
+        model.setNumRequests(model.getNumRequests()+tokens);
 
         return responseDTOIMapper.mapToDto(userDao.save(model));
     }
