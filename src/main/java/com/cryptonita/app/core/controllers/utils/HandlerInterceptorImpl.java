@@ -25,16 +25,16 @@ public class HandlerInterceptorImpl implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
-                             Object handler)
-            throws Exception
-    {
-        long startTime = System.currentTimeMillis();
-        request.setAttribute("startTime", startTime);
+                             Object handler) {
+        request.setAttribute("startTime", System.currentTimeMillis());
         return true;
     }
 
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request,
+                           HttpServletResponse response,
+                           Object handler,
+                           ModelAndView modelAndView) {
         Method method;
         if ((method = getMethodName(handler)) == null) return;
 
@@ -44,7 +44,6 @@ public class HandlerInterceptorImpl implements HandlerInterceptor {
         UserResponseDTO dto = securityContextHelper.getUser();
         mapService.consume(dto, consume.value());
 
-        addTokenToRestResponse(handler, consume.value());
         logTimeElapsed(request);
 
         log.info("Tokens of user: " + mapService.getTokenConsumed(dto));
@@ -58,13 +57,6 @@ public class HandlerInterceptorImpl implements HandlerInterceptor {
         String str = String.format("Time elapsed to process request of %s was %d ms", request.getRequestURI(), elapsedTime);
 
         log.info(str);
-    }
-
-    private void addTokenToRestResponse(Object object, int value) {
-        if (!(object instanceof RestResponse)) return;
-
-        RestResponse restResponse = (RestResponse) object;
-        restResponse.status.credit_count = value;
     }
 
     private Method getMethodName(Object handler) {

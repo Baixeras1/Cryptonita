@@ -2,6 +2,7 @@ package com.cryptonita.app.core.controllers;
 
 import com.cryptonita.app.core.controllers.services.IAutentificationService;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
+import com.cryptonita.app.core.controllers.utils.TokenConsume;
 import com.cryptonita.app.data.entities.enums.UserRole;
 import com.cryptonita.app.data.entities.enums.UserType;
 import com.cryptonita.app.dto.data.request.UserRegisterDTO;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/autentication")
 @CrossOrigin("*")
 @Tag(name = "Authentication")
-public class AutentificationController {
+public class AuthenticationController {
 
     private final IAutentificationService authenticationService;
 
