@@ -301,7 +301,7 @@ public class UserProviderImpl implements IUserProvider {
         StringBuilder sb = new StringBuilder();
 
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 8; i++) {
             int randomIndex = random.nextInt(chars.length());
             sb.append(chars.charAt(randomIndex));
         }
