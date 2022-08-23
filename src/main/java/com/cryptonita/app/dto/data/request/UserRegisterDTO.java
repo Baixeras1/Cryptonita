@@ -5,9 +5,7 @@ import com.cryptonita.app.data.entities.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 
 @AllArgsConstructor

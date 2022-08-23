@@ -14,6 +14,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/authentication")
