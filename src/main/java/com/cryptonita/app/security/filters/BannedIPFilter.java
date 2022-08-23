@@ -23,7 +23,6 @@ public class BannedIPFilter extends OncePerRequestFilter {
 
     private LoginAttemptsService loginAttemptsService;
     private ObjectMapper jsonMapper;
-    private IUserProvider iUserProvider;
 
     @SneakyThrows
     @Override

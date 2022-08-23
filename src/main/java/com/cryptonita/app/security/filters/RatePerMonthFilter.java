@@ -33,10 +33,6 @@ public class RatePerMonthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         UserResponseDTO useDTO = securityContextHelper.getUser();
-        if (useDTO == null || useDTO.role == UserRole.ADMIN) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         useDTO = userProvider.getByName(useDTO.getUsername());
 
@@ -57,7 +53,7 @@ public class RatePerMonthFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getRequestURI().startsWith("/api/");
+        return !request.getRequestURI().startsWith("/api/") || securityContextHelper.isNotAuthenticated();
     }
 
 }

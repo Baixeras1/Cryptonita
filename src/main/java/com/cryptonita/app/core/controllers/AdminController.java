@@ -47,7 +47,6 @@ public class AdminController {
         return RestResponse.encapsulate(adminService.changeUserType(mail, userType));
     }
 
-
     @PostMapping("/users/ban")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Bans a user")

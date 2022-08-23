@@ -3,7 +3,9 @@ package com.cryptonita.app.security.utils;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.Expiry;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +22,24 @@ public class LoginAttemptsService {
     private LoadingCache<String, Integer> attemptsCache;
 
     public LoginAttemptsService() {
-        super();
-        attemptsCache = Caffeine.newBuilder().
-                expireAfterWrite(3, TimeUnit.MINUTES)
-                .build(key -> 0);
+        attemptsCache = Caffeine.newBuilder()
+                .expireAfter(new Expiry<String, Integer>() {
+                    @Override
+                    public long expireAfterCreate(String s, Integer integer, long l) {
+                        return TimeUnit.MINUTES.toNanos(3);
+                    }
+
+                    @Override
+                    public long expireAfterUpdate(String s, Integer integer, long l, @NonNegative long l1) {
+                        return l1;
+                    }
+
+                    @Override
+                    public long expireAfterRead(String s, Integer integer, long l, @NonNegative long l1) {
+                        return l1;
+                    }
+                })
+                .build(s -> 0);
     }
 
     public void loginSucceeded(String key) {

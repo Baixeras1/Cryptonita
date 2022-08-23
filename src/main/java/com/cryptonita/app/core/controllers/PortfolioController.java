@@ -3,7 +3,7 @@ package com.cryptonita.app.core.controllers;
 import com.cryptonita.app.core.controllers.services.IPortfolioService;
 import com.cryptonita.app.core.controllers.utils.RestResponse;
 import com.cryptonita.app.core.controllers.utils.TokenConsume;
-import com.cryptonita.app.dto.data.response.PorfolioResponseDTO;
+import com.cryptonita.app.dto.data.response.PortfolioResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class PortfolioController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Gets the portfolio (totalBalance, coins, coin market data and allocation) for the current user ")
     @TokenConsume(1)
-    public PorfolioResponseDTO getPortfolio() {
-        return porfolioService.getAll();
+    public RestResponse getPortfolio() {
+        return RestResponse.encapsulate(porfolioService.getAll());
     }
 }

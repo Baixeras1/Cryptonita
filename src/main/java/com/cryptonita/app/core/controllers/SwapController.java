@@ -18,7 +18,7 @@ public class SwapController {
 
     private final ISwapService swapService;
 
-    @GetMapping("/trade")
+    @PostMapping("/trade")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Trades a certain amount of a coin to another in the portfolio of the current user")
     @TokenConsume(1)
@@ -26,7 +26,7 @@ public class SwapController {
         return RestResponse.encapsulate(swapService.swap(from, to, amount));
     }
 
-    @GetMapping("/send")
+    @PostMapping("/send")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Send a certain amount of a coin from the current user to the given user")
     @TokenConsume(1)

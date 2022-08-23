@@ -30,10 +30,6 @@ public class BannerUserFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         UserResponseDTO dtoUser = contextHelper.getUser();
-        if (dtoUser == null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         if (!userProvider.isBannedByUsername(dtoUser.getUsername())) {
             filterChain.doFilter(request, response);
@@ -58,8 +54,8 @@ public class BannerUserFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return !request.getRequestURI().startsWith("/api/");
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return !request.getRequestURI().startsWith("/api/") || contextHelper.isNotAuthenticated();
     }
 }
 

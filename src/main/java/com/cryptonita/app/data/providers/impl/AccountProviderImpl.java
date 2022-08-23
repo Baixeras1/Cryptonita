@@ -93,7 +93,7 @@ public class AccountProviderImpl implements IAccountProvider {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
-        CoinModel coinModel = coinDAO.findByName(coin).
+        CoinModel coinModel = coinDAO.findByCoinID(coin).
                 orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
         WalletModel walletModel = userModel.getWallets().stream()
@@ -118,7 +118,7 @@ public class AccountProviderImpl implements IAccountProvider {
         UserModel userModel = userDao.findByUsername(user)
                 .orElseThrow(() -> new UserNotFoundException(String.format(USER_ALREADY_EXISTS,user)));
 
-        CoinModel coinModel = coinDAO.findByName(coin)
+        CoinModel coinModel = coinDAO.findByCoinID(coin)
                 .orElseThrow(() -> new CoinNotFoundException(String.format(COIN_ALREADY_EXISTS,coin)));
 
         WalletModel wallet = userModel.getWallets().stream()
