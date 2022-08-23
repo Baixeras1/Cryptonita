@@ -3,12 +3,10 @@ package com.cryptonita.app.data.entities;
 import com.cryptonita.app.data.entities.enums.UserRole;
 import com.cryptonita.app.data.entities.enums.UserType;
 import lombok.*;
-import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
