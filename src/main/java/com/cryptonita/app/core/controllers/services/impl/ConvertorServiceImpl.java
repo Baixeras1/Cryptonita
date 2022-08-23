@@ -28,7 +28,7 @@ public class ConvertorServiceImpl implements IConvertorService {
         CoinResponseDTO fromCoin = coinProvider.getCoinById(from);
         CoinResponseDTO toCoin = coinProvider.getCoinById(to);
 
-        return  coinService.convert(fromCoin.symbol, toCoin.symbol, amount);
+        return coinService.convert(fromCoin.symbol, toCoin.symbol, amount);
     }
 
 }

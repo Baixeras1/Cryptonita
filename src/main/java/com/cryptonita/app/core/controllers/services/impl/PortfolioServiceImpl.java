@@ -19,27 +19,25 @@ import java.util.Map;
 @AllArgsConstructor
 public class PortfolioServiceImpl implements IPortfolioService {
 
-    private IUserProvider userProvider;
     private final IAccountProvider acountProvider;
     private final ICoinIntegrationService coinIntegrationService;
     private final SecurityContextHelper securityContextHelper;
-
     private final IConvertorService convertorService;
-    private final IMapper<Map<String,WalletResponseDto>, PortfolioResponseDTO> mapper;
+    private final IMapper<Map<String, WalletResponseDto>, PortfolioResponseDTO> mapper;
+    private IUserProvider userProvider;
 
     @Override
     public WalletResponseDto get(String coin) {
-        return acountProvider.get(securityContextHelper.getUser().getUsername(),coin);
+        return acountProvider.get(securityContextHelper.getUser().getUsername(), coin);
     }
 
     @Override
     public PortfolioResponseDTO getAll() {
         UserResponseDTO userResponseDTO = securityContextHelper.getUser();
-        Map<String,WalletResponseDto> wallets = userResponseDTO.getWallet();
+        Map<String, WalletResponseDto> wallets = userResponseDTO.getWallet();
 
         return mapper.mapToDto(wallets);
     }
-
 
 
 }

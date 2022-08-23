@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class PortfolioResponseDTO {
 
-    private double balance;
     private final List<CoinDetailsDTO> wallets;
+    private double balance;
 
 }

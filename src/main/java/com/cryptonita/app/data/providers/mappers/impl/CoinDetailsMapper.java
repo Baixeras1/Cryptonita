@@ -7,7 +7,6 @@ import com.cryptonita.app.dto.data.response.WalletResponseDto;
 public class CoinDetailsMapper implements IMapper<WalletResponseDto, PortfolioResponseDTO> {
 
 
-
     @Override
     public PortfolioResponseDTO mapToDto(WalletResponseDto walletResponseDto) {
         return null;

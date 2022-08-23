@@ -5,9 +5,6 @@ import com.cryptonita.app.data.entities.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-import javax.validation.constraints.Pattern;
-
-
 @AllArgsConstructor
 @Builder
 public class UserRegisterDTO {

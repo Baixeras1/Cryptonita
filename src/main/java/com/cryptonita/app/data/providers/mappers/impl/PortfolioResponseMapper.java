@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Component
-public class PortfolioResponseMapper implements IMapper<Map<String,WalletResponseDto>, PortfolioResponseDTO> {
+public class PortfolioResponseMapper implements IMapper<Map<String, WalletResponseDto>, PortfolioResponseDTO> {
 
     private final ICoinIntegrationService coinIntegrationService;
 
@@ -44,7 +44,7 @@ public class PortfolioResponseMapper implements IMapper<Map<String,WalletRespons
                 .id(dto.getId())
                 .name(dto.getCoinName())
                 .quantity(dto.getQuantity())
-                .marketData(coinIntegrationService.getAllMarkets("usd",dto.getCoinName()).blockFirst())
+                .marketData(coinIntegrationService.getAllMarkets("usd", dto.getCoinName()).blockFirst())
                 .build();
     }
 

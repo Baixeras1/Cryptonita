@@ -2,7 +2,6 @@ package com.cryptonita.app.security.filters;
 
 
 import com.cryptonita.app.core.controllers.utils.RestResponse;
-import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.security.utils.LoginAttemptsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

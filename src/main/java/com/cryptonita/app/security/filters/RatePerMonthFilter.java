@@ -1,7 +1,6 @@
 package com.cryptonita.app.security.filters;
 
 import com.cryptonita.app.core.controllers.utils.RestResponse;
-import com.cryptonita.app.data.entities.enums.UserRole;
 import com.cryptonita.app.data.providers.IUserProvider;
 import com.cryptonita.app.dto.data.response.UserResponseDTO;
 import com.cryptonita.app.security.SecurityContextHelper;
@@ -36,7 +35,7 @@ public class RatePerMonthFilter extends OncePerRequestFilter {
 
         useDTO = userProvider.getByName(useDTO.getUsername());
 
-        if(userProvider.getByName(useDTO.getUsername()).numRequests >= useDTO.type.getRateLimitPerMonth()) {
+        if (userProvider.getByName(useDTO.getUsername()).numRequests >= useDTO.type.getRateLimitPerMonth()) {
             response.setContentType("application/json");
             response.getOutputStream().print(
                     jsonMapper.writeValueAsString(

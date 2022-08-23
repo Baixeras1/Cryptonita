@@ -1,7 +1,6 @@
 package com.cryptonita.app.security.utils;
 
 import com.cryptonita.app.data.providers.IUserProvider;
-import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Expiry;
 import com.github.benmanes.caffeine.cache.LoadingCache;
@@ -15,11 +14,10 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LoginAttemptsService {
 
+    private final int MAX_ATTEMPT = 3;
     @Autowired
     IUserProvider iUserProvider;
-
-    private final int MAX_ATTEMPT = 3;
-    private LoadingCache<String, Integer> attemptsCache;
+    private final LoadingCache<String, Integer> attemptsCache;
 
     public LoginAttemptsService() {
         attemptsCache = Caffeine.newBuilder()

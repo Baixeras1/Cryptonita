@@ -8,6 +8,7 @@ import com.cryptonita.app.dto.data.response.WalletResponseDto;
  */
 public interface IPortfolioService {
     WalletResponseDto get(String coin);
+
     PortfolioResponseDTO getAll();
 
 }

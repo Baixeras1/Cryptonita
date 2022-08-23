@@ -22,8 +22,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BannerUserFilter extends OncePerRequestFilter {
 
-    private IUserProvider userProvider;
     private final SecurityContextHelper contextHelper;
+    private IUserProvider userProvider;
     private ObjectMapper objectMapper;
 
     @Override
