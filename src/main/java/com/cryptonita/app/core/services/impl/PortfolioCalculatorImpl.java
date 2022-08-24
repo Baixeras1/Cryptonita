@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.ToString;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -31,7 +32,8 @@ public class PortfolioCalculatorImpl implements IPortfolioCalculator {
     private static final double MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
     private static final ZoneId UTC = ZoneId.of("UTC");
     private static final TypeReference<List<WalletResponseDto>> PORTFOLIO_TYPE =
-            new TypeReference<List<WalletResponseDto>>() {};
+            new TypeReference<List<WalletResponseDto>>() {
+            };
 
     private final IRegisterProvider registerProvider;
     private final ICoinIntegrationService coinIntegrationService;
@@ -51,12 +53,11 @@ public class PortfolioCalculatorImpl implements IPortfolioCalculator {
         int currentIndex = 0;
         HistoryEntry current = HistoryEntry.of(histories.get(currentIndex));
 
-        for (ListIterator<HistoryInfoDTO> iterator = chartList.listIterator(); iterator.hasNext();) {
+        for (ListIterator<HistoryInfoDTO> iterator = chartList.listIterator(); iterator.hasNext(); ) {
 
             HistoryInfoDTO historyInfoDTO = iterator.next();
-
-            if ((currentIndex + 1) < histories.size()
-                    && historyInfoDTO.time >= histories.get(currentIndex + 1).date.atStartOfDay(UTC).toEpochSecond() * 1000 ) {
+            while ((currentIndex + 1) < histories.size()
+                    && historyInfoDTO.time >= histories.get(currentIndex + 1).date.atStartOfDay(UTC).toEpochSecond() * 1000) {
                 current = HistoryEntry.of(histories.get(++currentIndex));
             }
 
@@ -103,6 +104,7 @@ public class PortfolioCalculatorImpl implements IPortfolioCalculator {
     }
 
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @ToString
     private static final class HistoryEntry {
 
         private static final ObjectMapper jsonMapper = new ObjectMapper();

@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class HistoricalMarketAdapter implements IHistoricalMarketAdapter {
 
-    private static final String COIN_MARKET_URL = "https://api.coingecko.com/api/v3/coins/bitcoin/history";
+    private static final String COIN_MARKET_URL = "https://api.coingecko.com/api/v3/coins/{id}/history";
     private static final DateTimeFormatter date_formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private final WebClient coinMarketClient = WebClient.builder()
@@ -28,9 +28,8 @@ public class HistoricalMarketAdapter implements IHistoricalMarketAdapter {
     public Mono<CoinHistoricalMarketDTO> getHistorical(String id, LocalDate dateAt) {
         return coinMarketClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .queryParam("id", id)
                         .queryParam("date", getDateFormatted(dateAt))
-                        .build()
+                        .build(id)
                 )
                 .retrieve()
                 .bodyToMono(String.class)

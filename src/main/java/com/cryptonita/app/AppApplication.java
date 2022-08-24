@@ -42,19 +42,26 @@ public class AppApplication {
             coinLoader.load().blockLast();
             usersLoader.load().blockLast();
 
-            accountProvider.deposit("sergio.bernal", "Bitcoin", 1);
-
-            //accountProvider.deposit("sergio.bernal", "ethereum", 120);
-
-            registerProvider.log("sergio.bernal",
-                    LocalDate.now().minusDays(10), "Test", "test2", 15);
-
-            accountProvider.deposit("sergio.bernal", "Bitcoin", 1);
-
-            registerProvider.log("sergio.bernal",
-                    LocalDate.now().minusDays(5), "Test", "test2", 15);
-
+            mockHistoryAndPortfolio(accountProvider, registerProvider);
         };
+    }
+
+    private void mockHistoryAndPortfolio(IAccountProvider accountProvider, IRegisterProvider registerProvider) {
+
+        accountProvider.deposit("sergio.bernal", "Bitcoin", 1);
+
+        registerProvider.log("sergio.bernal",
+                LocalDate.now().minusDays(10), "Test", "test2", 15);
+
+        accountProvider.deposit("sergio.bernal", "Bitcoin", 1);
+
+        registerProvider.log("sergio.bernal",
+                LocalDate.now().minusDays(5), "Test", "test2", 15);
+
+        accountProvider.deposit("sergio.bernal", "Cardano", 4.58);
+
+        registerProvider.log("sergio.bernal",
+                LocalDate.now(), "Test", "test2", 15);
     }
 
 }
