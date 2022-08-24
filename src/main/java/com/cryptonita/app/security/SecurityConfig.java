@@ -31,8 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .csrf()
-                .disable()
-                .csrf().disable()
+                    .disable()
+                .csrf()
+                    .disable()
                 .addFilterBefore(bannedIPFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(bannerUserFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(ratePerMinuteFilter, BannerUserFilter.class)
@@ -40,12 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/**")
                 .hasAnyAuthority("ADMIN", "USER")
-                .and()
+                    .and()
                 .httpBasic()
                 .authenticationEntryPoint(authenticationErrorHandling)
-                .and()
+                    .and()
                 .headers().frameOptions().disable()
-                .and()
+                    .and()
                 .exceptionHandling().accessDeniedHandler(authorizationErrorHandler);
     }
 

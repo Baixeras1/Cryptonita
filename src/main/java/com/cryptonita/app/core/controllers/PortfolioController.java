@@ -37,4 +37,13 @@ public class PortfolioController {
     public RestResponse getPortfolio() {
         return RestResponse.encapsulate(portfolioService.getAll());
     }
+
+    @GetMapping("/chart")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Gets the portfolio chart of the user ")
+    @TokenConsume(4)
+    public RestResponse getPortfolioChart() {
+        return RestResponse.encapsulate(portfolioService.getPortfolioChart());
+    }
+
 }
