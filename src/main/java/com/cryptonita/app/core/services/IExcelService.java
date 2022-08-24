@@ -1,4 +1,4 @@
-package com.cryptonita.app.core.controllers.services;
+package com.cryptonita.app.core.services;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
