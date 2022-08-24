@@ -1,6 +1,6 @@
-package com.cryptonita.app.core.controllers.services.impl;
+package com.cryptonita.app.core.services.impl;
 
-import com.cryptonita.app.core.controllers.services.IExcelService;
+import com.cryptonita.app.core.services.IExcelService;
 import com.cryptonita.app.core.utils.ExcelGenerator;
 import com.cryptonita.app.data.providers.IRegisterProvider;
 import com.cryptonita.app.dto.data.response.HistoryResponseDTO;
